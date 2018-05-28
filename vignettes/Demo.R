@@ -23,8 +23,19 @@ ggplot(result, aes(x=DAT_Step, color = Technique, fill = Technique)) +
   geom_density(alpha=.8)
 
 ggplot(data = result, aes(x = DAT_Step,
-                      color = Technique,
-                      fill = Technique)) +
+                          color = Technique,
+                          fill = Technique)) +
   geom_density(aes(weight = weight), alpha = 0.5) +
   xlab("Dating") +
   theme(panel.background = element_blank())
+
+
+png("demo_image.png")
+ggplot(data = result, aes(x = DAT_Step,
+                          color = Technique,
+                          fill = Technique)) +
+  geom_density(aes(weight = weight), alpha = 0.5) +
+  xlab("Dating") +
+  theme(panel.background = element_blank())
+dev.off()
+getwd()

@@ -60,7 +60,6 @@ kable(head(df))
 ```
 
 
-## References
 
 
   
@@ -87,4 +86,5 @@ ggplot(data = df, aes(x = DAT_Step,
   theme(panel.background = element_blank())
 ```
 
+## References
 
