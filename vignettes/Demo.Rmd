@@ -2,7 +2,9 @@
 title: "datplot - Density Plots for Dates"
 author: "Lisa Steinmann"
 date: "28 Mai 2018"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 bibliography: ../inst/literatur.bib
 ---
 
