@@ -9,7 +9,7 @@ datsteps(df, stepsize = 5)
 \arguments{
 \item{df}{a dataframe with 4 variable: ID, group, minimum date (num) maximum date (num), _must_ be in this order, colnames are irrelevant; each objects _must_ be one row.}
 
-\item{stepsize}{defaults to 5. Number of years that should be considered a timestap/datestep.}
+\item{stepsize}{defaults to 5. Number of years that should be considered a timestep/datestep.}
 }
 \value{
 a larger dataframe with a number of steps for each object as well as a 'weight' value, that is a quantification of how well the object is dated (lesser values means objects are dated to larger timespans)

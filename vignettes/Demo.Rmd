@@ -3,8 +3,8 @@ title: "datplot - Density Plots for Dates"
 author: "Lisa Steinmann"
 date: "28 Mai 2018"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 bibliography: ../inst/literatur.bib
 ---
 
@@ -12,6 +12,7 @@ bibliography: ../inst/literatur.bib
 knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
 ```
+
 
 ## Density Plots for Dates
 
@@ -27,6 +28,7 @@ df <- read.table("../inst/data/testset_beazley_1000.csv", sep = ";")
 kable(df[sample(1:nrow(df), 10, replace = FALSE),])
 ```
 
+
 ## How to display a range?
 
 Now we have to dates for each object. The earliest possible dating and the latest possible dating. In order to be able to process this to a density graph, which to me seems the most elegant means of visualization for this kind of data. (At least if the goal is merely to evaluate changes over time and not to look at actual objects counts.)
@@ -36,13 +38,16 @@ Secondly, every object is duplicated a number of times equal to the dating range
 In this case the size of the dating steps will be 10 years. 
 I find this superior to using, e.g., the median date of an objects. The outcome might often be similar, but I still have the impression that a lot of information is lost on the way when doing that. I do not claim this to be an ideal solution to everything, however. There _are_ still problems and it might not be suitable for every purpose. I can't imagine this being useful for 'fine'-dating context, since it does erase the point of terminus post/ante quem, which is important on a smaller scale. I would rather imagine it being usefull to display the change in 'trends' over time, e.g. which vessel type is popular at a given time? How does style develop? Or maybe even to find occupation 'peaks' from survey data?
 
+
 ```{r steps}
 library(datplot)
 result <- datsteps(df, stepsize = 10)
 kable(head(result))
 ```
 
+
 This can now be displayed as a density plot, as seen below. The peak at around -500 indicates that is area has the highest overlay, so a large part of the objects in our sample have been dated around this time. This, however, is not yet very informative. 
+
 
 ```{r density one}
 dens <- result
@@ -50,23 +55,29 @@ dens$weight <- (dens$weight / sum(dens$weight))
 dens <- density(x = dens$DAT_Step, weights = dens$weight)
 plot(dens)
 ```
+
+
 A simplistic approach to a bar plot however whould look like this: 
+
+
 ```{r barplot}
 counts <- df
 counts$DAT_med <- ((counts$DAT_max + counts$DAT_min) / 2)
 counts <- table(counts$DAT_med)
 plot(counts)
 ```
+
+
 ## Scaling the weight along groups of objects
 
 But: In order to display the objects seperated into groups, the weights first have to be scaled along group membership, so that the sum of all weights in a group will equal 1. scaleweight() does exactly that for a dataframe as it was returned by datsteps().
 We also need to supply the group column.
+
+
 ```{r scaleweight}
 result <- scaleweight(result, result$Technique)
 kable(head(result))
 ```
-
-
 
 
   
@@ -83,8 +94,12 @@ ggplot(data = result, aes(x = DAT_Step,
   xlab("Dating") +
   theme(panel.background = element_blank())
 ```
+
+
 Please note that the plot does change when the weights are omitted. When every step is valued equally, a lot of steps fall into the end of the 4th century, since they were dated as e.g. "-400 to -300".
-```{r ggplot wout weight}
+
+
+```{r ggplot wout weight, warning=FALSE}
 ggplot(data = result, aes(x = DAT_Step, 
                           color = Technique, 
                           fill = Technique)) +
@@ -93,9 +108,11 @@ ggplot(data = result, aes(x = DAT_Step,
   theme(panel.background = element_blank())
 ```
 
+
 ## Barplots for comparison
 
-```{r barplot two}
+
+```{r barplot two, warning=FALSE}
 counts <- df
 counts$DAT_med <- ((counts$DAT_max + counts$DAT_min) / 2)
 counts <- table(counts$DAT_med, counts$Technique)
@@ -104,6 +121,7 @@ counts <- melt(counts)
 ggplot(data = counts, aes(x = Var1, y = value, fill = Var2)) +
   geom_bar(stat = "identity", position = "dodge")
 ```
+
 
 So, this is similar, but not quite. I find the smooth curves a more realistic approach to dating, since nothing should be fixed at one certain year alone. The production of objects was as continuous as there use, so it seems only reasonable to display it in a continuous fashion.
 

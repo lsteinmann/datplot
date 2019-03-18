@@ -20,9 +20,8 @@ Converting date ranges into dating 'steps' eases the visualization of changes in
 
 A rather common problem in archaeology is the fuzzyness of dates assigned to objects. If one wants to visualize overall changes in - let's say - pottery consumption, bar charts often fall short in that regard. Let's say we have Phases a -- f, then some of the objects can usually be dated to a, c, and f, as an example, but others will by classified as "a to c" or "b to c". But how can these data still be used for examining changes in a large set of objects without completely disregarding them?
 
-I would propose using density plots as I did in the Demo (vignettes). They are easy to understand and are usually asthetically pleasing. Obviously they do omit a some information, such as individual counts, that bar charts display a lot better. On the other hand, ranges can be incorporated into the visualization as well, which is a lot more difficult using bar charts. 
+I propose using density plots as seen in the Demo (vignettes). They are easy to understand and are usually asthetically pleasing. Obviously they do omit information, such as individual counts, that bar charts display a lot better. On the other hand, ranges can be incorporated into the visualization as well, which is a lot more difficult using bar charts while actual counts can always be supplemented in a table. 
 
-I imagine this to be mostly usefull for surveys and other analysis aimed at the longue duree.
 
 ![Attic Pottery from BAPD by Date](vignettes/demo_image.png "Attic Pottery from BAPD by Date")
 
