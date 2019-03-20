@@ -12,7 +12,7 @@ datsteps(df, stepsize = 5)
 \item{stepsize}{defaults to 5. Number of years that should be considered a timestep/datestep.}
 }
 \value{
-a larger dataframe with a number of steps for each object as well as a 'weight' value, that is a quantification of how well the object is dated (lesser values means objects are dated to larger timespans)
+a larger dataframe with a number of steps for each object as well as a 'weight' value, that is a quantification of how well the object is dated (lesser value means object is dated to larger timespan)
 }
 \description{
 Requires a dataframe with 4 variable: one ID (ideally factor), one group (ideally factor),

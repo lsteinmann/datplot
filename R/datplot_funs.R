@@ -8,7 +8,7 @@
 #' @param df a dataframe with 4 variable: ID, group, minimum date (num) maximum date (num), _must_ be in this order, colnames are irrelevant; each objects _must_ be one row.
 #' @param stepsize defaults to 5. Number of years that should be considered a timestap/datestep.
 #'
-#' @return a larger dataframe with a number of steps for each object as well as a 'weight' value, that is a quantification of how well the object is dated (lesser values means objects are dated to larger timespans)
+#' @return a larger dataframe with a number of steps for each object as well as a 'weight' value, that is a quantification of how well the object is dated (lesser value means object is dated to larger timespans, i.e. with less confidence)
 #'
 #' @export datsteps
 
@@ -16,7 +16,7 @@ datsteps <- function(df, stepsize = 5) {
   result <- as.data.frame(NULL)
   wip_data <- df
   wip_data$weight <- abs(df[,3] - df[,4])
-  wip_data$weight <- (max(wip_data$weight) + 1) - wip_data$weight
+  wip_data$weight <- 1/wip_data$weight
   for (i in 1:nrow(wip_data)) {
     sequence <- NULL
     sequence <- seq(wip_data[i,3], wip_data[i,4], by = stepsize)

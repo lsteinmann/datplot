@@ -8,10 +8,7 @@ output:
 bibliography: ../inst/literatur.bib
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-library(knitr)
-```
+
 
 
 ## Density Plots for Dates
@@ -23,10 +20,24 @@ First, it is handy to translate the phases into numbers, for which we should con
 I will demonstrate an approach of visualization that I personally found very useful, although I guess it is debatable whether it's 'valid' or not - I find that is works, however, and am very open to discussion. Let's start with a random sample of athenian pottery from the beazley archive ([@BAPD]), that I converted into the format described above beforehand!
 
 
-```{r prep}
+
+```r
 df <- read.table("../inst/data/testset_beazley_1000.csv", sep = ";")
 kable(df[sample(1:nrow(df), 10, replace = FALSE),])
 ```
+
+         Vase.Number  Technique       DAT_min   DAT_max
+------  ------------  -------------  --------  --------
+98858        9019787  RED-FIGURE         -500      -450
+9307           10114  BLACK-FIGURE       -575      -525
+57250         303311  BLACK-FIGURE       -550      -500
+63076         340188  RED-FIGURE         -500      -450
+64311         350956  BLACK-FIGURE       -550      -500
+47463         215346  RED-FIGURE         -450      -400
+23925          28072  RED-FIGURE         -475      -425
+17776          19547  BLACK-FIGURE       -550      -500
+36680         203822  RED-FIGURE         -500      -450
+26783          31047  BLACK-FIGURE       -525      -475
 
 
 ## How to display a range?
@@ -39,33 +50,49 @@ In this case the size of the dating steps will be 10 years.
 I find this superior to using, e.g., the median date of an objects. The outcome might often be similar, but I still have the impression that a lot of information is lost on the way when doing that. I do not claim this to be an ideal solution to everything, however. There _are_ still problems and it might not be suitable for every purpose. I can't imagine this being useful for 'fine'-dating context, since it does erase the point of terminus post/ante quem, which is important on a smaller scale. I would rather imagine it being usefull to display the change in 'trends' over time, e.g. which vessel type is popular at a given time? How does style develop? Or maybe even to find occupation 'peaks' from survey data?
 
 
-```{r steps}
+
+```r
 library(datplot)
 result <- datsteps(df, stepsize = 10)
 kable(head(result))
 ```
 
+          Vase.Number  Technique       DAT_min   DAT_max      weight   DAT_Step
+-------  ------------  -------------  --------  --------  ----------  ---------
+10110           10957  BLACK-FIGURE       -550      -500   0.0033333       -550
+101101          10957  BLACK-FIGURE       -550      -500   0.0033333       -540
+101102          10957  BLACK-FIGURE       -550      -500   0.0033333       -530
+101103          10957  BLACK-FIGURE       -550      -500   0.0033333       -520
+101104          10957  BLACK-FIGURE       -550      -500   0.0033333       -510
+101105          10957  BLACK-FIGURE       -550      -500   0.0033333       -500
+
 
 This can now be displayed as a density plot, as seen below. The peak at around -500 indicates that is area has the highest overlay, so a large part of the objects in our sample have been dated around this time. This, however, is not yet very informative. 
 
 
-```{r density one}
+
+```r
 dens <- result
 dens$weight <- (dens$weight / sum(dens$weight))
 dens <- density(x = dens$DAT_Step, weights = dens$weight)
 plot(dens)
 ```
 
+![](C:\Users\Lisa Steinmann\AppData\Local\Temp\RtmpQTAWOt\preview-3186aad4a3e.dir\Demo_files/figure-latex/density one-1.pdf)<!-- --> 
+
 
 A simplistic approach to a bar plot however whould look like this: 
 
 
-```{r barplot}
+
+```r
 counts <- df
 counts$DAT_med <- ((counts$DAT_max + counts$DAT_min) / 2)
 counts <- table(counts$DAT_med)
 plot(counts)
 ```
+
+![](C:\Users\Lisa Steinmann\AppData\Local\Temp\RtmpQTAWOt\preview-3186aad4a3e.dir\Demo_files/figure-latex/barplot-1.pdf)<!-- --> 
 
 
 ## Scaling the weight along groups of objects
@@ -74,10 +101,20 @@ But: In order to display the objects seperated into groups, the weights first ha
 We also need to supply the group column.
 
 
-```{r scaleweight}
+
+```r
 result <- scaleweight(result, result$Technique)
 kable(head(result))
 ```
+
+          Vase.Number  Technique       DAT_min   DAT_max      weight   DAT_Step
+-------  ------------  -------------  --------  --------  ----------  ---------
+10110           10957  BLACK-FIGURE       -550      -500   0.0003501       -550
+101101          10957  BLACK-FIGURE       -550      -500   0.0003501       -540
+101102          10957  BLACK-FIGURE       -550      -500   0.0003501       -530
+101103          10957  BLACK-FIGURE       -550      -500   0.0003501       -520
+101104          10957  BLACK-FIGURE       -550      -500   0.0003501       -510
+101105          10957  BLACK-FIGURE       -550      -500   0.0003501       -500
 
 
   
@@ -85,7 +122,8 @@ kable(head(result))
 
 This can now be plotted a little more nicely usind ggplot2. We can clearly see now what we knew before: Black-figure pottery is older than red-figure pottery. (The data are from a random sample of athenian pottery from the beazley archive, n = 1000. Computation of the dating steps may not work with very, very large datasets, or simply take up a lot of time.)
 
-```{r ggplot}
+
+```r
 library(ggplot2)
 ggplot(data = result, aes(x = DAT_Step, 
                           color = Technique, 
@@ -95,11 +133,14 @@ ggplot(data = result, aes(x = DAT_Step,
   theme(panel.background = element_blank())
 ```
 
+![](C:\Users\Lisa Steinmann\AppData\Local\Temp\RtmpQTAWOt\preview-3186aad4a3e.dir\Demo_files/figure-latex/ggplot-1.pdf)<!-- --> 
+
 
 Please note that the plot does change when the weights are omitted. When every step is valued equally, a lot of steps fall into the end of the 4th century, since they were dated as e.g. "-400 to -300".
 
 
-```{r ggplot wout weight, warning=FALSE}
+
+```r
 ggplot(data = result, aes(x = DAT_Step, 
                           color = Technique, 
                           fill = Technique)) +
@@ -108,11 +149,14 @@ ggplot(data = result, aes(x = DAT_Step,
   theme(panel.background = element_blank())
 ```
 
+![](C:\Users\Lisa Steinmann\AppData\Local\Temp\RtmpQTAWOt\preview-3186aad4a3e.dir\Demo_files/figure-latex/ggplot wout weight-1.pdf)<!-- --> 
+
 
 ## Barplots for comparison
 
 
-```{r barplot two, warning=FALSE}
+
+```r
 counts <- df
 counts$DAT_med <- ((counts$DAT_max + counts$DAT_min) / 2)
 counts <- table(counts$DAT_med, counts$Technique)
@@ -121,6 +165,8 @@ counts <- melt(counts)
 ggplot(data = counts, aes(x = Var1, y = value, fill = Var2)) +
   geom_bar(stat = "identity", position = "dodge")
 ```
+
+![](C:\Users\Lisa Steinmann\AppData\Local\Temp\RtmpQTAWOt\preview-3186aad4a3e.dir\Demo_files/figure-latex/barplot two-1.pdf)<!-- --> 
 
 
 So, this is similar, but not quite. I find the smooth curves a more realistic approach to dating, since nothing should be fixed at one certain year alone. The production of objects was as continuous as there use, so it seems only reasonable to display it in a continuous fashion.
