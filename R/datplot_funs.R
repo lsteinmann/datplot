@@ -16,6 +16,13 @@ datsteps <- function(df, stepsize = 5) {
   result <- as.data.frame(NULL)
   wip_data <- df
   wip_data$weight <- abs(df[,3] - df[,4])
+  if (any(wip_data$weight == 0)) {
+    print(paste("Warning: DAT_min and DAT_max in ",
+                wip_data[which(wip_data$weight == 0),1],
+                " (Index: ", rownames(wip_data)[which(wip_data$weight == 0)], ")",
+                " have the same value! Is this correct? Please check the table for possible errors.", sep = ""))
+    wip_data$weight[which(wip_data$weight == 0)] <- 1
+  }
   wip_data$weight <- 1/wip_data$weight
   for (i in 1:nrow(wip_data)) {
     sequence <- NULL
