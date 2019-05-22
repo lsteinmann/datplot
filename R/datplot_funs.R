@@ -14,25 +14,31 @@
 
 datsteps <- function(df, stepsize = 5) {
   result <- as.data.frame(NULL)
-  wip_data <- df
-  wip_data$weight <- abs(df[,3] - df[,4])
-  if (any(wip_data$weight == 0)) {
-    print(paste("Warning: DAT_min and DAT_max in ",
-                wip_data[which(wip_data$weight == 0),1],
-                " (Index: ", rownames(wip_data)[which(wip_data$weight == 0)], ")",
-                " have the same value! Is this correct? Please check the table for possible errors.", sep = ""))
-    wip_data$weight[which(wip_data$weight == 0)] <- 1
-  }
-  wip_data$weight <- 1/wip_data$weight
-  for (i in 1:nrow(wip_data)) {
-    sequence <- NULL
-    sequence <- seq(wip_data[i,3], wip_data[i,4], by = stepsize)
-    length <- length(sequence)
-    for (zahl in sequence) {
-      wip_sec <- wip_data[i,]
-      wip_sec$DAT_Step <- zahl
-      wip_sec$weight <- wip_sec$weight / length(sequence)
-      result <- rbind(result, wip_sec)
+  if (any(df[,3] > df[,4])) {
+    print(paste("Error: Dating seems to be in wrong order at ",
+                df[which(df[,3] > df[,4]),1],
+                " (Index: ", which(df[,3] > df[,4]), ")",
+                ". Please supply minimum date in 3rd Column, maximum date in 4th.", sep = ""))
+  } else {
+    df$weight <- abs(df[,3] - df[,4])
+    if (any(df$weight == 0)) {
+      print(paste("Warning: DAT_min and DAT_max in ",
+                  df[which(df$weight == 0),1],
+                  " (Index: ", which(df$weight == 0), ")",
+                  " have the same value! Is this correct? Please check the table for possible errors.", sep = ""))
+      df$weight[which(df$weight == 0)] <- 1
+    }
+    df$weight <- 1/df$weight
+    for (i in 1:nrow(df)) {
+      sequence <- NULL
+      sequence <- seq(df[i,3], df[i,4], by = stepsize)
+      length <- length(sequence)
+      for (zahl in sequence) {
+        wip <- df[i,]
+        wip$DAT_Step <- zahl
+        wip$weight <- wip$weight / length(sequence)
+        result <- rbind(result, wip)
+      }
     }
   }
   return(result)
