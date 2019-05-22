@@ -16,11 +16,12 @@ library(knitr)
 
 ## Density Plots for Dates
 
-A rather common problem in archaeology is the fuzzyness of dates assigned to objects. If one wants to visualize overall changes in - let's say - pottery consumption, bar charts often fall short in that regard. Let's say we have Phases a -- f, then some of the objects can usually be dated to a, c, and f, as an example, but others will by classified as "a to c" or "b to c". But one can these data still be used for examining changes in a large set of objects?
+A rather common problem in archaeology is the fuzziness of dates assigned to objects. If one wants to visualize overall changes in - let's say - pottery consumption, bar charts often fall short in that regard. Let's say we have Phases a -- f, then some of the objects can usually be dated to a, c, and f, as an example, but others will by classified as "a to c" or "b to c". But one can these data still be used for examining changes in a large set of objects?
 
-First, it is handy to translate the phases into numbers, for which we should conveniently choose the 'actual' dating. I know this causes other problems in the end, since such phases are often employed to avoid dates, but it is necessary in this case and may as well be changed back later in the visualization. Ideally, we can produce a 'beginning' and 'end' date for each object, or let's say an earliest possible dating and a latest possible dating corresponding to beginning and start of each phase mentioned above. 
+First, it is handy to translate the phases into numbers, for which we should conveniently choose the 'actual' dating. This may cause other problems in the end, since such phases are often employed to avoid dates, but it is necessary as the aim is to visualize the distribution on a continuous scale, for which numbers are needed. This step may later be reversed for the final visualization but supplementing or replacing the scale on the x-axis with the respective phases. 
+Ideally, one can produce a 'beginning' and 'end' date for each object, or let's say an earliest possible dating and a latest possible dating corresponding to beginning and start of each phase the object is dated to. 
 
-I will demonstrate an approach of visualization that I personally found very useful, although I guess it is debatable whether it's 'valid' or not - I find that is works, however, and am very open to discussion. Let's start with a random sample of athenian pottery from the beazley archive ([@BAPD]), that I converted into the format described above beforehand!
+To show and explain how this would work, I chose a random sample of athenian pottery from the beazley archive ([@BAPD]), as it is a large publicly available dataset. (Since the format provided by the BAPD is slightly different from that needed here I converted the data beforehand to match my requirements. No values have been changed.)
 
 
 ```{r prep}
@@ -31,11 +32,13 @@ kable(df[sample(1:nrow(df), 10, replace = FALSE),])
 
 ## How to display a range?
 
-Now we have to dates for each object. The earliest possible dating and the latest possible dating. In order to be able to process this to a density graph, which to me seems the most elegant means of visualization for this kind of data. (At least if the goal is merely to evaluate changes over time and not to look at actual objects counts.)
+The table provides two dates for each object. The earliest possible dating (DAT_min) and the latest possible dating (DAT_max). In order to be able to process this to a density graph, which is the most elegant means of visualization for continuous distributions. (At least if the goal is merely to evaluate changes over time and not to look at actual objects counts, which will be omitted.)
 
-In my opinion, things that can be dated with greater confidence should have a larger impact on the overall visualisation. That is why the following function productes a column named 'weight' which contains a value that corresponds to one (as the closest possible dating of one year) devided by the timespan between by the two dating variables. The greater the timespan, the lower the weight value. 
+Objects that can be dated with greater confidence should have a larger impact on the overall visualisation. That is why the following function productes a column named 'weight' which contains a value that corresponds to one (as the closest possible dating of one year) devided by the timespan between the two dating variables. The greater the timespan, the lower the weight value. 
 Secondly, every object is duplicated a number of times equal to the dating range devided by the stepsize-variable. Each duplicate has its own 'date', one single value between the two extremes. The above mention weight variable is devided by the number of steps, so that each new fictional object or 'date step' counts only as a fraction of the actual object. 
 In this case the size of the dating steps will be 10 years. 
+
+
 I find this superior to using, e.g., the median date of an objects. The outcome might often be similar, but I still have the impression that a lot of information is lost on the way when doing that. I do not claim this to be an ideal solution to everything, however. There _are_ still problems and it might not be suitable for every purpose. I can't imagine this being useful for 'fine'-dating context, since it does erase the point of terminus post/ante quem, which is important on a smaller scale. I would rather imagine it being usefull to display the change in 'trends' over time, e.g. which vessel type is popular at a given time? How does style develop? Or maybe even to find occupation 'peaks' from survey data?
 
 
@@ -83,7 +86,7 @@ kable(head(result))
   
 ## Plots for the distribution of objects across time
 
-This can now be plotted a little more nicely usind ggplot2. We can clearly see now what we knew before: Black-figure pottery is older than red-figure pottery. (The data are from a random sample of athenian pottery from the beazley archive, n = 1000. Computation of the dating steps may not work with very, very large datasets, or simply take up a lot of time.)
+This can now be plotted a little more nicely using ggplot2. We can clearly see now what we knew before: Black-figure pottery is older than red-figure pottery. (The data are from a random sample of athenian pottery from the beazley archive, n = 1000. Computation of the dating steps may not work with very, very large datasets, or simply take up a lot of time.)
 
 ```{r ggplot}
 library(ggplot2)
@@ -123,7 +126,7 @@ ggplot(data = counts, aes(x = Var1, y = value, fill = Var2)) +
 ```
 
 
-So, this is similar, but not quite. I find the smooth curves a more realistic approach to dating, since nothing should be fixed at one certain year alone. The production of objects was as continuous as there use, so it seems only reasonable to display it in a continuous fashion.
+The smooth curves of kernel density estimates are a more realistic approach to dating. The production of objects was as continuous as their use, so it seems only reasonable to display it in a continuous fashion.
 
 
 ## References
