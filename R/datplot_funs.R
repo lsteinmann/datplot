@@ -1,12 +1,12 @@
 #' Create 'steps' of dates for each object in a dataframe
 #'
-#' Requires a dataframe with 4 variable: one ID (ideally factor), one group (ideally factor),
-#' a minimum date (int/numeric) and a maximum date (int/numeric). It's expected that dates BCE are
-#' displayed as negative values while dates CE are positive. Ignoring this will cause problems when
-#' crossing 0.
+#' Requires a dataframe with 4 variables: ID (ideally factor), group (ideally factor),
+#' minimum date (int/numeric) and maximum date (int/numeric). It's expected that dates BCE are
+#' displayed as negative values while dates CE are positive values. Ignoring this will cause problems
+#' in any case.
 #'
-#' @param df a dataframe with 4 variable: ID, group, minimum date (num) maximum date (num), _must_ be in this order, colnames are irrelevant; each objects _must_ be one row.
-#' @param stepsize defaults to 5. Number of years that should be considered a timestap/datestep.
+#' @param df a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num), _must_ be in this order, colnames are irrelevant; each object _must_ be one row.
+#' @param stepsize defaults to 5. Number of years that should be used as an interval for creating dating steps.
 #'
 #' @return a larger dataframe with a number of steps for each object as well as a 'weight' value, that is a quantification of how well the object is dated (lesser value means object is dated to larger timespans, i.e. with less confidence)
 #'
@@ -48,10 +48,10 @@ datsteps <- function(df, stepsize = 5) {
 
 #' Scales the content of the weight columns according to group membership
 #'
-#' Requires a dataframe as produces by datsteps(). (Meaning 6 columns in the following order: ID, group, minimum/earliest date, maximum/latest date, weight, 'DAT_Steps')
+#' Requires a dataframe as produced by datsteps(). (Meaning 6 columns in the following order: ID, group, minimum/earliest date, maximum/latest date, weight, 'DAT_Steps')
 #'
 #' @param df a dataframe as returned by datsteps
-#' @param var the columns of said dataframe that should be used as the group variable
+#' @param var the column of said dataframe that should be used as the group variable
 #'
 #' @return the same dataframe, with the 'weight'-values scaled along group membership
 #'
