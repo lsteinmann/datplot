@@ -14,36 +14,86 @@
 
 datsteps <- function(df, stepsize = 5) {
   result <- as.data.frame(NULL)
-  if (any(df[,3] > df[,4])) {
+  if (any(df[,3] > df[,4]) == TRUE) {
     print(paste("Error: Dating seems to be in wrong order at ",
                 df[which(df[,3] > df[,4]),1],
                 " (Index: ", which(df[,3] > df[,4]), ")",
                 ". Please supply minimum date in 3rd Column, maximum date in 4th.", sep = ""))
   } else {
-    df$weight <- abs(df[,3] - df[,4])
-    if (any(df$weight == 0)) {
+    weights <- get.weights(df[,3], df[,4])
+
+
+    if (any(weights[,2] == FALSE)) {
       print(paste("Warning: DAT_min and DAT_max in ",
-                  df[which(df$weight == 0),1],
-                  " (Index: ", which(df$weight == 0), ")",
+                  df[which(weights == FALSE),1],
+                  " (Index: ", which(weights == FALSE), ")",
                   " have the same value! Is this correct? Please check the table for possible errors.", sep = ""))
-      df$weight[which(df$weight == 0)] <- 1
     }
-    df$weight <- 1/df$weight
-    for (i in 1:nrow(df)) {
-      sequence <- NULL
-      sequence <- seq(df[i,3], df[i,4], by = stepsize)
-      length <- length(sequence)
-      for (zahl in sequence) {
-        wip <- df[i,]
-        wip$DAT_Step <- zahl
-        wip$weight <- wip$weight / length(sequence)
-        result <- rbind(result, wip)
-      }
-    }
+
+    df$weight <- weights[,1]
+    result <- create.sub.objects(df, stepsize)
   }
   return(result)
 }
 
+
+#' Calculate the weights for each dated object
+#'
+#' Requires a dataframe with 4 variables: ID (ideally factor), group (ideally factor),
+#' minimum date (int/numeric) and maximum date (int/numeric). It's expected that dates BCE are
+#' displayed as negative values while dates CE are positive values. Ignoring this will cause problems
+#' in any case.
+#'
+#' @param DAT_min a vector containing the minimum date (int/num) of each object
+#' @param DAT_max a vector containing the maximum date (int/num) of each object
+#'
+#' @return the 'weight' value for the datsteps-dataframe, that is a quantification of how well the object is dated (lesser value means object is dated to larger timespans, i.e. with less confidence)
+#'
+#' @export get.weights
+
+
+get.weights <- function(DAT_min, DAT_max) {
+  weights <- as.data.frame(matrix(ncol = 2, nrow = length(DAT_min)))
+  weights[,1] <- abs(DAT_min - DAT_max)
+  weights[,2] <- TRUE
+  if (any(weights[,1] == 0)) {
+    weights[which(weights[,1] == 0),2] <- FALSE
+    weights[which(weights[,1] == 0),1] <- 1
+  }
+  weights[,1] <- 1/weights[,1]
+  return(weights)
+}
+
+#' Create sub-objects for each object in a dataframe
+#'
+#' Requires a dataframe with 5 variables: ID (ideally factor), group (ideally factor),
+#' minimum date (int/numeric), maximum date (int/numeric) and weight (as created by get.weights). It's expected that dates BCE are
+#' displayed as negative values while dates CE are positive values. Ignoring this will cause problems
+#' in any case.
+#'
+#' @param df a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num), _must_ be in this order, colnames are irrelevant; each object _must_ be one row.
+#' @param stepsize defaults to 5. Number of years that should be used as an interval for creating dating steps.
+#'
+#' @return a larger dataframe with a number of steps for each object as well as a 'weight' value, that is a quantification of how well the object is dated (lesser value means object is dated to larger timespans, i.e. with less confidence)
+#'
+#' @export create.sub.objects
+
+# this could be optimizes, maybe with apply()? because it takes too long
+create.sub.objects <- function(df, stepsize) {
+  result <- data.frame(NULL)
+  for (i in 1:nrow(df)) {
+    sequence <- NULL
+    sequence <- seq(df[i,3], df[i,4], by = stepsize)
+    length <- length(sequence)
+    for (step in sequence) {
+      wip <- df[i,]
+      wip$DAT_Step <- step
+      wip$weight <- wip$weight / length(sequence)
+      result <- rbind(result, wip)
+    }
+  }
+  return(result)
+}
 
 
 #' Scales the content of the weight columns according to group membership
