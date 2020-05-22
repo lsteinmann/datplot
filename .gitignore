@@ -15,3 +15,4 @@ vignettes/Explanation.Rmd
 *.out
 *.fls
 *.fdb*
+*.ttf

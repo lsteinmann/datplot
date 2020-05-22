@@ -5,48 +5,76 @@
 #' displayed as negative values while dates CE are positive values. Ignoring this will cause problems
 #' in any case.
 #'
-#' @param df a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num), _must_ be in this order, colnames are irrelevant; each object _must_ be one row.
+#' @param df a dataframe with 4 variables: ID, group, minimum date (int/num) maximum date (int/num), _must_ be in this order, colnames are irrelevant; each object _must_ be one row.
 #' @param stepsize defaults to 5. Number of years that should be used as an interval for creating dating steps.
 #'
 #' @return a larger dataframe with a number of steps for each object as well as a 'weight' value, that is a quantification of how well the object is dated (lesser value means object is dated to larger timespans, i.e. with less confidence)
 #'
 #' @export datsteps
 
-datsteps <- function(df, stepsize = "auto") {
+
+datsteps <- function(df, stepsize = 25) {
+  result <- as.data.frame(NULL)
   if (stepsize == "auto") {
     timespans <- abs(df[,3] - df[,4])
-    if (min(timespans) < 1) {
-      stepsize <- 1
-    } else {
-      stepsize <- min(timespans)
-    }
-    print(paste("Using stepsize = ", stepsize, ". (auto)", sep = ""))
+    stepsize <- generate.stepsize(timespans)
   } else if (!is.numeric(stepsize)) {
-    print("Error: stepsize has to be numeric.")
-    stop()
+    stop(error("stepsize has to be either 'auto' or numeric."))
   }
-  result <- as.data.frame(NULL)
-  if (any(df[,3] > df[,4]) == TRUE) {
-    print(paste("Error: Dating seems to be in wrong order at ",
-                df[which(df[,3] > df[,4]),1],
-                " (Index: ", which(df[,3] > df[,4]), ")",
-                ". Please supply minimum date in 3rd Column, maximum date in 4th.", sep = ""))
-  } else {
-    weights <- get.weights(df[,3], df[,4])
 
-
-    if (any(weights[,2] == FALSE)) {
-      print(paste("Warning: DAT_min and DAT_max in ",
-                  df[which(weights == FALSE),1],
-                  " (Index: ", which(weights == FALSE), ")",
-                  " have the same value! Is this correct? Please check the table for possible errors.", sep = ""))
-    }
-
-    df$weight <- weights[,1]
-    result <- create.sub.objects(df, stepsize)
+  if (any(df[,3] > df[,4])) {
+    warning(paste("Warning: Dating seems to be in wrong order at ID ", paste(df[which(df[,3] > df[,4]),1], collapse = ", "), " (Index: ",
+                  paste(which(df[,3] > df[,4]), collapse = ", "), ")",
+                  ". Dates have been switched, but be sure to check your original data for possible mistakes.", sep = ""))
+    DAT_err <- which(df[,3] > df[,4])
+    df <- switch.dating(df, DAT_err)
   }
+
+  weights <- get.weights(df[,3], df[,4])
+
+  df$weight <- weights[,1]
+  result <- create.sub.objects(df, stepsize)
   return(result)
 }
+
+
+#' Generate stepsize
+#'
+#' Requires a dataframe with 4 variables: ID (ideally factor), group (ideally factor),
+#' minimum date (int/numeric) and maximum date (int/numeric).
+#'
+#' @param df a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num)
+#'
+#' @return stepsize
+#'
+#' @export switch.dating
+
+generate.stepsize <- function(timespans) {
+  stepsize <- min(abs(df[,4] - df[,3]))
+  if(stepsize < 1) {
+    stepsize <- 1
+  }
+  print(paste("Using stepsize = ", stepsize, " (auto).", sep = ""))
+  return(stepsize)
+}
+
+#' Switch values where dating is in wrong order
+#'
+#' Requires a dataframe with 4 variables: ID (ideally factor), group (ideally factor),
+#' minimum date (int/numeric) and maximum date (int/numeric).
+#'
+#' @param df a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num)
+#' @param DAT_err a vector containing the dates in wrong order
+#'
+#' @return corrected df
+#'
+#' @export switch.dating
+
+switch.dating <- function(df, DAT_err) {
+  df[DAT_err,3:4] <- df[DAT_err,4:3]
+  return(df)
+}
+
 
 #' Calculate the weights for each dated object
 #'
@@ -72,8 +100,17 @@ get.weights <- function(DAT_min, DAT_max) {
     weights[which(weights[,1] == 0),1] <- 1
   }
   weights[,1] <- 1/weights[,1]
+  if (any(weights[,2] == FALSE)) {
+    warning(paste("Warning: DAT_min and DAT_max in ID ",
+                  paste(df[which(weights[,2] == FALSE),1], collapse = ", "),
+                  " (Index: ", paste(which(weights[,2] == FALSE), collapse = ", "), ")",
+                  " have the same value! Is this correct? Please check the table for possible errors.", sep = ""))
+  }
   return(weights)
 }
+
+
+
 
 #' Create sub-objects for each object in a dataframe
 #'
@@ -103,11 +140,18 @@ create.sub.objects <- function(df, stepsize) {
   result <- as.data.frame(matrix(ncol = ncol(df)+1, nrow = outputnr+100))
 
   colnames(result) <- c(colnames(df), "DAT_step")
+  diffs <- df[,4]-df[,3]
+
+  if (any(diffs < stepsize)) {
+    diffs <- diffs[diffs < stepsize]
+    warning(paste("stepsize is larger than the range of the closest dated object: ",
+                paste(df[which(diffs < stepsize),1], collapse = ", "), " (Index = ",
+                paste(which(diffs < stepsize), collapse = ", "), "). Using mean as year.", sep = ""))
+  }
+
   for (i in 1:nrow(df)) {
     sequence <- NULL
     if ((df[i,4]-df[i,3]) < stepsize) {
-      print(paste("stepsize is larger than the range of the closest dated object: ",
-                  df[i,1], " (Index = ", i, "). Using mean as year.", sep = ""))
       sequence <- (df[i,3]+df[i,4])/2
     } else {
       sequence <- seq(df[i,3], df[i,4], by = stepsize)
