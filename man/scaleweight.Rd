@@ -4,16 +4,16 @@
 \alias{scaleweight}
 \title{Scales the content of the weight columns according to group membership}
 \usage{
-scaleweight(df, var)
+scaleweight(df, var = c("all", 2))
 }
 \arguments{
 \item{df}{a dataframe as returned by datsteps}
 
-\item{var}{the columns of said dataframe that should be used as the group variable}
+\item{var}{the index of the column of said dataframe that should be used as the group variable, OR "all" (note: all non-numeric values will result in the weight being scaled accross all objects)}
 }
 \value{
-the same dataframe, with the 'weight'-values scaled along group membership
+the same dataframe, with scaled 'weight'-values
 }
 \description{
-Requires a dataframe as produces by datsteps(). (Meaning 6 columns in the following order: ID, group, minimum/earliest date, maximum/latest date, weight, 'DAT_Steps')
+Requires a dataframe as produced by datsteps(). (Meaning 6 columns in the following order: ID, group, minimum/earliest date, maximum/latest date, weight, 'DAT_Steps')
 }

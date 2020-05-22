@@ -12,7 +12,19 @@
 #'
 #' @export datsteps
 
-datsteps <- function(df, stepsize = 5) {
+datsteps <- function(df, stepsize = "auto") {
+  if (stepsize == "auto") {
+    timespans <- abs(df[,3] - df[,4])
+    if (min(timespans) < 1) {
+      stepsize <- 1
+    } else {
+      stepsize <- min(timespans)
+    }
+    print(paste("Using stepsize = ", stepsize, ". (auto)", sep = ""))
+  } else if (!is.numeric(stepsize)) {
+    print("Error: stepsize has to be numeric.")
+    stop()
+  }
   result <- as.data.frame(NULL)
   if (any(df[,3] > df[,4]) == TRUE) {
     print(paste("Error: Dating seems to be in wrong order at ",
@@ -35,7 +47,6 @@ datsteps <- function(df, stepsize = 5) {
   }
   return(result)
 }
-
 
 #' Calculate the weights for each dated object
 #'
@@ -78,15 +89,18 @@ get.weights <- function(DAT_min, DAT_max) {
 #'
 #' @export create.sub.objects
 
-# this could be optimizes, maybe with apply()? because it takes too long
 create.sub.objects <- function(df, stepsize) {
 
   mean_year_index <- which(df[,4]-df[,3] < stepsize)
 
-  outputnr <- ceiling(sum(((abs(df[-mean_year_index,3]-df[-mean_year_index,4]))/stepsize)+1))
-  outputnr <- outputnr+length(mean_year_index)
+  if (length(mean_year_index) == 0) {
+    outputnr <- ceiling(sum(((abs(df[,3]-df[,4]))/stepsize)+1))
+  } else {
+    outputnr <- ceiling(sum(((abs(df[-mean_year_index,3]-df[-mean_year_index,4]))/stepsize)+1))
+    outputnr <- outputnr+length(mean_year_index)
+  }
 
-  result <- as.data.frame(matrix(ncol = ncol(df)+1, nrow = outputnr))
+  result <- as.data.frame(matrix(ncol = ncol(df)+1, nrow = outputnr+100))
 
   colnames(result) <- c(colnames(df), "DAT_step")
   for (i in 1:nrow(df)) {
