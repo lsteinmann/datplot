@@ -80,18 +80,34 @@ get.weights <- function(DAT_min, DAT_max) {
 
 # this could be optimizes, maybe with apply()? because it takes too long
 create.sub.objects <- function(df, stepsize) {
-  result <- data.frame(NULL)
+
+  mean_year_index <- which(df[,4]-df[,3] < stepsize)
+
+  outputnr <- ceiling(sum(((abs(df[-mean_year_index,3]-df[-mean_year_index,4]))/stepsize)+1))
+  outputnr <- outputnr+length(mean_year_index)
+
+  result <- as.data.frame(matrix(ncol = ncol(df)+1, nrow = outputnr))
+
+  colnames(result) <- c(colnames(df), "DAT_step")
   for (i in 1:nrow(df)) {
     sequence <- NULL
-    sequence <- seq(df[i,3], df[i,4], by = stepsize)
+    if ((df[i,4]-df[i,3]) < stepsize) {
+      print(paste("stepsize is larger than the range of the closest dated object: ",
+                  df[i,1], " (Index = ", i, "). Using mean as year.", sep = ""))
+      sequence <- (df[i,3]+df[i,4])/2
+    } else {
+      sequence <- seq(df[i,3], df[i,4], by = stepsize)
+    }
     length <- length(sequence)
     for (step in sequence) {
       wip <- df[i,]
       wip$DAT_Step <- step
       wip$weight <- wip$weight / length(sequence)
-      result <- rbind(result, wip)
+      first_na <- match(NA, result$ID)
+      result[first_na,] <- wip[,]
     }
   }
+  result <- result[-c(match(NA, result$ID):nrow(result)), ]
   return(result)
 }
 
