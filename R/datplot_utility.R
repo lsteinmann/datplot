@@ -2,14 +2,15 @@
 #'
 #' @description todo
 #'
-#' @param DAT_df todo
+#' @param DAT_mat todo
 #'
 #' @return stepsize
 #'
 #' @export generate.stepsize
 
-generate.stepsize <- function(DAT_df) {
-  timespans <- abs(DAT_df[,3] - DAT_df[,4])
+generate.stepsize <- function(DAT_mat) {
+  timespans <- abs(DAT_mat[,3] - DAT_mat[,4])
+  stepsize <- min(timespans)
   if(stepsize < 1) {
     stepsize <- 1
   }
@@ -22,16 +23,16 @@ generate.stepsize <- function(DAT_df) {
 #' @description Requires a dataframe with 4 variables: ID (ideally factor), group (ideally factor),
 #' minimum date (int/numeric) and maximum date (int/numeric).
 #'
-#' @param DAT_df a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num)
+#' @param DAT_mat a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num)
 #' @param DAT_err a vector containing the indizes of the dates which are in wrong order
 #'
-#' @return corrected DAT_df
+#' @return corrected DAT_mat
 #'
 #' @export switch.dating
 
-switch.dating <- function(DAT_df, DAT_err) {
-  DAT_df[DAT_err,3:4] <- DAT_df[DAT_err,4:3]
-  return(DAT_df)
+switch.dating <- function(DAT_mat, DAT_err) {
+  DAT_mat[DAT_err,3:4] <- DAT_mat[DAT_err,4:3]
+  return(DAT_mat)
 }
 
 
@@ -76,46 +77,46 @@ get.weights <- function(DAT_min, DAT_max) {
 #' displayed as negative values while dates CE are positive values. Ignoring this will cause problems
 #' in any case.
 #'
-#' @param DAT_df a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num), _must_ be in this order, colnames are irrelevant; each object _must_ be one row.
+#' @param DAT_mat a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num), _must_ be in this order, colnames are irrelevant; each object _must_ be one row.
 #' @param stepsize defaults to 5. Number of years that should be used as an interval for creating dating steps.
 #'
 #' @return a larger dataframe with a number of steps for each object as well as a 'weight' value, that is a quantification of how well the object is dated (lesser value means object is dated to larger timespans, i.e. with less confidence)
 #'
 #' @export create.sub.objects
 
-create.sub.objects <- function(DAT_df, stepsize) {
+create.sub.objects <- function(DAT_mat, stepsize) {
 
-  mean_year_index <- which(DAT_df[,4]-DAT_df[,3] < stepsize)
+  mean_year_index <- which(DAT_mat[,4]-DAT_mat[,3] < stepsize)
 
   if (length(mean_year_index) == 0) {
-    outputnr <- ceiling(sum(((abs(DAT_df[,3]-DAT_df[,4]))/stepsize)+1))
+    outputnr <- ceiling(sum(((abs(DAT_mat[,3]-DAT_mat[,4]))/stepsize)+1))
   } else {
-    outputnr <- ceiling(sum(((abs(DAT_df[-mean_year_index,3]-DAT_df[-mean_year_index,4]))/stepsize)+1))
+    outputnr <- ceiling(sum(((abs(DAT_mat[-mean_year_index,3]-DAT_mat[-mean_year_index,4]))/stepsize)+1))
     outputnr <- outputnr+length(mean_year_index)
   }
 
-  result <- as.data.frame(matrix(ncol = ncol(DAT_df)+1, nrow = outputnr+100))
+  result <- as.data.frame(matrix(ncol = ncol(DAT_mat)+1, nrow = outputnr+100))
 
-  colnames(result) <- c(colnames(DAT_df), "DAT_step")
-  diffs <- DAT_df[,4]-DAT_df[,3]
+  colnames(result) <- c(colnames(DAT_mat), "DAT_step")
+  diffs <- DAT_mat[,4]-DAT_mat[,3]
 
   if (any(diffs < stepsize)) {
     diffs <- diffs[diffs < stepsize]
     warning(paste("stepsize is larger than the range of the closest dated object: ",
-                paste(DAT_df[which(diffs < stepsize),1], collapse = ", "), " (Index = ",
+                paste(DAT_mat[which(diffs < stepsize),1], collapse = ", "), " (Index = ",
                 paste(which(diffs < stepsize), collapse = ", "), "). Using mean as year.", sep = ""))
   }
 
-  for (i in 1:nrow(DAT_df)) {
+  for (i in 1:nrow(DAT_mat)) {
     sequence <- NULL
-    if ((DAT_df[i,4]-DAT_df[i,3]) < stepsize) {
-      sequence <- (DAT_df[i,3]+DAT_df[i,4])/2
+    if ((DAT_mat[i,4]-DAT_mat[i,3]) < stepsize) {
+      sequence <- (DAT_mat[i,3]+DAT_mat[i,4])/2
     } else {
-      sequence <- seq(DAT_df[i,3], DAT_df[i,4], by = stepsize)
+      sequence <- seq(DAT_mat[i,3], DAT_mat[i,4], by = stepsize)
     }
     length <- length(sequence)
     for (step in sequence) {
-      wip <- DAT_df[i,]
+      wip <- DAT_mat[i,]
       wip$DAT_Step <- step
       wip$weight <- wip$weight / length(sequence)
       first_na <- match(NA, result$ID)
