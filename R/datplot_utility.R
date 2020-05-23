@@ -2,14 +2,14 @@
 #'
 #' @description todo
 #'
-#' @param timespans todo
+#' @param DAT_df todo
 #'
 #' @return stepsize
 #'
 #' @export generate.stepsize
 
-generate.stepsize <- function(timespans) {
-  stepsize <- min(abs(DAT_df[,4] - DAT_df[,3]))
+generate.stepsize <- function(DAT_df) {
+  timespans <- abs(DAT_df[,3] - DAT_df[,4])
   if(stepsize < 1) {
     stepsize <- 1
   }

@@ -20,8 +20,7 @@
 datsteps <- function(DAT_df, stepsize = 25) {
   result <- as.data.frame(NULL)
   if (stepsize == "auto") {
-    timespans <- abs(DAT_df[,3] - DAT_df[,4])
-    stepsize <- generate.stepsize(timespans)
+    stepsize <- generate.stepsize(DAT_df)
   } else if (!is.numeric(stepsize)) {
     stop(print("stepsize has to be either 'auto' or numeric."))
   }
