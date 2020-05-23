@@ -4,17 +4,10 @@
 \alias{datsteps}
 \title{Create 'steps' of dates for each object in a dataframe}
 \usage{
-<<<<<<< HEAD
-datsteps(df, stepsize = "auto")
-}
-\arguments{
-\item{df}{a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num), _must_ be in this order, colnames are irrelevant; each object _must_ be one row.}
-=======
 datsteps(df, stepsize = 25)
 }
 \arguments{
 \item{df}{a dataframe with 4 variables: ID, group, minimum date (int/num) maximum date (int/num), _must_ be in this order, colnames are irrelevant; each object _must_ be one row.}
->>>>>>> functions
 
 \item{stepsize}{defaults to 5. Number of years that should be used as an interval for creating dating steps.}
 }
