@@ -4,15 +4,15 @@
 \alias{switch.dating}
 \title{Switch values where dating is in wrong order}
 \usage{
-switch.dating(df, DAT_err)
+switch.dating(DAT_df, DAT_err)
 }
 \arguments{
-\item{df}{a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num)}
+\item{DAT_df}{a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num)}
 
 \item{DAT_err}{a vector containing the dates in wrong order}
 }
 \value{
-corrected df
+corrected DAT_df
 }
 \description{
 Requires a dataframe with 4 variables: ID (ideally factor), group (ideally factor),

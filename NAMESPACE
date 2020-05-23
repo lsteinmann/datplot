@@ -2,6 +2,7 @@
 
 export(create.sub.objects)
 export(datsteps)
+export(generate.stepsize)
 export(get.weights)
 export(scaleweight)
 export(switch.dating)

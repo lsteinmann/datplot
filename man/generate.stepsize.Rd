@@ -7,12 +7,11 @@
 generate.stepsize(timespans)
 }
 \arguments{
-\item{df}{a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num)}
+\item{timespans}{todo}
 }
 \value{
 stepsize
 }
 \description{
-Requires a dataframe with 4 variables: ID (ideally factor), group (ideally factor),
-minimum date (int/numeric) and maximum date (int/numeric).
+todo
 }
