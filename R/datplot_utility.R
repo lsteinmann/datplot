@@ -69,6 +69,28 @@ get.weights <- function(DAT_min, DAT_max) {
 
 
 
+#' @title Calculate output rows
+#'
+#' @description approximation :(
+#'
+#' @param DAT_mat todo
+#' @param stepsize todo
+#'
+#' @return outputrows
+#'
+#' @export calculate.outputrows
+
+calculate.outputrows <- function(DAT_mat, stepsize) {
+  mean_year_index <- which(DAT_mat[,4]-DAT_mat[,3] < stepsize)
+
+  if (length(mean_year_index) == 0) {
+    outputrows <- ceiling(sum(((abs(DAT_mat[,3]-DAT_mat[,4]))/stepsize)+1))
+  } else {
+    outputrows <- ceiling(sum(((abs(DAT_mat[-mean_year_index,3]-DAT_mat[-mean_year_index,4]))/stepsize)+1))
+    outputrows <- outputrows+length(mean_year_index)
+  }
+  return(outputrows)
+}
 
 #' @title Create sub-objects for each object in a dataframe
 #'
@@ -86,18 +108,10 @@ get.weights <- function(DAT_min, DAT_max) {
 
 create.sub.objects <- function(DAT_mat, stepsize) {
 
-  mean_year_index <- which(DAT_mat[,4]-DAT_mat[,3] < stepsize)
+  outputrows <- calculate.outputrows(DAT_mat, stepsize)
 
-  if (length(mean_year_index) == 0) {
-    outputnr <- ceiling(sum(((abs(DAT_mat[,3]-DAT_mat[,4]))/stepsize)+1))
-  } else {
-    outputnr <- ceiling(sum(((abs(DAT_mat[-mean_year_index,3]-DAT_mat[-mean_year_index,4]))/stepsize)+1))
-    outputnr <- outputnr+length(mean_year_index)
-  }
+  result <- as.data.frame(matrix(ncol = ncol(DAT_mat)+1, nrow = outputrows+100))
 
-  result <- as.data.frame(matrix(ncol = ncol(DAT_mat)+1, nrow = outputnr+100))
-
-  colnames(result) <- c(colnames(DAT_mat), "DAT_step")
   diffs <- DAT_mat[,4]-DAT_mat[,3]
 
   if (any(diffs < stepsize)) {
@@ -116,14 +130,14 @@ create.sub.objects <- function(DAT_mat, stepsize) {
     }
     length <- length(sequence)
     for (step in sequence) {
-      wip <- DAT_mat[i,]
-      wip$DAT_Step <- step
-      wip$weight <- wip$weight / length(sequence)
-      first_na <- match(NA, result$ID)
-      result[first_na,] <- wip[,]
+      wip <- as.vector(DAT_mat[i,])
+      wip[6] <- step
+      wip[5] <- wip[5] / length(sequence)
+      first_na <- match(NA, result[,1])
+      result[first_na,1:6] <- wip
     }
   }
-  result <- result[-c(match(NA, result$ID):nrow(result)), ]
+  result <- result[-c(match(NA, result[,1]):nrow(result)), ]
   return(result)
 }
 
@@ -132,25 +146,25 @@ create.sub.objects <- function(DAT_mat, stepsize) {
 #'
 #' @description Requires a dataframe as produced by datsteps(). (Meaning 6 columns in the following order: ID, group, minimum/earliest date, maximum/latest date, weight, 'DAT_Steps')
 #'
-#' @param DAT_df a dataframe as returned by datsteps
+#' @param DAT_mat a dataframe as returned by datsteps
 #' @param var the index of the column of said dataframe that should be used as the group variable, OR "all" (note: all non-numeric values will result in the weight being scaled accross all objects)
 #'
 #' @return the same dataframe, with scaled 'weight'-values
 #'
 #' @export scaleweight
 
-scaleweight <- function(DAT_df, var = c("all", 2) ) {
-  res_DAT_df <- data.frame(NULL)
+scaleweight <- function(DAT_mat, var = c("all", 2) ) {
+  res_DAT_mat <- data.frame(NULL)
   if (is.numeric(var)) {
-    uvar <- unique(DAT_df[,var])
+    uvar <- unique(DAT_mat[,var])
     for (row in 1:length(uvar)) {
-      wip <- DAT_df[which(DAT_df[,var] == uvar[row]),]
+      wip <- DAT_mat[which(DAT_mat[,var] == uvar[row]),]
       wip$weight <- wip$weight / sum(wip$weight)
-      res_DAT_df <- rbind(res_DAT_df, wip)
+      res_DAT_mat <- rbind(res_DAT_mat, wip)
     }
   } else {
-    DAT_df$weight <- DAT_df$weight / sum(DAT_df$weight)
-    res_DAT_df <- DAT_df
+    DAT_mat$weight <- DAT_mat$weight / sum(DAT_mat$weight)
+    res_DAT_mat <- DAT_mat
   }
-  return(res_DAT_df)
+  return(res_DAT_mat)
 }

@@ -18,14 +18,6 @@
 #' @export datsteps
 
 datsteps <- function(DAT_df, stepsize = 25) {
-  DAT_mat <- as.matrix(DAT_df)
-  result <- as.data.frame(NULL)
-  if (stepsize == "auto") {
-    stepsize <- generate.stepsize(DAT_df)
-  } else if (!is.numeric(stepsize)) {
-    stop(print("stepsize has to be either 'auto' or numeric."))
-  }
-
   if (any(DAT_df[,3] > DAT_df[,4])) {
     warning(paste("Warning: Dating seems to be in wrong order at ID ", paste(DAT_df[which(DAT_df[,3] > DAT_df[,4]),1], collapse = ", "), " (Index: ",
                   paste(which(DAT_df[,3] > DAT_df[,4]), collapse = ", "), ")",
@@ -34,10 +26,34 @@ datsteps <- function(DAT_df, stepsize = 25) {
     DAT_df <- switch.dating(DAT_df, DAT_err)
   }
 
-  weights <- get.weights(DAT_df[,3], DAT_df[,4])
+  DAT_mat <- matrix(ncol = 6, nrow = nrow(DAT_df))
+  DAT_mat[,3] <- DAT_df[,3]
+  DAT_mat[,4] <- DAT_df[,4]
+  DAT_mat[,1] <- 1:nrow(DAT_df)
+  DAT_mat[,2] <- as.integer(DAT_df[,2])
 
-  DAT_df$weight <- weights[,1]
-  result <- create.sub.objects(DAT_df, stepsize)
+  if (stepsize == "auto") {
+    stepsize <- generate.stepsize(DAT_mat)
+  } else if (!is.numeric(stepsize)) {
+    stop(print("stepsize has to be either 'auto' or numeric."))
+  }
+
+  weights <- get.weights(DAT_mat[,3], DAT_mat[,4])
+
+  DAT_mat[,5] <- weights[,1]
+  DAT_mat[,6] <- NA
+  DAT_res <- create.sub.objects(DAT_mat, stepsize)
+
+
+  result <- as.data.frame(DAT_res)
+
+
+  result[,2] <- DAT_df[result[,1],2]
+  result[,1] <- DAT_df[result[,1],1]
+
+  colnames(result) <- c("ID", "variable", "DAT_min", "DAT_max", "weight", "DAT_step")
+  attr(result$DAT_step, "descr") <- "step"
+  attr(result$weight, "descr") <- "weight"
+
   return(result)
 }
-

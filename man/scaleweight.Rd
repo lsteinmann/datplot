@@ -4,10 +4,10 @@
 \alias{scaleweight}
 \title{Scales the content of the weight columns according to group membership}
 \usage{
-scaleweight(DAT_df, var = c("all", 2))
+scaleweight(DAT_mat, var = c("all", 2))
 }
 \arguments{
-\item{DAT_df}{a dataframe as returned by datsteps}
+\item{DAT_mat}{a dataframe as returned by datsteps}
 
 \item{var}{the index of the column of said dataframe that should be used as the group variable, OR "all" (note: all non-numeric values will result in the weight being scaled accross all objects)}
 }
