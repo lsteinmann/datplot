@@ -4,10 +4,10 @@
 \alias{create.sub.objects}
 \title{Create sub-objects for each object in a dataframe}
 \usage{
-create.sub.objects(DAT_df, stepsize)
+create.sub.objects(DAT_mat, stepsize)
 }
 \arguments{
-\item{DAT_df}{a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num), _must_ be in this order, colnames are irrelevant; each object _must_ be one row.}
+\item{DAT_mat}{a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num), _must_ be in this order, colnames are irrelevant; each object _must_ be one row.}
 
 \item{stepsize}{defaults to 5. Number of years that should be used as an interval for creating dating steps.}
 }

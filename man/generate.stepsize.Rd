@@ -4,10 +4,10 @@
 \alias{generate.stepsize}
 \title{Generate stepsize}
 \usage{
-generate.stepsize(DAT_df)
+generate.stepsize(DAT_mat)
 }
 \arguments{
-\item{DAT_df}{todo}
+\item{DAT_mat}{todo}
 }
 \value{
 stepsize

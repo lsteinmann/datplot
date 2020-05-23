@@ -18,6 +18,7 @@
 #' @export datsteps
 
 datsteps <- function(DAT_df, stepsize = 25) {
+  DAT_mat <- as.matrix(DAT_df)
   result <- as.data.frame(NULL)
   if (stepsize == "auto") {
     stepsize <- generate.stepsize(DAT_df)
@@ -39,3 +40,4 @@ datsteps <- function(DAT_df, stepsize = 25) {
   result <- create.sub.objects(DAT_df, stepsize)
   return(result)
 }
+
