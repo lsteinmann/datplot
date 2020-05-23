@@ -26,11 +26,12 @@ datsteps <- function(DAT_df, stepsize = 25) {
     DAT_df <- switch.dating(DAT_df, DAT_err)
   }
 
-  DAT_mat <- matrix(ncol = 6, nrow = nrow(DAT_df))
-  DAT_mat[,3] <- DAT_df[,3]
-  DAT_mat[,4] <- DAT_df[,4]
+  DAT_mat <- matrix(ncol = 5, nrow = nrow(DAT_df))
   DAT_mat[,1] <- 1:nrow(DAT_df)
-  DAT_mat[,2] <- as.integer(DAT_df[,2])
+  DAT_mat[,2] <- DAT_df[,3]
+  DAT_mat[,3] <- DAT_df[,4]
+
+  colnames(DAT_mat) <- c("index", "datmin", "datmax", "weight", "step")
 
   if (stepsize == "auto") {
     stepsize <- generate.stepsize(DAT_mat)
@@ -38,10 +39,9 @@ datsteps <- function(DAT_df, stepsize = 25) {
     stop(print("stepsize has to be either 'auto' or numeric."))
   }
 
-  weights <- get.weights(DAT_mat[,3], DAT_mat[,4])
+  weights <- get.weights(DAT_mat[,"datmin"], DAT_mat[,"datmax"])
 
-  DAT_mat[,5] <- weights[,1]
-  DAT_mat[,6] <- NA
+  DAT_mat[,"weight"] <- weights[,1]
   DAT_res <- create.sub.objects(DAT_mat, stepsize)
 
 

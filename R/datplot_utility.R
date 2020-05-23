@@ -9,7 +9,7 @@
 #' @export generate.stepsize
 
 generate.stepsize <- function(DAT_mat) {
-  timespans <- abs(DAT_mat[,3] - DAT_mat[,4])
+  timespans <- abs(DAT_mat[,"datmin"] - DAT_mat[,"datmax"])
   stepsize <- min(timespans)
   if(stepsize < 1) {
     stepsize <- 1
@@ -23,16 +23,16 @@ generate.stepsize <- function(DAT_mat) {
 #' @description Requires a dataframe with 4 variables: ID (ideally factor), group (ideally factor),
 #' minimum date (int/numeric) and maximum date (int/numeric).
 #'
-#' @param DAT_mat a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num)
+#' @param DAT_df a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num)
 #' @param DAT_err a vector containing the indizes of the dates which are in wrong order
 #'
 #' @return corrected DAT_mat
 #'
 #' @export switch.dating
 
-switch.dating <- function(DAT_mat, DAT_err) {
-  DAT_mat[DAT_err,3:4] <- DAT_mat[DAT_err,4:3]
-  return(DAT_mat)
+switch.dating <- function(DAT_df, DAT_err) {
+  DAT_df[DAT_err,3:4] <- DAT_df[DAT_err,4:3]
+  return(DAT_df)
 }
 
 
@@ -81,12 +81,12 @@ get.weights <- function(DAT_min, DAT_max) {
 #' @export calculate.outputrows
 
 calculate.outputrows <- function(DAT_mat, stepsize) {
-  mean_year_index <- which(DAT_mat[,4]-DAT_mat[,3] < stepsize)
+  mean_year_index <- which(DAT_mat[,"datmax"]-DAT_mat[,"datmin"] < stepsize)
 
   if (length(mean_year_index) == 0) {
-    outputrows <- ceiling(sum(((abs(DAT_mat[,3]-DAT_mat[,4]))/stepsize)+1))
+    outputrows <- ceiling(sum(((abs(DAT_mat[,"datmin"]-DAT_mat[,"datmax"]))/stepsize)+1))
   } else {
-    outputrows <- ceiling(sum(((abs(DAT_mat[-mean_year_index,3]-DAT_mat[-mean_year_index,4]))/stepsize)+1))
+    outputrows <- ceiling(sum(((abs(DAT_mat[-mean_year_index,"datmin"]-DAT_mat[-mean_year_index,"datmax"]))/stepsize)+1))
     outputrows <- outputrows+length(mean_year_index)
   }
   return(outputrows)
@@ -110,31 +110,34 @@ create.sub.objects <- function(DAT_mat, stepsize) {
 
   outputrows <- calculate.outputrows(DAT_mat, stepsize)
 
-  result <- as.data.frame(matrix(ncol = ncol(DAT_mat)+1, nrow = outputrows+100))
+  result <- as.data.frame(matrix(ncol = 6, nrow = outputrows+100))
 
-  diffs <- DAT_mat[,4]-DAT_mat[,3]
+  diffs <- DAT_mat[,"datmax"]-DAT_mat[,"datmin"]
 
   if (any(diffs < stepsize)) {
     diffs <- diffs[diffs < stepsize]
-    warning(paste("stepsize is larger than the range of the closest dated object: ",
-                paste(DAT_mat[which(diffs < stepsize),1], collapse = ", "), " (Index = ",
+    warning(paste("stepsize is larger than the range of the closest dated object at Index = ",
                 paste(which(diffs < stepsize), collapse = ", "), "). Using mean as year.", sep = ""))
   }
 
   for (i in 1:nrow(DAT_mat)) {
     sequence <- NULL
-    if ((DAT_mat[i,4]-DAT_mat[i,3]) < stepsize) {
-      sequence <- (DAT_mat[i,3]+DAT_mat[i,4])/2
+    if ((DAT_mat[i,"datmax"]-DAT_mat[i,"datmin"]) < stepsize) {
+      sequence <- (DAT_mat[i,"datmin"]+DAT_mat[i,"datmax"])/2
     } else {
-      sequence <- seq(DAT_mat[i,3], DAT_mat[i,4], by = stepsize)
+      sequence <- seq(DAT_mat[i,"datmin"], DAT_mat[i,"datmax"], by = stepsize)
     }
     length <- length(sequence)
     for (step in sequence) {
       wip <- as.vector(DAT_mat[i,])
-      wip[6] <- step
-      wip[5] <- wip[5] / length(sequence)
+      wip[5] <- step
+      wip[4] <- wip[4] / length(sequence)
       first_na <- match(NA, result[,1])
-      result[first_na,1:6] <- wip
+      result[first_na,1] <- wip[1]
+      result[first_na,3] <- wip[2]
+      result[first_na,4] <- wip[3]
+      result[first_na,5] <- wip[4]
+      result[first_na,6] <- wip[5]
     }
   }
   result <- result[-c(match(NA, result[,1]):nrow(result)), ]

@@ -4,10 +4,10 @@
 \alias{switch.dating}
 \title{Switch values where dating is in wrong order}
 \usage{
-switch.dating(DAT_mat, DAT_err)
+switch.dating(DAT_df, DAT_err)
 }
 \arguments{
-\item{DAT_mat}{a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num)}
+\item{DAT_df}{a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num)}
 
 \item{DAT_err}{a vector containing the indizes of the dates which are in wrong order}
 }
