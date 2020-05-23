@@ -23,7 +23,7 @@ generate.stepsize <- function(DAT_df) {
 #' minimum date (int/numeric) and maximum date (int/numeric).
 #'
 #' @param DAT_df a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num)
-#' @param DAT_err a vector containing the dates in wrong order
+#' @param DAT_err a vector containing the indizes of the dates which are in wrong order
 #'
 #' @return corrected DAT_df
 #'
@@ -60,9 +60,7 @@ get.weights <- function(DAT_min, DAT_max) {
   }
   weights[,1] <- 1/weights[,1]
   if (any(weights[,2] == FALSE)) {
-    warning(paste("Warning: DAT_min and DAT_max in ID ",
-                  paste(DAT_df[which(weights[,2] == FALSE),1], collapse = ", "),
-                  " (Index: ", paste(which(weights[,2] == FALSE), collapse = ", "), ")",
+    warning(paste("Warning: DAT_min and DAT_max at Index: ", paste(which(weights[,2] == FALSE), collapse = ", "), ")",
                   " have the same value! Is this correct? Please check the table for possible errors.", sep = ""))
   }
   return(weights)
