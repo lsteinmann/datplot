@@ -1,8 +1,8 @@
-#' @title Generate stepsize
+#' @title Determine stepsize
 #'
-#' @description todo
+#' @description Determines stepsize by selecting the absolute minimum value between the upper and lower end of all dating ranges.
 #'
-#' @param DAT_mat todo
+#' @param DAT_mat a matrix as prepared by datsteps(), resp. a matrix witch columns "datmin" and "datmax" containing numeric/integer value of the dating ranges.
 #'
 #' @return stepsize
 #'
@@ -21,7 +21,8 @@ generate.stepsize <- function(DAT_mat) {
 #' @title Switch values where dating is in wrong order
 #'
 #' @description Requires a dataframe with 4 variables: ID (ideally factor), group (ideally factor),
-#' minimum date (int/numeric) and maximum date (int/numeric).
+#' minimum date (int/numeric) and maximum date (int/numeric) and DAT_err as a vector of indizes where
+#' dating is in wrong order.
 #'
 #' @param DAT_df a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num)
 #' @param DAT_err a vector containing the indizes of the dates which are in wrong order
@@ -38,15 +39,16 @@ switch.dating <- function(DAT_df, DAT_err) {
 
 #' @title Calculate the weights for each dated object
 #'
-#' @description Requires a dataframe with 4 variables: ID (ideally factor), group (ideally factor),
-#' minimum date (int/numeric) and maximum date (int/numeric). It's expected that dates BCE are
-#' displayed as negative values while dates CE are positive values. Ignoring this will cause problems
-#' in any case.
+#' @description Calculates the weights from two vectors of minimum and maximum dating for each object.
+#' Returns a dataframe with the weight in the first column and FALSE in the second if two rows have the
+#' same value in both min and max dating.
 #'
 #' @param DAT_min a vector containing the minimum date (int/num) of each object
 #' @param DAT_max a vector containing the maximum date (int/num) of each object
 #'
-#' @return the 'weight' value for the datsteps-dataframe, that is a quantification of how well the object is dated (lesser value means object is dated to larger timespans, i.e. with less confidence)
+#' @return the 'weight' value for the datsteps-dataframe, that is a quantification of
+#' how well the object is dated (lesser value means object is dated to larger
+#' timespans, i.e. with less confidence)
 #'
 #' @export get.weights
 
@@ -99,8 +101,8 @@ calculate.outputrows <- function(DAT_mat, stepsize) {
 #' displayed as negative values while dates CE are positive values. Ignoring this will cause problems
 #' in any case.
 #'
-#' @param DAT_mat a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num), _must_ be in this order, colnames are irrelevant; each object _must_ be one row.
-#' @param stepsize defaults to 5. Number of years that should be used as an interval for creating dating steps.
+#' @param DAT_mat a matrix with 3 variables: ID, group, minimum date (int/num) maximum date (int/num), _must_ be in this order, colnames are irrelevant; each object _must_ be one row.
+#' @param stepsize Number of years that should be used as an interval for creating dating steps.
 #'
 #' @return a larger dataframe with a number of steps for each object as well as a 'weight' value, that is a quantification of how well the object is dated (lesser value means object is dated to larger timespans, i.e. with less confidence)
 #'
