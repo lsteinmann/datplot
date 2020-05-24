@@ -1,8 +1,8 @@
 ---
-title: "How to use this"
+title: "Density Plots for Dates"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{How to use this}
+  %\VignetteIndexEntry{Density Plots for Dates}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 bibliography: ../inst/literatur.bib
@@ -15,18 +15,25 @@ knitr::opts_chunk$set(
   fig.width = 7,
   fig.align = "center"
 )
+
 library(knitr)
+library(ggplot2)
+plot_theme <- theme(panel.background = element_blank(), 
+        panel.grid.major = element_line(color = "grey60", linetype = "dashed"),
+        panel.grid.minor = element_line(color = "grey80", linetype = "dashed"),
+        legend.position = c(0.9,0.85), legend.background = element_rect(fill = "white", color = "grey60"))
+plot_fill <- scale_fill_manual(name="Technique", values = c("gray30", "tomato3"))
 ```
 
 
-# Density Plots for Dates
+## Why?
 
 A rather common problem in archaeology is the fuzziness of dates assigned to objects. If one wants to visualize overall changes in - let's say - pottery consumption, bar charts often fall short in that regard. If we have Phases a -- f, then some of the objects can usually be dated to a, c, and f, as an example, but others will by classified as "a to c" or "b to c". But how can these data still be used for examining changes in a large set of objects?
 
 First, it is handy to translate the phases into numbers, for which we should conveniently choose the 'actual' dating. This may cause other problems in the end, since such phases are often employed to avoid dates, but it is necessary as the aim is to visualize the distribution on a continuous scale, for which numbers are needed. Also, this step may be reversed for the final visualization but supplementing or replacing the scale on the x-axis with the respective phases. 
 Ideally, one can produce a 'beginning' and 'end' date for each object, or let's say an earliest possible dating and a latest possible dating, e.g. corresponding to beginning and start of each phase the object is dated to. 
 
-To show and explain how this would work, I chose a random sample of athenian pottery from the beazley archive ([@BAPD]), as it is a large publicly available dataset. (Since the format provided by the BAPD is slightly different from that needed here I converted the data beforehand to match my requirements. No values have been changed.)
+To show and explain how this would work, I chose a random sample of athenian pottery from the beazley archive ([@BAPD]), as it is a large publicly available dataset. (Since the format provided by the BAPD is slightly different from that needed here I converted the data beforehand to match my requirements. No values have been changed. The sample dataset is included in datplot.)
 
 ```{r prep}
 library(datplot)
@@ -48,18 +55,27 @@ This method will not be useful for dating specific context, since any concept of
 Other approaches, e.g. using the median date of each object, may often produce similar outcomes, but create other problems. A lot of information is lost on the way when employing averaged or median data, as large amount of loosely dated objects will produce peaks at unreasonable values. (Consider a large amount of objects dated between 600 and 400 BCE all attributed to the year 500 BCE.)
 
 ```{r barplot}
-counts <- Beazley
-counts$DAT_mean <- ((counts$DAT_max + counts$DAT_min) / 2)
-counts <- table(counts$DAT_mean)
-plot(counts)
+Beazley$DAT_mean <- (Beazley$DAT_max + Beazley$DAT_min) / 2
+library(ggplot2)
+ggplot(Beazley, aes(x = DAT_mean, fill = Technique)) + 
+  geom_histogram() + plot_theme + plot_fill
 ```
 
 Employing dating steps will even out unreasonable peaks. Not especially the gap between -425 and -300 in the plot above, that is -- in the plot below -- filled with a constant amount of objects in each year. This is due to the data containing large amounts of objects dating from -400 to -300 BCE. Of couse, due to duplicating each object numerous times (see table below), the counts represented on the y-axis have become meaningless.
 
-```{r steps}
+```{r steps1}
 library(datplot)
 result <- datsteps(Beazley, stepsize = 5)
-hist(result$DAT_step)
+ggplot(result, aes(x = DAT_step, fill = variable)) + 
+  geom_histogram() + plot_theme + plot_fill
+```
+
+`datsteps()` can also calculate a stepsize on its own. It equals the closest possible dating of any object. 
+
+```{r steps2}
+result <- datsteps(Beazley, stepsize = "auto")
+ggplot(result, aes(x = DAT_step, fill = variable)) + 
+  geom_histogram() + plot_theme + plot_fill
 ```
 
 
@@ -70,6 +86,7 @@ kable(head(result))
 Due to the impossibility of displaying object counts as well, it is ideal to use kernel density estimates for visualization. The density plot below shows the result. The peak at around -500 indicates that is area has the highest overlay, so a large part of the objects in our sample have been dated around this time. The same distribution can also be seen in the bar plots above. This, however, is not yet very informative. 
 
 ```{r density one}
+result <- datsteps(Beazley, stepsize = 25)
 dens <- result
 dens$weight <- (dens$weight / sum(dens$weight))
 dens <- density(x = dens$DAT_step, weights = dens$weight)
@@ -98,13 +115,10 @@ kable(head(result))
 In the case of the beazley archives data [@BAPD] we can clearly see what we knew before: Black-figure pottery is older than red-figure pottery. (The data are from a random sample of athenian pottery from the beazley archive, n = 1000. Computation of the dating steps may not work with very, very large datasets, or simply take up a lot of time.)
 
 ```{r ggplot, warning=FALSE}
-library(ggplot2)
 ggplot(data = result, aes(x = DAT_step, 
-                          color = variable, 
                           fill = variable)) +
   geom_density(aes(weight = weight), alpha = 0.5) +
-  xlab("Dating") +
-  theme(panel.background = element_blank())
+  xlab("Dating") + plot_theme + plot_fill
 ```
 
 
@@ -112,11 +126,9 @@ Please note that the plot does change when the weights are omitted (see plot bel
 
 ```{r ggplot without weight, warning=FALSE}
 ggplot(data = result, aes(x = DAT_step, 
-                          color = variable, 
                           fill = variable)) +
   geom_density(alpha = 0.5) +
-  xlab("Dating") +
-  theme(panel.background = element_blank())
+  xlab("Dating") + plot_theme + plot_fill
 ```
 
 
