@@ -16,3 +16,4 @@ vignettes/Explanation.Rmd
 *.fls
 *.fdb*
 *.ttf
+inst/doc
