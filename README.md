@@ -1,4 +1,8 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+ <!-- badges: start -->
+  [![R build status](https://github.com/lsteinmann/datplot/workflows/R-CMD-check/badge.svg)](https://github.com/lsteinmann/datplot/actions)
+  <!-- badges: end -->
+
 datplot
 =======
 
