@@ -3,13 +3,8 @@
 .RData
 .Ruserdata
 inst/prep.R
-inst/data/beazley_archive.csv
-inst/data/testset_beazley.csv
 inst/literatur.bib.bak
 inst/literatur.bib.sav
-private/
-inst/data/testset_beazley_shape.csv
-vignettes/Explanation.Rmd
 *.log
 *.aux
 *.out
