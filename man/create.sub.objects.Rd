@@ -7,9 +7,9 @@
 create.sub.objects(DAT_mat, stepsize)
 }
 \arguments{
-\item{DAT_mat}{a dataframe with 4 variable: ID, group, minimum date (int/num) maximum date (int/num), _must_ be in this order, colnames are irrelevant; each object _must_ be one row.}
+\item{DAT_mat}{a matrix with 3 variables: ID, group, minimum date (int/num) maximum date (int/num), _must_ be in this order, colnames are irrelevant; each object _must_ be one row.}
 
-\item{stepsize}{defaults to 5. Number of years that should be used as an interval for creating dating steps.}
+\item{stepsize}{Number of years that should be used as an interval for creating dating steps.}
 }
 \value{
 a larger dataframe with a number of steps for each object as well as a 'weight' value, that is a quantification of how well the object is dated (lesser value means object is dated to larger timespans, i.e. with less confidence)

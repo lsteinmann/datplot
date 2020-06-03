@@ -94,6 +94,65 @@ calculate.outputrows <- function(DAT_mat, stepsize) {
   return(outputrows)
 }
 
+
+
+
+#' @title Calculate the sequence of dating steps
+#'
+#' @description approximation :( also i dont want to write documentation
+#'
+#' @param datmin todo
+#' @param datmax todo
+#' @param stepsize todo
+#'
+#' @return sequence
+#'
+#' @export get.step.sequence
+
+get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
+  timespan <- datmax - datmin
+  if (timespan %/% stepsize == 0) {
+    if (timespan > (stepsize*0.6)) {
+      sequence <- c(datmin, round(((datmin+datmax)/2), digits = 0), datmax)
+      print(sequence)
+    } else {
+      sequence <- c(datmin, datmax)
+      print(sequence)
+    }
+  } else {
+    sequence <- seq(from = datmin, to = datmax, by = stepsize)
+    resid <- datmax-sequence[length(sequence)]
+    print(paste("can fit ", timespan %/% stepsize, " times", sep = ""))
+    print(paste("from: ", datmin, " to: ", datmax, sep=""))
+    print(paste("there was a rest of ", resid))
+
+    if (resid >= (stepsize/2)) {
+      print("and i resolved it this way:")
+      stepsize_mod <- (datmax-datmin)/length(sequence)
+      sequence <- round(seq(datmin, datmax, stepsize_mod), digits = 0)
+      print(sequence)
+    } else if (resid != 0) {
+      print("sasad")
+      move <- round(resid/(length(sequence)-1), digits = 0)
+      sequence[2:length(sequence)] <- sequence[2:length(sequence)] + move
+      sequence[length(sequence)] <- datmax
+      print(sequence)
+    } else {
+      print("and i didnt resolve anything:")
+      print(sequence)
+    }
+  }
+  return(sequence)
+}
+
+
+
+
+
+
+
+
+
 #' @title Create sub-objects for each object in a dataframe
 #'
 #' @description Requires a dataframe with 5 variables: ID (ideally factor), group (ideally factor),
@@ -124,11 +183,9 @@ create.sub.objects <- function(DAT_mat, stepsize) {
 
   for (i in 1:nrow(DAT_mat)) {
     sequence <- NULL
-    if ((DAT_mat[i,"datmax"]-DAT_mat[i,"datmin"]) < stepsize) {
-      sequence <- (DAT_mat[i,"datmin"]+DAT_mat[i,"datmax"])/2
-    } else {
-      sequence <- seq(DAT_mat[i,"datmin"], DAT_mat[i,"datmax"], by = stepsize)
-    }
+
+    sequence <- get.step.sequence(DAT_mat[i,"datmin"], DAT_mat[i,"datmax"], stepsize)
+
     length <- length(sequence)
     for (step in sequence) {
       wip <- as.vector(DAT_mat[i,])
