@@ -129,7 +129,8 @@ get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
     resid <- datmax-sequence[length(sequence)]
     if (resid >= (stepsize/2)) {
       stepsize_mod <- (datmax-datmin)/length(sequence)
-      sequence <- round(seq(datmin, datmax, stepsize_mod), digits = 0)
+      sequence <- seq(datmin, datmax, stepsize_mod)
+      sequence[-c(1,length(sequence))] <- round(sequence[-c(1,length(sequence))], digits = 0)
     } else if (resid != 0) {
       move <- round(resid/(length(sequence)-1), digits = 0)
       sequence[2:length(sequence)] <- sequence[2:length(sequence)] + move
