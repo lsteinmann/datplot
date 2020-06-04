@@ -54,6 +54,8 @@ datsteps <- function(DAT_df, stepsize = 25) {
   colnames(result) <- c("ID", "variable", "DAT_min", "DAT_max", "weight", "DAT_step")
   attr(result$DAT_step, "descr") <- "step"
   attr(result$weight, "descr") <- "weight"
+  attr(result, "stepsize") <- "datplot: stepsize used to calculate DAT_step"
+  attributes(result)$stepsize <- stepsize
 
   return(result)
 }

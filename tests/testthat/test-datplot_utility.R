@@ -1,3 +1,4 @@
+source(file = "../create_testing_df.R")
 library(datplot)
 library(devtools)
 
@@ -17,7 +18,6 @@ test_that("switch.dating returns values correctly", {
   expect_equal(switch.dating(as.data.frame(testmat), DAT_err), corrmat)
 })
 
-source(file = "../create_testing_df.R")
 testdf <- create.testing.df()
 
 fristlast <- matrix(nrow = nrow(testdf), ncol = 2)
