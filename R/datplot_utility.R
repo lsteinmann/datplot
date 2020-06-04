@@ -99,7 +99,7 @@ calculate.outputrows <- function(DAT_mat, stepsize) {
 
 #' @title Calculate the sequence of dating steps
 #'
-#' @description approximation :( also i dont want to write documentation
+#' @description TO DO also i dont want to write documentation
 #'
 #' @param datmin todo
 #' @param datmax todo
@@ -109,37 +109,30 @@ calculate.outputrows <- function(DAT_mat, stepsize) {
 #'
 #' @export get.step.sequence
 
+
+
+
+
+### THIS IS NOT DONE
 get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
   timespan <- datmax - datmin
   if (timespan %/% stepsize == 0) {
     if (timespan > (stepsize*0.6)) {
       sequence <- c(datmin, round(((datmin+datmax)/2), digits = 0), datmax)
-      print(sequence)
     } else {
       sequence <- c(datmin, datmax)
-      print(sequence)
     }
   } else {
     sequence <- seq(from = datmin, to = datmax, by = stepsize)
     resid <- datmax-sequence[length(sequence)]
-    print(paste("can fit ", timespan %/% stepsize, " times", sep = ""))
-    print(paste("from: ", datmin, " to: ", datmax, sep=""))
-    print(paste("there was a rest of ", resid))
-
     if (resid >= (stepsize/2)) {
-      print("and i resolved it this way:")
       stepsize_mod <- (datmax-datmin)/length(sequence)
       sequence <- round(seq(datmin, datmax, stepsize_mod), digits = 0)
-      print(sequence)
     } else if (resid != 0) {
-      print("sasad")
       move <- round(resid/(length(sequence)-1), digits = 0)
       sequence[2:length(sequence)] <- sequence[2:length(sequence)] + move
       sequence[length(sequence)] <- datmax
-      print(sequence)
     } else {
-      print("and i didnt resolve anything:")
-      print(sequence)
     }
   }
   return(sequence)
@@ -192,6 +185,7 @@ create.sub.objects <- function(DAT_mat, stepsize) {
       wip[5] <- step
       wip[4] <- wip[4] / length(sequence)
       first_na <- match(NA, result[,1])
+      ### HIER GIBT ES EIN PROBLEM
       result[first_na,1] <- wip[1]
       result[first_na,3] <- wip[2]
       result[first_na,4] <- wip[3]
