@@ -82,13 +82,15 @@ get.weights <- function(DAT_min, DAT_max) {
 #'
 #' @export calculate.outputrows
 
+
+
 calculate.outputrows <- function(DAT_mat, stepsize) {
-  mean_year_index <- which(DAT_mat[,"datmax"]-DAT_mat[,"datmin"] < stepsize)
+  mean_year_index <- which(DAT_mat[,"datmax"] - DAT_mat[,"datmin"] < stepsize)
 
   if (length(mean_year_index) == 0) {
-    outputrows <- ceiling(sum(((abs(DAT_mat[,"datmin"]-DAT_mat[,"datmax"]))/stepsize)+1))
+    outputrows <- ceiling(sum(((abs(DAT_mat[,"datmax"] - DAT_mat[,"datmin"])) / stepsize) + 3))
   } else {
-    outputrows <- ceiling(sum(((abs(DAT_mat[-mean_year_index,"datmin"]-DAT_mat[-mean_year_index,"datmax"]))/stepsize)+1))
+    outputrows <- ceiling(sum(((abs(DAT_mat[-mean_year_index,"datmax"] - DAT_mat[-mean_year_index,"datmin"]))/stepsize)+3))
     outputrows <- outputrows+length(mean_year_index)
   }
   return(outputrows)
@@ -163,7 +165,6 @@ get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
 create.sub.objects <- function(DAT_mat, stepsize) {
 
   outputrows <- calculate.outputrows(DAT_mat, stepsize)
-
   result <- as.data.frame(matrix(ncol = 6, nrow = outputrows+100))
 
   diffs <- DAT_mat[,"datmax"]-DAT_mat[,"datmin"]
@@ -176,16 +177,12 @@ create.sub.objects <- function(DAT_mat, stepsize) {
 
   for (i in 1:nrow(DAT_mat)) {
     sequence <- NULL
-
     sequence <- get.step.sequence(DAT_mat[i,"datmin"], DAT_mat[i,"datmax"], stepsize)
-
-    length <- length(sequence)
     for (step in sequence) {
       wip <- as.vector(DAT_mat[i,])
       wip[5] <- step
       wip[4] <- wip[4] / length(sequence)
       first_na <- match(NA, result[,1])
-      ### HIER GIBT ES EIN PROBLEM
       result[first_na,1] <- wip[1]
       result[first_na,3] <- wip[2]
       result[first_na,4] <- wip[3]
