@@ -182,7 +182,7 @@ create.sub.objects <- function(DAT_mat, stepsize) {
     for (step in sequence) {
       wip <- as.vector(DAT_mat[i,])
       wip[5] <- step
-      wip[4] <- wip[4] / length(sequence)
+      wip[4] <- wip[4] #/ length(sequence)
       first_na <- match(NA, result[,1])
       result[first_na,1] <- wip[1]
       result[first_na,3] <- wip[2]
