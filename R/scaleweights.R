@@ -19,7 +19,7 @@ scaleweight <- function(DAT_df, var = c("all", 2) ) {
       res_DAT_df <- rbind(res_DAT_df, wip)
     }
   } else {
-    DAT_df$weight <- DAT_df$weight / sum(DAT_mat$weight)
+    DAT_df$weight <- DAT_df$weight / sum(DAT_df$weight)
     res_DAT_df <- DAT_df
   }
   return(res_DAT_df)
