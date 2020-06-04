@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 
 library(knitr)
 library(ggplot2)
+require(ggplot2)
 plot_theme <- theme(panel.background = element_blank(), 
         panel.grid.major = element_line(color = "grey60", linetype = "dashed"),
         panel.grid.minor = element_line(color = "grey80", linetype = "dashed"),
