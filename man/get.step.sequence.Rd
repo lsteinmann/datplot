@@ -17,5 +17,5 @@ get.step.sequence(datmin = 0, datmax = 100, stepsize = 25)
 sequence
 }
 \description{
-approximation :( also i dont want to write documentation
+TO DO also i dont want to write documentation
 }

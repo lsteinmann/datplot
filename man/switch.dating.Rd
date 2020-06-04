@@ -16,5 +16,6 @@ corrected DAT_mat
 }
 \description{
 Requires a dataframe with 4 variables: ID (ideally factor), group (ideally factor),
-minimum date (int/numeric) and maximum date (int/numeric).
+minimum date (int/numeric) and maximum date (int/numeric) and DAT_err as a vector of indizes where
+dating is in wrong order.
 }

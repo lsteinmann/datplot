@@ -12,11 +12,12 @@ get.weights(DAT_min, DAT_max)
 \item{DAT_max}{a vector containing the maximum date (int/num) of each object}
 }
 \value{
-the 'weight' value for the datsteps-dataframe, that is a quantification of how well the object is dated (lesser value means object is dated to larger timespans, i.e. with less confidence)
+the 'weight' value for the datsteps-dataframe, that is a quantification of
+how well the object is dated (lesser value means object is dated to larger
+timespans, i.e. with less confidence)
 }
 \description{
-Requires a dataframe with 4 variables: ID (ideally factor), group (ideally factor),
-minimum date (int/numeric) and maximum date (int/numeric). It's expected that dates BCE are
-displayed as negative values while dates CE are positive values. Ignoring this will cause problems
-in any case.
+Calculates the weights from two vectors of minimum and maximum dating for each object.
+Returns a dataframe with the weight in the first column and FALSE in the second if two rows have the
+same value in both min and max dating.
 }
