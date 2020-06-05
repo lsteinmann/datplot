@@ -18,14 +18,26 @@
 #' @export datsteps
 
 datsteps <- function(DAT_df, stepsize = 25) {
+
+  # Checking the overall structure
+  check.structure(DAT_df)
+
+  # Check for the two Dainng columns to be in the correct order:
   if (any(DAT_df[,3] > DAT_df[,4])) {
-    warning(paste("Warning: Dating seems to be in wrong order at ID ", paste(DAT_df[which(DAT_df[,3] > DAT_df[,4]),1], collapse = ", "), " (Index: ",
-                  paste(which(DAT_df[,3] > DAT_df[,4]), collapse = ", "), ")",
-                  ". Dates have been switched, but be sure to check your original data for possible mistakes.", sep = ""))
-    DAT_err <- which(DAT_df[,3] > DAT_df[,4])
-    DAT_df <- switch.dating(DAT_df, DAT_err)
+    # Strore Index of Rows to switch later and issue warning, so people can check the Data!
+    dat_wrong_order <- which(DAT_df[,3] > DAT_df[,4])
+    warning(paste("Warning: Dating seems to be in wrong order at ID ",
+                  paste(DAT_df[dat_wrong_order,1], collapse = ", "),
+                  " (Index: ",
+                  paste(dat_wrong_order, collapse = ", "),
+                  ")",
+                  ". Dates have been switched, but be sure to check your original data for possible mistakes.",
+                  sep = ""))
+    # Switch the Dating of Rows assumed to be in wrong order:
+    DAT_df <- switch.dating(DAT_df, dat_wrong_order)
   }
 
+  # Prepare the Matrix to be used instead of the df for faster processing
   DAT_mat <- matrix(ncol = 5, nrow = nrow(DAT_df))
   DAT_mat[,1] <- 1:nrow(DAT_df)
   DAT_mat[,2] <- DAT_df[,3]
@@ -33,29 +45,30 @@ datsteps <- function(DAT_df, stepsize = 25) {
 
   colnames(DAT_mat) <- c("index", "datmin", "datmax", "weight", "step")
 
+  # If not already set, set stepsize
   if (stepsize == "auto") {
     stepsize <- generate.stepsize(DAT_mat)
   } else if (!is.numeric(stepsize)) {
     stop(print("stepsize has to be either 'auto' or numeric."))
   }
 
+  # calculate the weights
   weights <- get.weights(DAT_mat[,"datmin"], DAT_mat[,"datmax"])
-
   DAT_mat[,"weight"] <- weights[,1]
+
+  # Process the dating to create the steps
   DAT_res <- create.sub.objects(DAT_mat, stepsize)
 
-
+  # convert to data.frame again and store the variable and ID in the correct order, using the matrix index as reference
   result <- as.data.frame(DAT_res)
-
-
   result[,2] <- DAT_df[result[,1],2]
   result[,1] <- DAT_df[result[,1],1]
 
+  # names and attributes
   colnames(result) <- c("ID", "variable", "DAT_min", "DAT_max", "weight", "DAT_step")
   attr(result$DAT_step, "descr") <- "step"
   attr(result$weight, "descr") <- "weight"
-  attr(result, "stepsize") <- "datplot: stepsize used to calculate DAT_step"
-  attributes(result)$stepsize <- stepsize
+  attr(result, "stepsize") <- stepsize
 
   return(result)
 }
