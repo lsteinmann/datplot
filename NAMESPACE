@@ -2,6 +2,7 @@
 
 export(calculate.outputrows)
 export(check.number)
+export(check.structure)
 export(create.sub.objects)
 export(create.testing.df)
 export(datsteps)
