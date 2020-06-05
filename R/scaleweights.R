@@ -18,9 +18,12 @@ scaleweight <- function(DAT_df, var = c("all", 2) ) {
       wip$weight <- wip$weight / sum(wip$weight)
       res_DAT_df <- rbind(res_DAT_df, wip)
     }
+    attr(DAT_df$weight, "descr") <- "weight (scaled to sum of objects grouped by variable)"
   } else {
     DAT_df$weight <- DAT_df$weight / sum(DAT_df$weight)
+    attr(DAT_df$weight, "descr") <- "weight (scaled to sum of all objects)"
     res_DAT_df <- DAT_df
   }
+
   return(res_DAT_df)
 }
