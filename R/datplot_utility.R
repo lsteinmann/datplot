@@ -145,7 +145,7 @@ get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
     if (resid >= (stepsize/2)) {
       # if the residual is larger or equals half the stepsize, the stepsize is temporarily modified to fit the as many values
       # as it would with the length of the sequence generated
-      stepsize_mod <- (datmax-datmin)/length(sequence)
+      stepsize_mod <- (datmax-datmin)/(length(sequence)+1) ## length(sequence + 1 might be better!)
       sequence <- seq(datmin, datmax, stepsize_mod)
       # then rounds all values except first and last, which need to stay as minumum and maximum date
       sequence[-c(1,length(sequence))] <- round(sequence[-c(1,length(sequence))], digits = 0)
@@ -206,17 +206,14 @@ create.sub.objects <- function(DAT_mat, stepsize) {
   for (i in 1:nrow(DAT_mat)) {
     sequence <- NULL
     sequence <- get.step.sequence(DAT_mat[i,"datmin"], DAT_mat[i,"datmax"], stepsize)
-    for (step in sequence) {
-      wip <- as.vector(DAT_mat[i,])
-      wip[5] <- step
-      wip[4] <- wip[4] #/ length(sequence)
-      first_na <- match(NA, result[,1])
-      result[first_na,1] <- wip[1]
-      result[first_na,3] <- wip[2]
-      result[first_na,4] <- wip[3]
-      result[first_na,5] <- wip[4]
-      result[first_na,6] <- wip[5]
-    }
+
+    first_na <- match(NA, result[,1])
+    last_row <- first_na + (length(sequence)-1)
+    result[first_na:last_row,1] <- DAT_mat[i,1]
+    result[first_na:last_row,3] <- DAT_mat[i,2]
+    result[first_na:last_row,4] <- DAT_mat[i,3]
+    result[first_na:last_row,5] <- DAT_mat[i,4]
+    result[first_na:last_row,6] <- sequence
   }
   result <- result[-c(match(NA, result[,1]):nrow(result)), ]
   return(result)
