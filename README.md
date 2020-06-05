@@ -1,6 +1,8 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
  <!-- badges: start -->
   [![R build status](https://github.com/lsteinmann/datplot/workflows/R-CMD-check/badge.svg)](https://github.com/lsteinmann/datplot/actions)
+  [![Travis build status](https://travis-ci.com/lsteinmann/datplot.svg?branch=master)](https://travis-ci.com/lsteinmann/datplot)
+  [![Codecov test coverage](https://codecov.io/gh/lsteinmann/datplot/branch/master/graph/badge.svg)](https://codecov.io/gh/lsteinmann/datplot?branch=master)
   <!-- badges: end -->
 
 datplot
