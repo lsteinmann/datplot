@@ -2,7 +2,7 @@
 % Please edit documentation in R/datplot_utility.R
 \name{check.number}
 \alias{check.number}
-\title{Check for numbers}
+\title{Check for numbers (internal)}
 \usage{
 check.number(value)
 }

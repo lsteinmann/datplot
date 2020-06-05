@@ -2,14 +2,14 @@
 % Please edit documentation in R/datplot_utility.R
 \name{get.weights}
 \alias{get.weights}
-\title{Calculate the weights for each dated object}
+\title{Calculate the weights for each dated object (internal)}
 \usage{
 get.weights(DAT_min, DAT_max)
 }
 \arguments{
-\item{DAT_min}{a vector containing the minimum date (int/num) of each object}
+\item{DAT_min}{a vector containing the minimum date (a number) of each object}
 
-\item{DAT_max}{a vector containing the maximum date (int/num) of each object}
+\item{DAT_max}{a vector containing the maximum date (a number) of each object}
 }
 \value{
 the 'weight' value for the datsteps-dataframe, that is a quantification of

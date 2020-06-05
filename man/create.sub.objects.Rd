@@ -2,21 +2,25 @@
 % Please edit documentation in R/datplot_utility.R
 \name{create.sub.objects}
 \alias{create.sub.objects}
-\title{Create sub-objects for each object in a dataframe}
+\title{Create sub-objects for each object in a dataframe (internal)}
 \usage{
 create.sub.objects(DAT_mat, stepsize)
 }
 \arguments{
-\item{DAT_mat}{a matrix with 3 variables: ID, group, minimum date (int/num) maximum date (int/num), _must_ be in this order, colnames are irrelevant; each object _must_ be one row.}
+\item{DAT_mat}{a matrix with 3 variables as prepared by datsteps()}
 
 \item{stepsize}{Number of years that should be used as an interval for creating dating steps.}
 }
 \value{
-a larger dataframe with a number of steps for each object as well as a 'weight' value, that is a quantification of how well the object is dated (lesser value means object is dated to larger timespans, i.e. with less confidence)
+a longer matrix of the same structure to be further processed by datsteps() with a number of steps for each object
 }
 \description{
-Requires a dataframe with 5 variables: ID (ideally factor), group (ideally factor),
-minimum date (int/numeric), maximum date (int/numeric) and weight (as created by get.weights). It's expected that dates BCE are
-displayed as negative values while dates CE are positive values. Ignoring this will cause problems
-in any case.
+Requires a matrix with 4 named columns as datsteps will hand to the function:
+* "index" (identifier so the values can later be reassigned to their ID and variable),
+* "datmin" (minimum dating as any kind of number),
+* "datmax" (maximum dating as any kind of number),
+* "weight" (as created by get.weights),
+* "step" (empty).
+It's expected that dates BCE are displayed as negative values while dates CE are positive values.
+Ignoring this will cause problems in any case, that would be fixed automatically by switch.dating().
 }
