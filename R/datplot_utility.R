@@ -195,5 +195,24 @@ create.sub.objects <- function(DAT_mat, stepsize) {
   return(result)
 }
 
+#' @title Check for numbers
+#'
+#' @description Checks if value is either numeric, integer or double and and returns TRUE.
+#'
+#' @param value A value to check
+#'
+#' @return TRUE if value is any kind of number, FALSE if value is not
+#'
+#' @export check.number
 
 
+check.number <- function(value) {
+  result <- is.integer(value)
+  if (result == FALSE) {
+    result <- is.numeric(value)
+    if  (result == FALSE) {
+      result <- is.double(value)
+    }
+  }
+  return(result)
+}

@@ -1,6 +1,7 @@
 source(file = "../create_testing_df.R")
 library(datplot)
 library(devtools)
+library(testthat)
 
 testmat <- matrix(c(1,2,3,4,0,0,50,-200,5,-200,50,5), byrow = FALSE, ncol = 3)
 colnames(testmat) <- c("index", "datmin", "datmax")
@@ -29,8 +30,20 @@ for (r in 1:nrow(testdf)) {
   fristlast[r,2] <- seq[length(seq)]
 }
 
-library(testthat)
 test_that("sequence returns first and last values", {
   expect_equal(fristlast[,1], testdf[,3])
   expect_equal(fristlast[,2], testdf[,4])
 })
+
+
+test_that("check.number returns true for numbers false for other", {
+  expect_true(check.number(numeric(1)))
+  expect_true(check.number(double(1)))
+  expect_true(check.number(integer(1)))
+  expect_false(check.number(character(1)))
+  expect_false(check.number(factor(1)))
+})
+
+
+
+
