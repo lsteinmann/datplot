@@ -55,6 +55,7 @@ test_that("check.number returns true for numbers false for other", {
   expect_false(check.number(testdf_wrong[3,3]))
   expect_true(check.number(testdf_wrong[3,4]))
   expect_false(check.number(testdf_wrong_two[3,4]))
+  expect_false(check.number(testdf))
 })
 
 

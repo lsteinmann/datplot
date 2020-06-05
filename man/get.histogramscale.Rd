@@ -4,30 +4,26 @@
 \alias{get.histogramscale}
 \title{Scaling Factor for Combined Histogramm Plots}
 \usage{
-get.histogramscale(DAT_df, bw = "auto")
+get.histogramscale(DAT_df_steps, binwidth = "stepsize")
 }
 \arguments{
-\item{DAT_df}{a dataframe as returned by datsteps}
+\item{DAT_df_steps}{a dataframe as returned by datsteps}
 
-\item{bw}{the bandwidth to use for the density function and histogram. Should be stepsize used to
-create the dataframe. If a df as returned by datsteps() is given, stepsize is automatically assigned
-using the corresponding attribute.}
+\item{binwidth}{the bandwidth to use for the density function and histogram. Should be stepsize used to
+create the dataframe. If a df as returned by datsteps() is given, stepsize can be automatically assigned
+using the corresponding attribute (binwidth = "stepsize")}
 }
 \value{
 the value with which to scale the density curve to a histogram plot so that both will be visible
 }
 \description{
-Requires a dataframe as produced by datsteps().
-Meaning 6 columns in the following order:
-* ID,
-* group,
-* minimum/earliest date,
-* maximum/latest date,
-* weight,
-* 'DAT_Steps'
+Requires a dataframe as produced by datsteps() or a number as DAT_df_steps. Calculated the value with which the
+y-axis of a density graph should be multplied in order to be visible in the corresponding histogram.
 }
 \examples{
 DAT_df_steps <- datsteps(DAT_df[1:100,], stepsize = 25)
 get.histogramscale(DAT_df_steps)
+
+get.histogramscale(500, binwidth = 20)
 
 }
