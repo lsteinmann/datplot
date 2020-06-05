@@ -1,7 +1,7 @@
 Package: datplot
 Type: Package
 Title: Preparation of object dating ranges for density plots
-Version: 0.2.1
+Version: 0.2.2
 Author: Lisa Steinmann
 Maintainer: Lisa Steinmann <lisa.steinmann@rub.de>
 Description: Converting date ranges into dating 'steps' eases the visualization of changes in e.g. pottery consumption, style and other variables over time. This package provides tools to process and prepare data for visualization.
