@@ -1,18 +1,12 @@
 #' @title Scaling Factor for Combined Histogramm Plots
 #'
-#' @description Requires a dataframe as produced by datsteps().
-#' Meaning 6 columns in the following order:
-#' * ID,
-#' * group,
-#' * minimum/earliest date,
-#' * maximum/latest date,
-#' * weight,
-#' * 'DAT_Steps'
+#' @description Requires a dataframe as produced by datsteps() or a number as DAT_df_steps. Calculated the value with which the
+#' y-axis of a density graph should be multplied in order to be visible in the corresponding histogram.
 #'
-#' @param DAT_df a dataframe as returned by datsteps
-#' @param bw the bandwidth to use for the density function and histogram. Should be stepsize used to
-#' create the dataframe. If a df as returned by datsteps() is given, stepsize is automatically assigned
-#' using the corresponding attribute.
+#' @param DAT_df_steps a dataframe as returned by datsteps
+#' @param binwidth the bandwidth to use for the density function and histogram. Should be stepsize used to
+#' create the dataframe. If a df as returned by datsteps() is given, stepsize can be automatically assigned
+#' using the corresponding attribute (binwidth = "stepsize")
 #'
 #' @return the value with which to scale the density curve to a histogram plot so that both will be visible
 #'
@@ -20,23 +14,27 @@
 #' DAT_df_steps <- datsteps(DAT_df[1:100,], stepsize = 25)
 #' get.histogramscale(DAT_df_steps)
 #'
+#' get.histogramscale(500, binwidth = 20)
+#'
 #' @export get.histogramscale
 
-get.histogramscale <- function(DAT_df, bw = "auto") {
-  if (bw == "auto") {
-    if (!is.null(attributes(DAT_df)$stepsize)) {
-      bw <- attributes(DAT_df)$stepsize
-    } else {
-      stop("Either specify stepsize/bandwidth (bw = ) or use a data.frame as returned by datsteps()")
+get.histogramscale <- function(DAT_df_steps, binwidth = "stepsize") {
+  if (check.number(DAT_df_steps)) {
+    nrow <- DAT_df_steps
+    if (binwidth == "stepsize") {
+      stop("'binwidth == stepsize' cannot be used with a number, supply either a dataframe as returned by datsteps or a numerical bindwidth")
     }
-  } else if (!is.numeric(bw)) {
-    stop("Either specify stepsize/bandwidth (bw = ) or use a data.frame as returned by datsteps()")
+  } else {
+    nrow <- nrow(DAT_df_steps)
+    if (binwidth == "stepsize") {
+      binwidth <- attributes(DAT_df_steps)$stepsize
+      if (is.null(binwidth)) {
+        stop("Supply numerical binwidth or dataframe as returned by datsteps")
+      }
+    } else if (!check.number(binwidth)) {
+      stop('Supply numerical binwidth or use binwidth = "stepsize".')
+    }
   }
-  density <- density(DAT_df$DAT_step, weights = DAT_df$weight, bw = bw)
-  breaks <- range(DAT_df$DAT_step)
-  breaks <- breaks[2] - breaks [1]
-  breaks <- round(breaks / bw, digits = 0)
-  hist <- hist(DAT_df$DAT_step, breaks = breaks)
-  histogramscale <- max(hist$counts) / max(density$y)
+  histogramscale <- nrow * binwidth
   return(histogramscale)
 }
