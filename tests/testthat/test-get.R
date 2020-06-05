@@ -12,4 +12,5 @@ attributes(teststeps_wrong)$stepsize <- NULL
 test_that("multiplication works", {
   #expect_type(get.histogramscale(teststeps), c("numeric", "double", "integer"))
   expect_error(get.histogramscale(teststeps_wrong))
+  expect_true(check.number(get.histogramscale(testdfsteps)))
 })
