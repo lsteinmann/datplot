@@ -130,6 +130,9 @@ get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
     if (timespan > (stepsize*0.6)) {
       # If the timespan exceeds 60% of the stepsize, three steps will be created corresponding to minimum, mean and maximum dating
       sequence <- c(datmin, round(((datmin+datmax)/2), digits = 0), datmax)
+    } else if (timespan == 0) {
+      # for objects dated to one year, only use one year!
+      sequence <- datmin
     } else {
       # if the timespan is less than 60% of the stepsize, just two values corresponding to minimum and maximum dating will be returned
       sequence <- c(datmin, datmax)
