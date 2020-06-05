@@ -68,3 +68,7 @@ test_that("check.structure works", {
 
 
 
+test_that("check.structure issues warning", {
+  expect_warning(check.structure(testdf), regexp = "recommended")
+})
+
