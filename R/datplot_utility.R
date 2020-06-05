@@ -216,3 +216,38 @@ check.number <- function(value) {
   }
   return(result)
 }
+
+#' @title Check the Structure to be compatible with datsteps()
+#'
+#' @description Checks if the object passed to datsteps() will work
+#'
+#' @param DAT_df A value to check
+#'
+#' @return TRUE if df can be processen, FALSE if not
+#'
+#' @export check.structure
+
+check.structure <- function(DAT_df) {
+  dat_df_structure <- c(NA, NA, NA, NA, NA)
+  names(dat_df_structure) <- c("is.df", "is.id", "is.var", "is.minDAT", "is.maxDAT")
+
+  dat_df_structure["is.df"] <- is.data.frame(DAT_df)
+  dat_df_structure["is.id"] <- is.character(DAT_df[,1])
+  dat_df_structure["is.var"] <- is.factor(DAT_df[,2])
+  dat_df_structure[c("is.minDAT", "is.maxDAT")] <- c(check.number(DAT_df[,3]), check.number(DAT_df[,4]))
+
+  if (dat_df_structure[1] == FALSE) {
+    result <- FALSE
+    stop("datsteps requires an object of class data.frame")
+  } else { result <- TRUE }
+  if (any(dat_df_structure[4:5] == FALSE)) {
+    result <- FALSE
+    stop("The 3rd or 4th columns of your data.frame are not numbers.")
+  } else { result <- TRUE }
+  if (any(dat_df_structure[2:3] == FALSE)) {
+    warning("It is recommended to use character vector for the ID column and factor for the variable column.")
+  }
+  return(result)
+}
+
+

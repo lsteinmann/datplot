@@ -36,14 +36,35 @@ test_that("sequence returns first and last values", {
 })
 
 
+
+
+
+
+testdf_wrong <- testdf
+testdf_wrong$min <- "TEST"
+testdf_wrong_two <- testdf
+testdf_wrong_two$max <- factor("börek")
+
+
 test_that("check.number returns true for numbers false for other", {
   expect_true(check.number(numeric(1)))
   expect_true(check.number(double(1)))
   expect_true(check.number(integer(1)))
   expect_false(check.number(character(1)))
   expect_false(check.number(factor(1)))
+  expect_false(check.number(testdf_wrong[3,3]))
+  expect_true(check.number(testdf_wrong[3,4]))
+  expect_false(check.number(testdf_wrong_two[3,4]))
 })
 
+
+
+
+test_that("check.structure works", {
+  expect_true(check.structure(testdf))
+  expect_error(check.structure(testdf_wrong))
+  expect_error(check.structure(testdf_wrong_two))
+})
 
 
 
