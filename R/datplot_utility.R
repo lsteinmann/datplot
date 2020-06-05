@@ -1,4 +1,4 @@
-#' @title Determine stepsize
+#' @title Determine stepsize (internal)
 #'
 #' @description Determines stepsize by selecting the absolute minimum value between the upper and lower end of all dating ranges.
 #'
@@ -18,7 +18,7 @@ generate.stepsize <- function(DAT_mat) {
   return(stepsize)
 }
 
-#' @title Switch values where dating is in wrong order
+#' @title Switch values where dating is in wrong order (internal)
 #'
 #' @description Requires a dataframe with 4 variables: ID (ideally factor), group (ideally factor),
 #' minimum date (int/numeric) and maximum date (int/numeric) and DAT_err as a vector of indizes where
@@ -37,14 +37,14 @@ switch.dating <- function(DAT_df, DAT_err) {
 }
 
 
-#' @title Calculate the weights for each dated object
+#' @title Calculate the weights for each dated object (internal)
 #'
 #' @description Calculates the weights from two vectors of minimum and maximum dating for each object.
 #' Returns a dataframe with the weight in the first column and FALSE in the second if two rows have the
 #' same value in both min and max dating.
 #'
-#' @param DAT_min a vector containing the minimum date (int/num) of each object
-#' @param DAT_max a vector containing the maximum date (int/num) of each object
+#' @param DAT_min a vector containing the minimum date (a number) of each object
+#' @param DAT_max a vector containing the maximum date (a number) of each object
 #'
 #' @return the 'weight' value for the datsteps-dataframe, that is a quantification of
 #' how well the object is dated (lesser value means object is dated to larger
@@ -58,9 +58,12 @@ get.weights <- function(DAT_min, DAT_max) {
   weights[,1] <- abs(DAT_min - DAT_max)
   weights[,2] <- TRUE
   if (any(weights[,1] == 0)) {
+    # store FALSE if any weights are zero to display the warning below
     weights[which(weights[,1] == 0),2] <- FALSE
+    # then store a weight of 1 as to treat objects with same min and max dating (dated to one year precisely) as very influential
     weights[which(weights[,1] == 0),1] <- 1
   }
+  # weights have to be below 1
   weights[,1] <- 1/weights[,1]
   if (any(weights[,2] == FALSE)) {
     warning(paste("Warning: DAT_min and DAT_max at Index: ", paste(which(weights[,2] == FALSE), collapse = ", "), ")",
@@ -71,18 +74,20 @@ get.weights <- function(DAT_min, DAT_max) {
 
 
 
-#' @title Calculate output rows
+#' @title Calculate output rows (internal)
 #'
-#' @description approximation :(
+#' @description an approximation(!) of the rows that will be needed to fit all the steps of the dating
 #'
-#' @param DAT_mat todo
-#' @param stepsize todo
+#' @param DAT_mat a matrix as transformed by datsteps()
+#' @param stepsize the stepsize given to or by datsteps()
 #'
-#' @return outputrows
+#' @return the number of rows create.sub.objects should at least produce in order to fit all steps
 #'
 #' @export calculate.outputrows
 
 
+# TODO: as stated, this is still an approximation and overestimates the number. in testing, there were cases of
+# underestimating, but it hasnt happened since the last fix
 
 calculate.outputrows <- function(DAT_mat, stepsize) {
   mean_year_index <- which(DAT_mat[,"datmax"] - DAT_mat[,"datmin"] < stepsize)
@@ -91,7 +96,7 @@ calculate.outputrows <- function(DAT_mat, stepsize) {
     outputrows <- ceiling(sum(((abs(DAT_mat[,"datmax"] - DAT_mat[,"datmin"])) / stepsize) + 3))
   } else {
     outputrows <- ceiling(sum(((abs(DAT_mat[-mean_year_index,"datmax"] - DAT_mat[-mean_year_index,"datmin"]))/stepsize)+3))
-    outputrows <- outputrows+length(mean_year_index)
+    outputrows <- outputrows + length(mean_year_index)
   }
   return(outputrows)
 }
@@ -99,45 +104,60 @@ calculate.outputrows <- function(DAT_mat, stepsize) {
 
 
 
-#' @title Calculate the sequence of dating steps
+#' @title Calculate the sequence of dating steps (internal)
 #'
-#' @description TO DO also i dont want to write documentation
+#' @description Produces an appropriate sequence of years between the minimum and maximum dating.
+#' If they cannot be properly devided by the stepsize set beforehand, either three values are generated for
+#' objects that are dated to a range of more then 60% of the stepsize (min, mean, max), or two values for
+#' objects dated to a timespan of less or equal to 60% of the stepsize.
+#' If they can be devided without residual, the normal sequence is returned. If there is a residual, the stepsize
+#' is modified depending on how large the residual is. (TODO: There is still a problem here that needs fixing.)
 #'
-#' @param datmin todo
-#' @param datmax todo
-#' @param stepsize todo
+#' @param datmin value of the minimum dating of one object
+#' @param datmax value of the maximum dating of one object
+#' @param stepsize the stepsize to be used
 #'
-#' @return sequence
+#' @return sequence of steps to be created by create.sub.objects()
 #'
 #' @export get.step.sequence
 
-
-
-
-
-### THIS IS NOT DONE
 get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
+  # Get the difference of the two dating values
   timespan <- datmax - datmin
+
+  # First: If the stepsize is larger than the timespan, two different strategies can be employed
   if (timespan %/% stepsize == 0) {
     if (timespan > (stepsize*0.6)) {
+      # If the timespan exceeds 60% of the stepsize, three steps will be created corresponding to minimum, mean and maximum dating
       sequence <- c(datmin, round(((datmin+datmax)/2), digits = 0), datmax)
     } else {
+      # if the timespan is less than 60% of the stepsize, just two values corresponding to minimum and maximum dating will be returned
       sequence <- c(datmin, datmax)
     }
   } else {
+    # If the timespan can be devided at least once, first generate the sequence
     sequence <- seq(from = datmin, to = datmax, by = stepsize)
+    # then check how many years the maximum dating would be off
     resid <- datmax-sequence[length(sequence)]
     if (resid >= (stepsize/2)) {
+      # if the residual is larger or equals half the stepsize, the stepsize is temporarily modified to fit the as many values
+      # as it would with the length of the sequence generated
       stepsize_mod <- (datmax-datmin)/length(sequence)
       sequence <- seq(datmin, datmax, stepsize_mod)
+      # then rounds all values except first and last, which need to stay as minumum and maximum date
       sequence[-c(1,length(sequence))] <- round(sequence[-c(1,length(sequence))], digits = 0)
     } else if (resid != 0) {
+      # if the residual is smaller but also not 0, the sequence values at moved by an appropriate fraction
       move <- round(resid/(length(sequence)-1), digits = 0)
       sequence[2:length(sequence)] <- sequence[2:length(sequence)] + move
+      # and the end of the sequence is reset as the maximum dating
       sequence[length(sequence)] <- datmax
+      # TODO: these two things do essentially the same? I need to fix the first one to use the largest possible division, maybe
     } else {
+      # this implies that there was no residual, so the original sequence can be used
     }
   }
+  # returns the sequence
   return(sequence)
 }
 
@@ -149,17 +169,21 @@ get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
 
 
 
-#' @title Create sub-objects for each object in a dataframe
+#' @title Create sub-objects for each object in a dataframe (internal)
 #'
-#' @description Requires a dataframe with 5 variables: ID (ideally factor), group (ideally factor),
-#' minimum date (int/numeric), maximum date (int/numeric) and weight (as created by get.weights). It's expected that dates BCE are
-#' displayed as negative values while dates CE are positive values. Ignoring this will cause problems
-#' in any case.
+#' @description Requires a matrix with 4 named columns as datsteps will hand to the function:
+#' * "index" (identifier so the values can later be reassigned to their ID and variable),
+#' * "datmin" (minimum dating as any kind of number),
+#' * "datmax" (maximum dating as any kind of number),
+#' * "weight" (as created by get.weights),
+#' * "step" (empty).
+#' It's expected that dates BCE are displayed as negative values while dates CE are positive values.
+#' Ignoring this will cause problems in any case, that would be fixed automatically by switch.dating().
 #'
-#' @param DAT_mat a matrix with 3 variables: ID, group, minimum date (int/num) maximum date (int/num), _must_ be in this order, colnames are irrelevant; each object _must_ be one row.
+#' @param DAT_mat a matrix with 3 variables as prepared by datsteps()
 #' @param stepsize Number of years that should be used as an interval for creating dating steps.
 #'
-#' @return a larger dataframe with a number of steps for each object as well as a 'weight' value, that is a quantification of how well the object is dated (lesser value means object is dated to larger timespans, i.e. with less confidence)
+#' @return a longer matrix of the same structure to be further processed by datsteps() with a number of steps for each object
 #'
 #' @export create.sub.objects
 
@@ -195,7 +219,7 @@ create.sub.objects <- function(DAT_mat, stepsize) {
   return(result)
 }
 
-#' @title Check for numbers
+#' @title Check for numbers (internal)
 #'
 #' @description Checks if value is either numeric, integer or double and and returns TRUE.
 #'
@@ -217,13 +241,13 @@ check.number <- function(value) {
   return(result)
 }
 
-#' @title Check the Structure to be compatible with datsteps()
+#' @title Check the Structure to be compatible with datsteps()  (internal)
 #'
 #' @description Checks if the object passed to datsteps() will work
 #'
-#' @param DAT_df A value to check
+#' @param DAT_df An object to check
 #'
-#' @return TRUE if df can be processen, FALSE if not
+#' @return TRUE if object can be processed by datsteps(), error / FALSE if not
 #'
 #' @export check.structure
 

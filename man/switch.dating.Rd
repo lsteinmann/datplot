@@ -2,7 +2,7 @@
 % Please edit documentation in R/datplot_utility.R
 \name{switch.dating}
 \alias{switch.dating}
-\title{Switch values where dating is in wrong order}
+\title{Switch values where dating is in wrong order (internal)}
 \usage{
 switch.dating(DAT_df, DAT_err)
 }

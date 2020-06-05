@@ -9,11 +9,25 @@ get.histogramscale(DAT_df, bw = "auto")
 \arguments{
 \item{DAT_df}{a dataframe as returned by datsteps}
 
-\item{bw}{the bandwidtg to use. shoudl be stepsize used to compute the dataframe, and if a df as returned by datsteps() is automatically assigned}
+\item{bw}{the bandwidth to use for the density function and histogram. Should be stepsize used to
+create the dataframe. If a df as returned by datsteps() is given, stepsize is automatically assigned
+using the corresponding attribute.}
 }
 \value{
-the factor with which to scale the density curve to a histogram plot
+the value with which to scale the density curve to a histogram plot so that both will be visible
 }
 \description{
-Requires a dataframe as produced by datsteps(). (Meaning 6 columns in the following order: ID, group, minimum/earliest date, maximum/latest date, weight, 'DAT_Steps')
+Requires a dataframe as produced by datsteps().
+Meaning 6 columns in the following order:
+* ID,
+* group,
+* minimum/earliest date,
+* maximum/latest date,
+* weight,
+* 'DAT_Steps'
+}
+\examples{
+DAT_df_steps <- datsteps(DAT_df[1:100,], stepsize = 25)
+get.histogramscale(DAT_df_steps)
+
 }

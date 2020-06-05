@@ -59,7 +59,7 @@ Other approaches, e.g. using the median date of each object, may often produce s
 Beazley$DAT_mean <- (Beazley$DAT_max + Beazley$DAT_min) / 2
 library(ggplot2)
 ggplot(Beazley, aes(x = DAT_mean, fill = Technique)) + 
-  geom_histogram() + plot_theme + plot_fill
+  geom_histogram(binwidth = 25, position = "dodge") + plot_theme + plot_fill
 ```
 
 Employing dating steps will even out unreasonable peaks. Not especially the gap between -425 and -300 in the plot above, that is -- in the plot below -- filled with a constant amount of objects in each year. This is due to the data containing large amounts of objects dating from -400 to -300 BCE. Of couse, due to duplicating each object numerous times (see table below), the counts represented on the y-axis have become meaningless.
@@ -68,7 +68,7 @@ Employing dating steps will even out unreasonable peaks. Not especially the gap 
 library(datplot)
 result <- datsteps(Beazley, stepsize = 5)
 ggplot(result, aes(x = DAT_step, fill = variable)) + 
-  geom_histogram() + plot_theme + plot_fill
+  geom_histogram(binwidth = 25, position = "dodge") + plot_theme + plot_fill
 ```
 
 `datsteps()` can also calculate a stepsize on its own. It equals the closest possible dating of any object. 
@@ -76,7 +76,7 @@ ggplot(result, aes(x = DAT_step, fill = variable)) +
 ```{r steps2}
 result <- datsteps(Beazley, stepsize = "auto")
 ggplot(result, aes(x = DAT_step, fill = variable)) + 
-  geom_histogram() + plot_theme + plot_fill
+  geom_histogram(binwidth = 25, position = "dodge") + plot_theme + plot_fill
 ```
 
 
@@ -89,7 +89,7 @@ Due to the impossibility of displaying object counts as well, it is ideal to use
 ```{r density one}
 result <- datsteps(Beazley, stepsize = 25)
 dens <- result
-dens$weight <- (dens$weight / sum(dens$weight))
+dens <- scaleweight(result, var = "all")
 dens <- density(x = dens$DAT_step, weights = dens$weight)
 plot(dens)
 ```
@@ -102,7 +102,7 @@ In order to display the objects seperated into groups, the weights first have to
 
 
 ```{r scaleweight}
-result <- scaleweight(result, 2)
+result <- scaleweight(result, var = 2)
 ```
 
 ```{r scaleweighttable, echo = FALSE}
@@ -117,13 +117,14 @@ In the case of the beazley archives data [@BAPD] we can clearly see what we knew
 
 ```{r ggplot, warning=FALSE}
 ggplot(data = result, aes(x = DAT_step, 
-                          fill = variable)) +
-  geom_density(aes(weight = weight), alpha = 0.5) +
+                          fill = variable,
+                          weight = weight)) +
+  geom_density(alpha = 0.5) +
   xlab("Dating") + plot_theme + plot_fill
 ```
 
 
-Please note that the plot does change when the weights are omitted (see plot below). When every step is valued equally, a lot of steps fall into the end of the 4th century (as mentioned above), since they were dated as e.g. "-400 to -300".
+Please note that the plot does change when the weights are omitted (see plot below). When every step is valued equally, a lot of steps fall into the end of the 4th century (as mentioned above), since they were dated as e.g. "-400 to -300". The impact here is not very huge, as the dating ranges of the objects do not vary greatly. However, the differences can be very dramatic for more heterogenious data.
 
 ```{r ggplot without weight, warning=FALSE}
 ggplot(data = result, aes(x = DAT_step, 
@@ -132,8 +133,24 @@ ggplot(data = result, aes(x = DAT_step,
   xlab("Dating") + plot_theme + plot_fill
 ```
 
+We also added a function that calculated the value needed to scale the density curve to the axis of a Histogram of the dating steps. Please note that the histogram will not show the actual objects counts, but the counts of the maximum possible objects dated to the corresponding year resp. bin. The value to scale the density curve for a combined plot with a histogram can be obtained via `get.histogramscale`: 
 
-The smooth curves of kernel density estimates are a more realistic approach to dating. The production of objects was as continuous as their use, so it seems only reasonable to display it in a continuous fashion.
+
+```{r histogramscale, warning = FALSE, message = FALSE}
+histogramscale <- get.histogramscale(result)
+```
+
+
+```{r ggplot-combination}
+ggplot(result, aes(x = DAT_step, fill = variable)) +
+  stat_density(alpha = 0.5, position = "dodge", aes(y = (..density..*histogramscale), weight = weight ))+
+  geom_histogram(alpha = 0.5, binwidth = 25, position = "dodge") + plot_theme + plot_fill +
+  labs(y = "maximum number of objects per year", x = "Dating")
+```
+
+The combination of density curve and histogram also shows the common problem of histograms. Their output depends significantly on where the first bin is placed and may show a skewed distribution especially for roughly dated objects.
+
+The smooth curves of kernel density estimates are a more realistic approach to dating. The production of objects was as continuous as their use, so it seems only reasonable to display it in a more continuous fashion on a flexible timescale.
 
 
 ## References
