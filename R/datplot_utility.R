@@ -173,7 +173,7 @@ create.sub.objects <- function(DAT_mat, stepsize) {
   if (any(diffs < stepsize)) {
     diffs <- diffs[diffs < stepsize]
     warning(paste("stepsize is larger than the range of the closest dated object at Index = ",
-                paste(which(diffs < stepsize), collapse = ", "), "). Using mean as year.", sep = ""))
+                paste(which(diffs < stepsize), collapse = ", "), "). For information see documentation of get.step.sequence().", sep = ""))
   }
 
   for (i in 1:nrow(DAT_mat)) {
