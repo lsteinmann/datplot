@@ -18,6 +18,16 @@ I imagine this to be mostly usefull for surveys and other analysis aimed at the 
 
 ![Attic Pottery from BAPD by Date](demo_readme.png "Attic Pottery from BAPD by Date")
 
+Installation 
+-------
+'datplot' can be installed from GitHub directly with devtools:
+
+    devtools::install_github("lsteinmann/datplot")
+
+Recommendation
+-------
+People interested in employing this method should also consider taking a look at [ISAAKiel's package aoristAAR](https://github.com/ISAAKiel/aoristAAR/). 
+
 Contact
 -------
 
