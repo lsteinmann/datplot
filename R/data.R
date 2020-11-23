@@ -7,7 +7,7 @@
 #'   \item ID. Identifier of the Objects (has to be unique)
 #'   \item var. Grouping variable, such as a Type or a Findspot
 #'   \item DAT_min. Integer: lower range of the dating, BCE in negative numbers
-#'   \item DAT_max. Integer: uppder range of the dating, BCE in negative numbers
+#'   \item DAT_max. Integer: upper range of the dating, BCE in negative numbers
 #' }
 #'
 #' @docType data
@@ -30,7 +30,7 @@ NULL
 #'   \item Identifier (Vase.Number in BAPD)
 #'   \item Technique: Sample contains only red- or blackfigured objects
 #'   \item DAT_min. Integer: lower range of the dating, BCE in negative numbers
-#'   \item DAT_max. Integer: uppder range of the dating, BCE in negative numbers
+#'   \item DAT_max. Integer: upper range of the dating, BCE in negative numbers
 #' }
 #'
 #' @docType data
