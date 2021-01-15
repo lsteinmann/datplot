@@ -3,7 +3,7 @@
 library(readxl)
 library(tidyverse)
 
-inscriptions <- readxl::read_excel("Bithynia_Inscriptions.xlsx")
+inscriptions <- readxl::read_excel(system.file('extdata', 'Bithynia_Inscriptions.xlsx', package = 'datplot', mustWork = TRUE))
 
 inscriptions$ID <- paste("I_", 1:nrow(inscriptions), sep = "")
 inscriptions <- inscriptions %>%
@@ -27,13 +27,12 @@ sel <- grepl("[0-9]", inscriptions$Dating)
 periods <- data.frame("Dating" = unique(inscriptions$Dating[which(sel == FALSE)]))
 periods$DAT_min <- NA
 periods$DAT_max <- NA
-write.csv(periods, file = "periods.csv", fileEncoding = "UTF-8")
+#write.csv(periods, file = "periods.csv", fileEncoding = "UTF-8")
 # .... Manual editing of the resulting table, saving it as "periods_edit.csv".
-join_dating <- read.csv(file = "periods_edit.csv",
+join_dating <- read.csv(file = system.file('extdata', 'periods_edit.csv', package = 'datplot', mustWork = TRUE),
                         row.names = 1,
                         colClasses = c("character", "character", "integer", "integer"),
                         encoding = "UTF-8")
-
 
 num_dating <- data.frame("Dating" = unique(inscriptions$Dating[which(sel == TRUE)]))
 num_dating$DAT_min <- NA
@@ -130,8 +129,8 @@ join_dating <- rbind(join_dating, num_dating[!is.na(num_dating$DAT_min),])
 num_dating <- num_dating[which(is.na(num_dating$DAT_min)),]
 unique(num_dating$Dating)[1:20]
 
-write.csv(num_dating, file = "num_dating.csv", fileEncoding = "UTF-8")
-num_dating <- read.csv(file = "num_dating_edit.csv",
+#write.csv(num_dating, file = "num_dating.csv", fileEncoding = "UTF-8")
+num_dating <- read.csv(file = system.file('extdata', 'num_dating_edit.csv', package = 'datplot', mustWork = TRUE),
                        encoding = "UTF-8",
                        row.names = 1,
                        colClasses = c("character", "character", "integer", "integer"))
@@ -169,8 +168,8 @@ attr(inscriptions$uncertain_dating, "descr") <-
 attr(inscriptions$DAT_min, "descr") <- "lower border of the dating timespan"
 attr(inscriptions$DAT_max, "descr") <- "uppper border of the dating timespan"
 
-write.table(inscriptions, file = "inscriptions.csv",
-            fileEncoding = "UTF-8", sep = ";", row.names = FALSE)
+#write.table(inscriptions, file = "inscriptions.csv",
+#            fileEncoding = "UTF-8", sep = ";", row.names = FALSE)
 
 
 Inscr_Bithynia <- inscriptions

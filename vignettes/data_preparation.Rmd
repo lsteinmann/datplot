@@ -1,16 +1,12 @@
 ---
 title: "Data Preparation and Visualization"
 output: rmarkdown::html_vignette
-mode: selfcontained
-self_contained: yes
-subtitle: Preparing an Archaeological Dataset and Using the R-Package Datplot
 bibliography: ../inst/literatur.bib
 vignette: >
-  %\VignetteIndexEntry{data_prep}
+  %\VignetteIndexEntry{Data Preparation and Visualization}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -42,7 +38,7 @@ The manually curated data that B. Weissov\'a prepared for her dissertation was s
 [^1]: We would like to warmly thank B. Weissov\'a for kindly giving us permission to utilize and present in this manner the data used in her publication.
 
 ```{r }
-inscriptions <- readxl::read_excel("../data-raw/Bithynia_Inscriptions.xlsx")
+inscriptions <- readxl::read_excel(system.file('extdata', 'Bithynia_Inscriptions.xlsx', package = 'datplot', mustWork = TRUE))
 summary(inscriptions)
 ```
 
@@ -109,9 +105,10 @@ sel <- grepl("[0-9]", inscriptions$Dating)
 periods <- data.frame("Dating" = unique(inscriptions$Dating[which(sel == FALSE)]))
 periods$DAT_min <- NA
 periods$DAT_max <- NA
-write.csv(periods, file = "../data-raw/periods.csv", fileEncoding = "UTF-8")
+#write.csv(periods, file = "../data-raw/periods.csv", fileEncoding = "UTF-8")
 # .... Manual editing of the resulting table, saving it as "periods_edit.csv".
-join_dating <- read.csv(file = "../data-raw/periods_edit.csv", 
+join_dating <- read.csv(file = system.file('extdata', 'periods_edit.csv', 
+                                           package = 'datplot', mustWork = TRUE), 
                         row.names = 1, 
                         colClasses = c("character", "character", "integer", "integer"),
                         encoding = "UTF-8")
@@ -289,8 +286,9 @@ Due to the heterogeneous nature of these `r nrow(num_dating)` values, we decided
 We then have to reload the corrected data. The values that we put aside in the `join_dating` `data.frame` beforehand serve as the basis for our new `data.frame` that we use as a look-up table. As the variables were treated as character-strings, we need to convert them to a numeric format first. We append the newly loaded manually assigned values to this data.frame. Again, to keep this process as transparent as possible, we included the *.csv-Table in the "data/prep/" subfolder as "num_dating_edit.csv".
 
 ```{r }
-write.csv(num_dating, file = "../data-raw/num_dating.csv", fileEncoding = "UTF-8")
-num_dating <- read.csv(file = "../data-raw/num_dating_edit.csv", 
+#write.csv(num_dating, file = "../data-raw/num_dating.csv", fileEncoding = "UTF-8")
+num_dating <- read.csv(file = system.file('extdata', 'num_dating_edit.csv', 
+                                          package = 'datplot', mustWork = TRUE), 
                        encoding = "UTF-8",
                        row.names = 1, 
                        colClasses = c("character", "character", "integer", "integer"))
