@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 Archaeological data as it can be found "in the wild" rarely conforms to the formats that we need for any kind of statistical analysis. This vignette is intended as a way of demonstrating a possibility of data cleaning on a data set as it can frequently be found in archaeological literature. The data is prepared for use with the `datplot`-package. An analysis based on this data can be found as a case study in the "DATPLOT: A NEW R-PACKAGE FOR THE VISUALIZATION OF DATE RANGES IN ARCHAEOLOGY" [@datplotarticle] by the authors of this package. 
 
-This vignette details the preparation of manually gathered archaeological data, in this case the inscriptions of Bithynia that are included in this package as a demo. This data set has been gathered from a publication on the inscriptions of ancient Bithynia [@weissova2019]. The vignette is thus meant as guidance for archaeologists looking to employ the [datplot-package (redacted)](https://github.com/anonymousgit/datplot), and finding themselves in need of reformatting their data without much experience in programming languages. It points to certain problems arising with data sets and lists as they are typically used by many (classical) archaeologists and suggests solutions for these issues, which may also be adapted to other data and fields.
+This vignette details the preparation of manually gathered archaeological data, in this case the inscriptions of Bithynia that are included in this package as a demo. This data set has been gathered from a publication on the inscriptions of ancient Bithynia [@weissova2019]. The vignette is thus meant as guidance for archaeologists looking to employ the [datplot-package (redacted)](https://github.com/lsteinmann/datplot), and finding themselves in need of reformatting their data without much experience in programming languages. It points to certain problems arising with data sets and lists as they are typically used by many (classical) archaeologists and suggests solutions for these issues, which may also be adapted to other data and fields.
 
 First, we attach the packages to be used in this vignette: 
 
@@ -32,7 +32,7 @@ library(reshape2)
 
 # The "Inscriptions of Bithynia" data set
 
-The manually curated data that B. Weissov\'a prepared for her dissertation was saved as an Excel-file[^1]. As this is very often the case, we will continue directly from this original file, which B. Weissov\'a kindly permitted to be published in this package. The original file is available [in this repositories (redacted)](https://github.com/anonymousgit/datplot) "data/raw/"-subfolder. It can be loaded into R without further complications using the `read_excel()`-function from the package `readxl`. Alternatively, the file is suited for storage as a *.tsv-file, which is also provided in the same folder for better long-term support. 
+The manually curated data that B. Weissov\'a prepared for her dissertation was saved as an Excel-file[^1]. As this is very often the case, we will continue directly from this original file, which B. Weissov\'a kindly permitted to be published in this package. The original file is available [in this repositories (redacted)](https://github.com/lsteinmann/datplot) "data/raw/"-subfolder. It can be loaded into R without further complications using the `read_excel()`-function from the package `readxl`. Alternatively, the file is suited for storage as a *.tsv-file, which is also provided in the same folder for better long-term support. 
 
 
 [^1]: We would like to warmly thank B. Weissov\'a for kindly giving us permission to utilize and present in this manner the data used in her publication.
@@ -98,7 +98,7 @@ inscriptions$Dating <- gsub("\\?", "", inscriptions$Dating)
 
 ### Creating a Concordance for Periods
 
-The next step is sorting out values from the `Dating` variable that have to be manually entered, such as the "Roman Imperial period". We achieve this by excluding all values that contain a number, preparing a table in which we can manually enter the desired dating span and saving it as a .csv-file. After adding the values manually, we reload the file. The manually edited concordance can be found in the "data-raw/"-subfolder [of this repository (redacted)](https://github.com/anonymousgit/datplot) in the file `periods_edit.csv` and corresponds to the chronological assessment of periods used in the original publication ([@weissova2019, 42]).
+The next step is sorting out values from the `Dating` variable that have to be manually entered, such as the "Roman Imperial period". We achieve this by excluding all values that contain a number, preparing a table in which we can manually enter the desired dating span and saving it as a .csv-file. After adding the values manually, we reload the file. The manually edited concordance can be found in the "data-raw/"-subfolder [of this repository (redacted)](https://github.com/lsteinmann/datplot) in the file `periods_edit.csv` and corresponds to the chronological assessment of periods used in the original publication ([@weissova2019, 42]).
 
 ```{r }
 sel <- grepl("[0-9]", inscriptions$Dating)
@@ -360,7 +360,7 @@ write.table(inscriptions, file = "../data-raw/inscriptions.csv",
 
 For later use and publication, we add explanations of the variables and metadata to the R-object and store them in the *.rda file. As a backup, we also save the finished table as a .csv-file, suitable for archiving. The .csv-Table, however, does not contain the additional information added as attributes. 
 
-All files are available [in this repository (redacted)](https://github.com/anonymousgit/datplot) and as part of this package for further use by other researchers. We kindly ask you to cite @weissova2019, the Packard Humanities Institute and this repository at [github.com/anonymousgit/datplot (redacted)](https://github.com/anonymousgit/datplot) as sources.
+All files are available [in this repository (redacted)](https://github.com/lsteinmann/datplot) and as part of this package for further use by other researchers. We kindly ask you to cite @weissova2019, the Packard Humanities Institute and this repository at [github.com/lsteinmann/datplot (redacted)](https://github.com/lsteinmann/datplot) as sources.
 
 The dataset can be loaded into R by simply calling
 ```{r}
@@ -393,7 +393,7 @@ We can now begin using the **datplot**-package. Since `datplot` is not on CRAN, 
 ```{r eval = FALSE}
 library(devtools)
 # either
-install_github("anonymousgit/datplot") # (redacted)
+install_github("lsteinmann/datplot") # (redacted)
 # or 
 install_local(path = "../datplot_0.1.0.tar.gz")
 ```

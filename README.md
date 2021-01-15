@@ -1,7 +1,7 @@
  <!-- badges: start -->
-  [![R build status](https://github.com/anonymousgit/datplot/workflows/R-CMD-check/badge.svg)](https://github.com/anonymousgit/datplot/actions)
-  [![Travis build status](https://travis-ci.com/anonymousgit/datplot.svg?branch=master)](https://travis-ci.com/anonymousgit/datplot)
-  [![Codecov test coverage](https://codecov.io/gh/anonymousgit/datplot/branch/master/graph/badge.svg)](https://codecov.io/gh/anonymousgit/datplot?branch=master)
+  [![R build status](https://github.com/lsteinmann/datplot/workflows/R-CMD-check/badge.svg)](https://github.com/lsteinmann/datplot/actions)
+  [![Travis build status](https://travis-ci.com/lsteinmann/datplot.svg?branch=master)](https://travis-ci.com/lsteinmann/datplot)
+  [![Codecov test coverage](https://codecov.io/gh/lsteinmann/datplot/branch/master/graph/badge.svg)](https://codecov.io/gh/lsteinmann/datplot?branch=master)
   <!-- badges: end -->
 
 datplot
@@ -21,7 +21,7 @@ Installation
 -------
 'datplot' can be installed from GitHub directly with devtools:
 
-    devtools::install_github("anonymousgit/datplot")
+    devtools::install_github("lsteinmann/datplot")
 
 Recommendation
 -------
