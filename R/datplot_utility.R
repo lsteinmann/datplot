@@ -231,13 +231,8 @@ create.sub.objects <- function(DAT_mat, stepsize) {
 
 
 check.number <- function(value) {
-  result <- is.integer(value)
-  if (result == FALSE) {
-    result <- is.numeric(value)
-    if  (result == FALSE) {
-      result <- is.double(value)
-    }
-  }
+  result <- c(is.integer(value), is.numeric(value), is.double(value))
+  result <- any(result)
   return(result)
 }
 
