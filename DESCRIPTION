@@ -8,7 +8,7 @@ Description: Converting date ranges into dating 'steps' eases the visualization 
 License: CC BY-SA 4.0
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Suggests: 
     testthat,
     devtools,

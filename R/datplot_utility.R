@@ -251,15 +251,16 @@ check.structure <- function(DAT_df) {
   names(dat_df_structure) <- c("is.df", "is.id", "is.var", "is.minDAT", "is.maxDAT")
 
   dat_df_structure["is.df"] <- is.data.frame(DAT_df)
-  dat_df_structure["is.id"] <- is.character(DAT_df[,1])
-  dat_df_structure["is.var"] <- is.factor(DAT_df[,2])
-  dat_df_structure[c("is.minDAT", "is.maxDAT")] <- c(check.number(DAT_df[,3]), check.number(DAT_df[,4]))
+  dat_df_structure["is.id"] <- is.character(DAT_df[,1, drop = TRUE])
+  dat_df_structure["is.var"] <- is.factor(DAT_df[,2, drop = TRUE])
+  dat_df_structure[c("is.minDAT", "is.maxDAT")] <- c(check.number(DAT_df[,3, drop = TRUE]),
+                                                     check.number(DAT_df[,4, drop = TRUE]))
 
   if (dat_df_structure[1] == FALSE) {
     result <- FALSE
     stop("datsteps requires an object of class data.frame")
   } else { result <- TRUE }
-  if (any(dat_df_structure[4:5] == FALSE)) {
+  if (any(dat_df_structure[c("is.minDAT", "is.maxDAT")] == FALSE)) {
     result <- FALSE
     stop("The 3rd or 4th columns of your data.frame are not numbers.")
   } else { result <- TRUE }
