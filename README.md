@@ -27,6 +27,16 @@ Recommendation
 -------
 People interested in employing this method should also consider taking a look at [ISAAKiel's package aoristAAR](https://github.com/ISAAKiel/aoristAAR/). 
 
+Installation 
+-------
+'datplot' can be installed from GitHub directly with devtools:
+
+    devtools::install_github("lsteinmann/datplot")
+
+Recommendation
+-------
+People interested in employing this method should also consider taking a look at [ISAAKiel's package aoristAAR](https://github.com/ISAAKiel/aoristAAR/). 
+
 Contact
 -------
 

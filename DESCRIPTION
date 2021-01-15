@@ -1,9 +1,9 @@
 Package: datplot
 Type: Package
 Title: Preparation of object dating ranges for density plots
-Version: 0.2.2
-Author: Anonymous Anonymous
-Maintainer: Anonymous Anonymous <Anonymous.Anonymous@Anonymous.de>
+Version: 0.2.3
+Author: Lisa Steinmann
+Maintainer: Lisa Steinmann <lisa.steinmann@rub.de>
 Description: Converting date ranges into dating 'steps' eases the visualization of changes in e.g. pottery consumption, style and other variables over time. This package provides tools to process and prepare data for visualization.
 License: CC BY-SA 4.0
 Encoding: UTF-8
@@ -19,6 +19,7 @@ Suggests:
     ggridges,
     readxl,
     reshape2
+    covr
 Depends: 
     R (>= 2.10)
 VignetteBuilder: knitr
