@@ -2,18 +2,21 @@
 % Please edit documentation in R/scaleweights.R
 \name{scaleweight}
 \alias{scaleweight}
-\title{Scales the content of the weight columns according to group membership}
+\title{Scales the content of a column according to group membership}
 \usage{
-scaleweight(DAT_df, var = c("all", 2))
+scaleweight(DAT_df, var = c("all", 2), val = 5)
 }
 \arguments{
-\item{DAT_df}{a dataframe as returned by datsteps}
+\item{DAT_df}{a dataframe}
 
-\item{var}{the index of the column of said dataframe that should be used as the group variable, OR "all" (note: all non-numeric values will result in the weight being scaled accross all objects)}
+\item{var}{the index of the column that should be used as the group variable, OR "all"
+(note: all non-numeric values will result in the weight being scaled accross all objects)}
+
+\item{val}{the column that should be scaled (value / sum(values))}
 }
 \value{
-the same dataframe, with scaled 'weight'-values
+the same dataframe, with scaled values in the specifies column
 }
 \description{
-Requires a dataframe as produced by datsteps(). (Meaning 6 columns in the following order: ID, group, minimum/earliest date, maximum/latest date, weight, 'DAT_Steps')
+Requires a dataframe with one variable and one value column.
 }
