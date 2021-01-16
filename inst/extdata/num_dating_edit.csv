@@ -3,7 +3,7 @@
 2,end of 1st c. BC – beg. of 1st c. AD,-20,20
 3,end 2nd c. BC,-120,-100
 4,early 1st c. AD,1,20
-7,after 212 AD,212,250
+7,after 212 AD,212,222
 8,AD 531,531,531
 10,5th/6th century AD,400,599
 14,3rd/4th century AD,200,399
@@ -45,7 +45,7 @@
 105,late 3rd century AD,280,299
 106,late 2nd century AD,180,199
 107,end of the 2nd/beg. of the 3rd century AD,180,220
-108,after 98 AD,98,120
+108,after 98 AD,98,108
 111,AD 209,209,209
 113,6th century AD,500,599
 114,5th - 6th century AD,400,599
@@ -58,7 +58,7 @@
 147,beg. of the 3rd c. AD,200,220
 148,beg. of the 2nd c. AD,100,120
 149,after ca. 70–79 AD,70,79
-150,after 128 AD,128,150
+150,after 128 AD,128,138
 152,AD 243/244,243,244
 154,97/98–98/99 AD,97,99
 158,5th/4th century BC,-499,-300
@@ -69,7 +69,7 @@
 183,1st century BC,-99,-1
 200,102–114,102,114
 201,early 3rd century AD,200,220
-203,after 138 AD,138,150
+203,after 138 AD,138,148
 207,3rd/4th century AD (or later),200,450
 208,3rd or 4th century AD,200,399
 209,3rd c. AD or before,180,299
@@ -80,9 +80,9 @@
 234,122/123–126/127 AD,122,127
 237,early 3rd c. AD,200,220
 238,ca. 2nd century AD,100,199
-239,before 212 AD,200,212
-240,before 211 AD,200,211
-241,after 202 AD,202,250
+239,before 212 AD,202,212
+240,before 211 AD,201,211
+241,after 202 AD,202,212
 259,mid – end of 3rd c. AD,240,299
 263,281 or 190 BC,-281,-190
 270,AD 288/289,288,289
@@ -90,7 +90,7 @@
 272,late 2nd century AD ,180,199
 273,end of the 2nd – 3rd c. AD,180,299
 274,beg. of the 2nd c. BC,-200,-180
-275,"after 171 BC, ca. 188 BC",-188,-171
+275,"after 171 BC, ca. 188 BC",-188,-161
 279,7th century AD,600,699
 281,5th – 6th C AD,400,599
 283,4th – 6th c. AD,300,599

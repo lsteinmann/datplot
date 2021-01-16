@@ -248,7 +248,7 @@ num_dating <- num_dating[which(is.na(num_dating$DAT_min)),]
 
 ### Reformatting of Imprecise Dating Values
 
-For dates that are around a certain value, i.e. of the format "ca. 190 AD", we decided to take a total span of 20 years, i.e. 10 years before and 10 years after the mentioned value. "ca. 190 AD" thus becomes "180--200 AD", with the same mechanism for BC in negative values.
+For dates that are around a certain value, i.e. of the format "ca. 190 AD", we are not able to make a more informed decision than guess about what the researchers providing this assessment had in mind. This might also change from inscription to inscription. While a closer look at the individual inscriptions may yield a more sensible estimate, this seems not feasible as part of the data preparation process. It seems that in most cases, if the dating can be as precise as a span of around 10 years, researchers tend to emphasize this. Therefore we decided to take a total span of 20 years, i.e. 10 years before and 10 years after the mentioned value, reflecting some uncertainty on the precision and duration of the estimate. "ca. 190 AD" thus becomes "180--200 AD", with the same mechanism for BC in negative values.
 
 
 ```{r }
@@ -281,7 +281,7 @@ num_dating <- num_dating[which(is.na(num_dating$DAT_min)),]
 unique(num_dating$Dating)[1:20]
 ```
 
-Due to the heterogeneous nature of these `r nrow(num_dating)` values, we decided to convert them manually again. Our criteria for translating terms like "beginning of" are the following: "beginning of", "end of", "early", "late" all translate to 20 years, as we assume that more information would have been given if the time span was greater than a quarter century. For the other values, we employed the same criteria as seen above in the automated process. For another transformation used later on we decided to treat e.g. -199 / 100 as the beginning of century, and e.g. -100 / 199 as the end of the century and did so accordingly in the manual assignment. 
+Due to the heterogeneous nature of these `r nrow(num_dating)` values, we decided to convert them manually again. Our criteria for translating terms like "beginning of" are the following: "beginning of", "end of", "early", "late" are -- similarly to ca. -- all translated to 20 years, as we assume that more information would have been given if the time span was greater than a quarter century. For the other values, we employed the same criteria as seen above in the automated process. For another transformation used later on we decided to treat e.g. -199 / 100 as the beginning of century, and e.g. -100 / 199 as the end of the century and did so accordingly in the manual assignment. Since the data is epigraphical, in the case of "before" or "after" (i.e. terminus ante/post quem) dates, we assume some connection to a datable event, and therefore add or subtract a span of 10 years, which is, however, still rather arbitrary. 
 
 As a last step, we switch the in some cases automatically assigned year 0, so that it will be treated as either 1 oder -1:
 ```{r}
