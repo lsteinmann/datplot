@@ -73,3 +73,23 @@ test_that("check.structure issues warning", {
   expect_warning(check.structure(testdf), regexp = "recommended")
 })
 
+
+testdf <- create.testing.df()
+testdf[,3] <- sample(-200:0, nrow(testdf))
+testdf[,4] <- sample(1:200, nrow(testdf))
+testdf[1,3:4] <- c(4,4)
+
+DAT_mat <- matrix(ncol = 5, nrow = nrow(testdf))
+DAT_mat[,1] <- 1:nrow(testdf)
+DAT_mat[,2] <- testdf[,3]
+DAT_mat[,3] <- testdf[,4]
+colnames(DAT_mat) <- c("index", "datmin", "datmax", "weight", "step")
+
+test_that("create.sub.objects issues no warning", {
+  expect_failure(expect_warning(create.sub.objects(DAT_mat, stepsize = 1),
+                                regexp = "stepsize is larger"))
+  expect_warning(create.sub.objects(DAT_mat, stepsize = 5),
+                 regexp = "stepsize is larger")
+})
+
+
