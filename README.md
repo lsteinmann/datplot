@@ -17,7 +17,7 @@ This package proposes implements the concepts of aoristic analysis to prepare ar
 
 after installing the package, or on GitHub in the /vignettes/ directory. Density plots are easy to understand and are usually aesthetically pleasing. They do omit a some information, such as individual counts, that bar histograms can communicate better. On the other hand, ranges can be incorporated into the visualization as well to regard the variety of timespans archaeological objects may be dated to.
 
-I imagine this to be mostly useful for surveys and other analysis aimed at the longue duree. 
+I imagine this to be mostly useful for surveys and other analysis aimed at the longue duree. The package has been published along with a case study on the Inscriptions of Bithynia, which are now included as a Data object in the datplot-package itself, in (citation). 
 
 ![Attic Pottery from BAPD by Date](inst/extdata/demo_readme.png "Attic Pottery from BAPD by Date")
 
@@ -25,7 +25,7 @@ I imagine this to be mostly useful for surveys and other analysis aimed at the l
 
 Recommendation
 -------
-People interested in employing this method should also consider taking a look at [ISAAKiel's package aoristAAR](https://github.com/ISAAKiel/aoristAAR/), or at [archSeries](github.com/davidcorton/archSeries), [tabula](github.com/nfrerebeau/tabula/) and [rtefact](github.com/ahb108/rtefact)). 
+People interested in employing this method should also consider taking a look at [ISAAKiel's package aoristAAR](https://github.com/ISAAKiel/aoristAAR/), or at [archSeries](github.com/davidcorton/archSeries), [tabula](github.com/nfrerebeau/tabula/) and [rtefact](github.com/ahb108/rtefact). 
 
 
 Installation 
