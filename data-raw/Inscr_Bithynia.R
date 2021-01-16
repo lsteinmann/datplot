@@ -129,11 +129,16 @@ join_dating <- rbind(join_dating, num_dating[!is.na(num_dating$DAT_min),])
 num_dating <- num_dating[which(is.na(num_dating$DAT_min)),]
 unique(num_dating$Dating)[1:20]
 
+join_dating$DAT_min[which(join_dating$DAT_min == 0)] <- 1
+join_dating$DAT_max[which(join_dating$DAT_max == 0)] <- -1
+
+
 #write.csv(num_dating, file = "num_dating.csv", fileEncoding = "UTF-8")
 num_dating <- read.csv(file = system.file('extdata', 'num_dating_edit.csv', package = 'datplot', mustWork = TRUE),
                        encoding = "UTF-8",
                        row.names = 1,
                        colClasses = c("character", "character", "integer", "integer"))
+
 
 join_dating <- join_dating %>%
   mutate(DAT_min = as.integer(DAT_min),
@@ -173,5 +178,8 @@ attr(inscriptions$DAT_max, "descr") <- "uppper border of the dating timespan"
 
 
 Inscr_Bithynia <- inscriptions
+
+#inscriptions[which(inscriptions$DAT_min == 0),c(1,2,4,5,8,9)]
+#inscriptions[which(inscriptions$DAT_max == 0),c(1,2,4,5,8,9)]
 
 usethis::use_data(Inscr_Bithynia, overwrite = TRUE)

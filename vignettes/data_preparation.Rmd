@@ -248,7 +248,7 @@ num_dating <- num_dating[which(is.na(num_dating$DAT_min)),]
 
 ### Reformatting of Imprecise Dating Values
 
-For dates that are around a certain value, i.e. of the format "ca. 190 AD", we decided to take a total span of 20 years, i.e. 10 years before and 10 years after the mentioned value. "ca. 190 AD" thus becomes "180--200 AD", with the same mechanism for BC in negative values.
+For dates that are around a certain value, i.e. of the format "ca. 190 AD", we are not able to make a more informed decision than guess about what the researchers providing this assessment had in mind. This might also change from inscription to inscription. While a closer look at the individual inscriptions may yield a more sensible estimate, this seems not feasible as part of the data preparation process. It seems that in most cases, if the dating can be as precise as a span of around 10 years, researchers tend to emphasize this. Therefore we decided to take a total span of 20 years, i.e. 10 years before and 10 years after the mentioned value, reflecting some uncertainty on the precision and duration of the estimate. "ca. 190 AD" thus becomes "180--200 AD", with the same mechanism for BC in negative values.
 
 
 ```{r }
@@ -281,7 +281,13 @@ num_dating <- num_dating[which(is.na(num_dating$DAT_min)),]
 unique(num_dating$Dating)[1:20]
 ```
 
-Due to the heterogeneous nature of these `r nrow(num_dating)` values, we decided to convert them manually again. Our criteria for translating terms like "beginning of" are the following: "beginning of", "end of", "early", "late" all translate to 20 years, as we assume that more information would have been given if the time span was greater than a quarter century. For the other values, we employed the same criteria as seen above in the automated process. For another transformation used later on we decided to treat e.g. -199 / 100 as the beginning of century, and e.g. -100 / 199 as the end of the century and did so accordingly in the manual assignment. 
+Due to the heterogeneous nature of these `r nrow(num_dating)` values, we decided to convert them manually again. Our criteria for translating terms like "beginning of" are the following: "beginning of", "end of", "early", "late" are -- similarly to ca. -- all translated to 20 years, as we assume that more information would have been given if the time span was greater than a quarter century. For the other values, we employed the same criteria as seen above in the automated process. For another transformation used later on we decided to treat e.g. -199 / 100 as the beginning of century, and e.g. -100 / 199 as the end of the century and did so accordingly in the manual assignment. Since the data is epigraphical, in the case of "before" or "after" (i.e. terminus ante/post quem) dates, we assume some connection to a datable event, and therefore add or subtract a span of 10 years, which is, however, still rather arbitrary. 
+
+As a last step, we switch the in some cases automatically assigned year 0, so that it will be treated as either 1 oder -1:
+```{r}
+join_dating$DAT_min[which(join_dating$DAT_min == 0)] <- 1
+join_dating$DAT_max[which(join_dating$DAT_max == 0)] <- -1
+```
 
 We then have to reload the corrected data. The values that we put aside in the `join_dating` `data.frame` beforehand serve as the basis for our new `data.frame` that we use as a look-up table. As the variables were treated as character-strings, we need to convert them to a numeric format first. We append the newly loaded manually assigned values to this data.frame. Again, to keep this process as transparent as possible, we included the *.csv-Table in the "data/prep/" subfolder as "num_dating_edit.csv".
 
@@ -292,7 +298,6 @@ num_dating <- read.csv(file = system.file('extdata', 'num_dating_edit.csv',
                        encoding = "UTF-8",
                        row.names = 1, 
                        colClasses = c("character", "character", "integer", "integer"))
-
 join_dating <- join_dating %>% 
   mutate(DAT_min = as.integer(DAT_min),
          DAT_max = as.integer(DAT_max)) %>%
@@ -318,7 +323,8 @@ knitr::kable(na.omit(inscriptions)[sample(1:nrow(na.omit(inscriptions)), 15),c(6
 
 We can now make a 'test run' using datplot with the stepsize-value set to 5 in order to save as much time as possible[^3] and check for errors first. We have to select exactly 4 columns in the correct order of: Identifier, Grouping Variable, Minimum Dating, Maximum Dating. We transform the output from the pipe operator to a `data.frame` before handing it to `datstepts()`, as **datplot** needs this format.
 
-[^3]: Using different stepsizes is a bit of an artifact left over from a less efficient version of datplot, where is processing would take more than a minute if stepsize was set to 1, so I would usually start out with 100 or 25 just to look for errors and problems. This, however, is technically not necessary anymore as the function now works fast enough.
+
+[^3]: Using different stepsizes is a bit of an artifact left over from a less efficient version of datplot, where is processing would take more than a minute if stepsize was set to 1, so I would usually start out with 100 or 25 just to look for errors and problems and to not lose much time. This, however, is technically not necessary in any way. The function now works faster, though there is a lot of room for improvement, as it may still take several seconds or longer, but generally not several minutes. We determined that the feature might still be useful, and therefore it was not removed.
 
 ```{r warning = TRUE, message = TRUE, out.lines = 20}
 #inscriptions$
@@ -350,9 +356,9 @@ inscriptions[which(inscriptions$ID == "I_2725"),c("DAT_min", "DAT_max")] <-
 
 Note that `datsteps()` changes the date and proceeds, but warns you of the possibility of errors. It is therefore recommended to check the data mentioned in that warning. As we 'fixed' out data set, we should save it again, so that the same error will not occur twice:
 
-```{r }
-write.table(inscriptions, file = "../data-raw/inscriptions.csv", 
-            fileEncoding = "UTF-8", sep = ";", row.names = FALSE)
+```{r eval = FALSE}
+#write.table(inscriptions, file = "../data-raw/inscriptions.csv", 
+#            fileEncoding = "UTF-8", sep = ";", row.names = FALSE)
 ```
 
 
@@ -388,20 +394,13 @@ summary(inscr_clean)
 
 # datplot
 
-We can now begin using the **datplot**-package. Since `datplot` is not on CRAN, it is necessary to either install it from our github repository directly or download the source file and install it. For this, R needs the `devtools`-package to be installed.
+We can now begin using the **datplot**-package... 
 
 ```{r eval = FALSE}
-library(devtools)
-# either
-install_github("lsteinmann/datplot") # (redacted)
-# or 
-install_local(path = "../datplot_0.1.0.tar.gz")
+library(datplot)
 ```
 
-
-# The Output of `datsteps()`
-
-Now we can actually try to use `datsteps()`, first with a `stepsize` of 25 years[^3]:
+...and can actually try to use `datsteps()`, first with a `stepsize` of 25 years[^3]:
 
 ```{r warning=TRUE, out.lines = 13}
 inscr_steps <- inscr_clean %>% 
