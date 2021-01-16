@@ -394,20 +394,13 @@ summary(inscr_clean)
 
 # datplot
 
-We can now begin using the **datplot**-package. Since `datplot` is not on CRAN, it is necessary to either install it from our github repository directly or download the source file and install it. For this, R needs the `devtools`-package to be installed.
+We can now begin using the **datplot**-package... 
 
 ```{r eval = FALSE}
-library(devtools)
-# either
-install_github("lsteinmann/datplot") # (redacted)
-# or 
-install_local(path = "../datplot_x.x.x.tar.gz")
+library(datplot)
 ```
 
-
-# The Output of `datsteps()`
-
-Now we can actually try to use `datsteps()`, first with a `stepsize` of 25 years[^3]:
+...and can actually try to use `datsteps()`, first with a `stepsize` of 25 years[^3]:
 
 ```{r warning=TRUE, out.lines = 13}
 inscr_steps <- inscr_clean %>% 
