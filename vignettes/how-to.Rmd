@@ -2,7 +2,7 @@
 title: "Density Plots for Dates"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Density Plots for Dates}
+  %\VignetteIndexEntry{datplot: Visualizing chronological distribution}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 bibliography: ../inst/literatur.bib
@@ -48,10 +48,10 @@ kable(Beazley[sample(1:nrow(Beazley), 10, replace = FALSE),])
 
 The table provides two dates for each object. The earliest possible dating (DAT_min) and the latest possible dating (DAT_max). In order to be able to process this to a [density graph](https://en.wikipedia.org/wiki/Kernel_density_estimation), which is the most elegant means of visualization for continuous distributions. (At least if the goal is merely to evaluate changes over time and the probability of object groups dating to a certain point in time, and not to look at actual objects counts, which will be obscured.) The scale we use is only pseudo-continuous, as the data actually comprises of intervals (1 year, or 25 years, etc.), but we nonetheless treat it as a continuous one. 
 
-Objects that can be dated with greater confidence should have a larger impact on the overall visualization. The core function of this package (`datsteps()`) produces a column named 'weight' which contains a value that corresponds to one (as the closest possible dating of one year) devided by the time span between the two dating variables. The greater the time span, the lower the weight value. This is a generally accepted method of aoristic analysis ([@ratcliffe_Aoristicanalysisspatial_2000, 671--672 with Fig. 1]).
-Secondly, every object is duplicated a number of times equal to the dating range devided by the stepsize-variable. Each duplicate has its own 'date', one single value between the two extremes. The above mentioned weight variable is divided by the number of steps, so that each new fictional object or 'date step' counts only as a fraction of the actual object. 
+Objects that can be dated with greater confidence should have a larger impact on the overall visualization. The core function of this package (`datsteps()`) produces a column named 'weight' which contains a value that corresponds to one (as the closest possible dating of one year) divided by the time span between the two dating variables. The greater the time span, the lower the weight value. This is a generally accepted method of aoristic analysis ([@ratcliffe_Aoristicanalysisspatial_2000, 671--672 with Fig. 1]).
+Secondly, every object is duplicated a number of times equal to the dating range divided by the stepsize-variable. Each duplicate has its own 'date', one single value between the two extremes. The above mentioned weight variable is divided by the number of steps, so that each new fictional object or 'date step' counts only as a fraction of the actual object. With this, we hope to archieve a greater influence of closely dated objects and a higher emphasis on overlap. 
 
-This method will not be useful for dating specific context, since any concept of _terminus post/ante quem_ is lost here, which is important on a smaller scale. For the visualization of changes in _trends_ over time, e.g. the popularity of pottery types, or overall peaks in occupation from survey data, the method is ideal. 
+This method will not be useful for dating specific contexts, since any concept of _terminus post/ante quem_ is lost here, which is important on a smaller scale. It may however be applicable for contexts that are disturbed, as a noticable overlap of objects could indicate the mass original date. For the visualization of changes in _trends_ over time, e.g. the popularity of pottery types, or overall peaks in occupation from survey data, the method seems suitable ([@orton_CatchUnitResearch_2017, 5]). 
 
 Other approaches, e.g. using the median date of each object, may often produce similar outcomes, but create other problems. A lot of information is lost on the way when employing averaged or median data, as large amount of loosely dated objects will produce peaks at unreasonable values. (Consider a large amount of objects dated between 600 and 400 BCE all attributed to the year 500 BCE.)
 
@@ -64,7 +64,22 @@ ggplot(Beazley, aes(x = DAT_mean, fill = Technique)) +
 
 Employing dating steps will even out unreasonable peaks. Note especially the gap between -425 and -300 in the plot above, that is -- in the plot below -- filled with a constant amount of objects in each year. This is due to the data containing large amounts of objects dating from -400 to -300 BCE. Of course, due to duplicating each object numerous times (see table below), the counts represented on the y-axis now inform us of the maximum amount of objects that might be dated to a given bin rather than the actual amount.
 
-The method datplot uses for partitioning steps an be explained as follows: If any given object had been dated as '475 to 425 BC' and steps of 25 years were used for each object, this would result in the creation of three sub-objects with the respective dating of: 475 BC, 450 BC, 425 BC. For an interval of 5 years, the same object would be partitioned into 11 sub-objects, each dating to 475 BC, 470 BC, 465 BC, 460 BC, 455 BC, 450 BC, 445 BC, 440 BC, 435 BC, 430 BC and 425 BC respectively. In order to keep the data comparable, the interval (expressed as the stepsize-variable in the R-package) must be chosen globally for all objects. As the timespan an object is dated to can in many cases not be divided without remainder by the value given as a stepsize (i.e. may only be divided with the modulus of the division being greater than 0), datplot resolves these conflicts by temporarily modifying the size of steps for the objects in question without deviating significantly from the size set beforehand, so that the output is representative and comparable. Objects which are dated to a timespan undercutting the stepsize-variable can either be assigned to one year (for objects dated precisely to one year), to two years (for objects dated to a number of years less than or equal to 40% of the stepsize) or to three years (for objects dated to a number of years exceeding 60% of the stepsize).
+The method datplot uses for partitioning steps an be explained as follows: If any given object had been dated as '475 to 425 BC' and steps of 25 years were used for each object, this would result in the creation of three sub-objects with the respective dating of: 475 BC, 450 BC, 425 BC. For an interval of 5 years, the same object would be partitioned into 11 sub-objects, each dating to 475 BC, 470 BC, 465 BC, 460 BC, 455 BC, 450 BC, 445 BC, 440 BC, 435 BC, 430 BC and 425 BC respectively. In order to keep the data comparable, the interval (expressed as the stepsize-variable in the R-package) must be chosen globally for all objects. As the time span an object is dated to can in many cases not be divided without remainder by the value given as a stepsize (i.e. may only be divided with the modulus of the division being greater than 0), datplot resolves these conflicts by temporarily modifying the size of steps for the objects in question without deviating significantly from the size set beforehand, so that the output is representative and comparable. Objects which are dated to a time span undercutting the stepsize-variable can either be assigned to one year (for objects dated precisely to one year), to two years (for objects dated to a number of years less than or equal to 40% of the stepsize) or to three years (for objects dated to a number of years exceeding 60% of the stepsize).
+
+```{r warning = FALSE}
+data("Inscr_Bithynia")
+Inscr_Bithynia <- Inscr_Bithynia %>%
+  select(ID, Location, DAT_min, DAT_max) %>%
+  na.omit() 
+
+system.time(inscr_steps <- datsteps(Inscr_Bithynia, stepsize = 25))[3]
+system.time(inscr_steps <- datsteps(Inscr_Bithynia, stepsize = "auto"))[3]
+```
+
+Using larger step sizes is only recommended if the stepsize of 1 year leads to significant delays in processing while yielding not additional information. If one where to look at a total time span of 10000 years, step sizes of 1 no longer seem very reasonable, as such detailed changes should not be visible or graspable at all, and using steps of 100 years will lead to the same outcome. As classical archaeologists a duration of more than 1000 years mostly exceeds our area of study. We seem to get good results with stepsizes between 1 and 25.
+
+
+
 
 ```{r steps1}
 library(datplot)

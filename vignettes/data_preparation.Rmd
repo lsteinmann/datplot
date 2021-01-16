@@ -283,6 +283,12 @@ unique(num_dating$Dating)[1:20]
 
 Due to the heterogeneous nature of these `r nrow(num_dating)` values, we decided to convert them manually again. Our criteria for translating terms like "beginning of" are the following: "beginning of", "end of", "early", "late" all translate to 20 years, as we assume that more information would have been given if the time span was greater than a quarter century. For the other values, we employed the same criteria as seen above in the automated process. For another transformation used later on we decided to treat e.g. -199 / 100 as the beginning of century, and e.g. -100 / 199 as the end of the century and did so accordingly in the manual assignment. 
 
+As a last step, we switch the in some cases automatically assigned year 0, so that it will be treated as either 1 oder -1:
+```{r}
+join_dating$DAT_min[which(join_dating$DAT_min == 0)] <- 1
+join_dating$DAT_max[which(join_dating$DAT_max == 0)] <- -1
+```
+
 We then have to reload the corrected data. The values that we put aside in the `join_dating` `data.frame` beforehand serve as the basis for our new `data.frame` that we use as a look-up table. As the variables were treated as character-strings, we need to convert them to a numeric format first. We append the newly loaded manually assigned values to this data.frame. Again, to keep this process as transparent as possible, we included the *.csv-Table in the "data/prep/" subfolder as "num_dating_edit.csv".
 
 ```{r }
@@ -292,7 +298,6 @@ num_dating <- read.csv(file = system.file('extdata', 'num_dating_edit.csv',
                        encoding = "UTF-8",
                        row.names = 1, 
                        colClasses = c("character", "character", "integer", "integer"))
-
 join_dating <- join_dating %>% 
   mutate(DAT_min = as.integer(DAT_min),
          DAT_max = as.integer(DAT_max)) %>%
@@ -396,6 +401,7 @@ library(devtools)
 install_github("lsteinmann/datplot") # (redacted)
 # or 
 install_local(path = "../datplot_0.1.0.tar.gz")
+install_local(path = "../datplot_x.x.x.tar.gz")
 ```
 
 
