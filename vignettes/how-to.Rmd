@@ -68,6 +68,7 @@ The method datplot uses for partitioning steps an be explained as follows: If an
 
 ```{r warning = FALSE}
 data("Inscr_Bithynia")
+library(tidyverse)
 Inscr_Bithynia <- Inscr_Bithynia %>%
   select(ID, Location, DAT_min, DAT_max) %>%
   na.omit() 
