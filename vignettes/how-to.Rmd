@@ -17,49 +17,50 @@ knitr::opts_chunk$set(
 )
 
 library(knitr)
-library(ggplot2)
-require(ggplot2)
-plot_theme <- theme(panel.background = element_blank(), 
+
+Plot_Theme <- theme(panel.background = element_blank(), 
         panel.grid.major = element_line(color = "grey60", linetype = "dashed"),
         panel.grid.minor = element_line(color = "grey80", linetype = "dashed"),
-        legend.position = c(0.9,0.85), legend.background = element_rect(fill = "white", color = "grey60"))
-plot_fill <- scale_fill_manual(name="Technique", values = c("gray30", "tomato3"))
+        legend.position = c(0.9,0.85), 
+        legend.background = element_rect(fill = "white", color = "grey60"))
+Plot_Fill <- scale_fill_manual(name="Technique", values = c("gray30", "tomato3"))
 ```
 
 
 ## Why?
 
-A rather common problem in archaeology is the fuzziness of dates assigned to objects. If one wants to visualize overall changes in - let's say - pottery consumption, bar charts often fall short in that regard. If we have Phases a -- f, then some of the objects can usually be dated to a, c, and f, as an example, but others will by classified as "a to c" or "b to c". But how can these data still be used for examining changes in a large set of objects? The answer lies in aoristic analysis, which was implemented in criminology to assess the general temporal occurrence of burglaries from the reported time span in between which individual burglaries had happened ([@ratcliffe_Aoristicanalysisspatial_2000]). This concept has been implemented in archaeology before (see [@orton_CatchUnitResearch_2017, 3--5] for a recent overview, generally credited with the first implementation for archaeology is [@johnson_AoristicAnalysisSeeds_2004]). There are other R-packages that implement aoristic analysis in archaeology, usually with a less object-based focus and with differing algorithms (namely [aoristAAR](github.com/ISAAKiel/aoristAAR), [archSeries](github.com/davidcorton/archSeries), [tabula](github.com/nfrerebeau/tabula/) and [rtefact](github.com/ahb108/rtefact)). We wholeheartedly recommend trying out those packages as well to find the best fit for your data. This implementation (datplot) is kept rather simple. The case study with which the package is published addresses classical archaeology.  
+A rather common problem in archaeology is the fuzziness of dates assigned to objects. If one wants to visualize overall changes in - let's say - pottery consumption, bar charts often fall short in that regard. If we have Phases a -- f, then some of the objects can usually be dated to a, c, and f, as an example, but others will by classified as "a to c" or "b to c". But how can these data still be used for examining changes in a large set of objects? The answer lies in aoristic analysis, which was implemented in criminology to assess the general temporal occurrence of burglaries from the reported time span in between which individual burglaries had happened ([@ratcliffe_Aoristicanalysisspatial_2000]). This concept has been implemented in archaeology before (see [@orton_CatchUnitResearch_2017, 3--5] for a recent overview, generally credited with the first implementation for archaeology is [@johnson_AoristicAnalysisSeeds_2004]). There are other R-packages that implement aoristic analysis in archaeology, usually with a less object-based focus and with differing algorithms (namely [aoristAAR](github.com/ISAAKiel/aoristAAR), [archSeries](github.com/davidcorton/archSeries), [tabula](github.com/nfrerebeau/tabula/) and [rtefact](github.com/ahb108/rtefact)). We wholeheartedly recommend trying out those packages as well to find the best fit for your data. This implementation (datplot) is kept rather simple. The case study with which the package is published ([@datplotarticle]) addresses classical archaeology, but the package itself is in no way restricted to any discipline.  
 
-First, it is handy to translate the phases into numbers, for which we need to choose boundaries for their absolute dating. This may cause other problems in the end, since such phases are often employed to avoid dates, but it is necessary as the aim is to visualize the distribution on a continuous scale, for which numbers are needed. Also, this step may be reversed for the final visualization by supplementing or replacing the scale on the x-axis with the respective phases. An automated process has not been implemented yet. 
+First, it is handy to translate the phases into numbers, for which we need to choose boundaries for their absolute dating. This may cause other problems in the end, since such phases are often employed to avoid dates, but it is necessary as the aim is to visualize the distribution on a (pseudo-)continuous scale, for which numbers are needed. Also, this step may be reversed for the final visualization by supplementing or replacing the scale on the x-axis with the respective phases. An automated process has not been implemented yet.
+
 Ideally, one can produce a 'beginning' and 'end' date for each object, or let's say an earliest possible dating and a latest possible dating, e.g. corresponding to beginning and start of each phase the object is dated to. 
 
-To show and explain how this would work, we chose a random sample of athenian pottery from the Beazley archive ([@BAPD]), as it is a large publicly available data set. (Since the format provided by the BAPD is slightly different from that needed here we converted the data beforehand to match requirements. No values have been changed. The sample data set is included in datplot. In a recent version the Inscriptions of Bithynia data set has been added to datplot as well. Its cleaning and formatting is detailed in the "data_preparation"-vignette.)
+To show and explain how this would work, we chose a random sample of athenian pottery from the Beazley archive ([@BAPD]), as it is a large publicly available data set. (Since the format provided by the BAPD is slightly different from that needed here we converted the data beforehand to match requirements. No values have been changed. The sample data set is included in datplot. In a recent version the Inscriptions of Bithynia data set has been added to datplot as well. Its cleaning and formatting is detailed in the "data_preparation"-vignette as an example for scholars looking for approaches to the transformation of verbose and heterogeneous data.)
 
 ```{r prep}
 library(datplot)
 data(Beazley)
 ```
 ```{r preptable, echo = FALSE}
-kable(Beazley[sample(1:nrow(Beazley), 10, replace = FALSE),])
+knitr::kable(Beazley[sample(1:nrow(Beazley), 10, replace = FALSE),])
 ```
 
 ## How to display a range?
 
 The table provides two dates for each object. The earliest possible dating (DAT_min) and the latest possible dating (DAT_max). In order to be able to process this to a [density graph](https://en.wikipedia.org/wiki/Kernel_density_estimation), which is the most elegant means of visualization for continuous distributions. (At least if the goal is merely to evaluate changes over time and the probability of object groups dating to a certain point in time, and not to look at actual objects counts, which will be obscured.) The scale we use is only pseudo-continuous, as the data actually comprises of intervals (1 year, or 25 years, etc.), but we nonetheless treat it as a continuous one. 
 
-Objects that can be dated with greater confidence should have a larger impact on the overall visualization. The core function of this package (`datsteps()`) produces a column named 'weight' which contains a value that corresponds to one (as the closest possible dating of one year) divided by the time span between the two dating variables. The greater the time span, the lower the weight value. This is a generally accepted method of aoristic analysis ([@ratcliffe_Aoristicanalysisspatial_2000, 671--672 with Fig. 1]).
-Secondly, every object is duplicated a number of times equal to the dating range divided by the stepsize-variable. Each duplicate has its own 'date', one single value between the two extremes. The above mentioned weight variable is divided by the number of steps, so that each new fictional object or 'date step' counts only as a fraction of the actual object. With this, we hope to archieve a greater influence of closely dated objects and a higher emphasis on overlap. 
+Objects that can be dated with greater confidence should have a larger impact on the overall visualization. The core function of this package (`datsteps()`) produces a column named 'weight' which contains a value that corresponds to one (as the closest possible dating of one year) divided by the time span between the two dating variables. The greater the time span, the lower the weight value. This is a generally accepted method of aoristic analysis ([@ratcliffe_Aoristicanalysisspatial_2000, 671--672 with Fig. 1]) and explained in greater detail in [@datplotarticle].
+Secondly, every object is duplicated a number of times equal to the dating range divided by the stepsize-variable. Each duplicate has its own 'DAT_step' -- one single value between the two extremes. The above mentioned weight variable is divided by the number of steps, so that each new fictional object or 'date step' counts only as a fraction of the actual object. With this, we hope to achieve a greater influence of closely dated objects and a higher emphasis on overlap. 
 
-This method will not be useful for dating specific contexts, since any concept of _terminus post/ante quem_ is lost here, which is important on a smaller scale. It may however be applicable for contexts that are disturbed, as a noticable overlap of objects could indicate the mass original date. For the visualization of changes in _trends_ over time, e.g. the popularity of pottery types, or overall peaks in occupation from survey data, the method seems suitable ([@orton_CatchUnitResearch_2017, 5]). 
+This method will not be useful for dating specific contexts, since any concept of _terminus post/ante quem_ is lost here, which is important on a smaller scale. It may however be applicable for contexts that are disturbed, as a noticeable overlap of objects could give an indication for the original tpq-date. The method is suitable also for the visualization of changes in _trends_ over time, e.g. the popularity of pottery types, or overall peaks in occupation from survey data ([@orton_CatchUnitResearch_2017, 5]). 
 
-Other approaches, e.g. using the median date of each object, may often produce similar outcomes, but create other problems. A lot of information is lost on the way when employing averaged or median data, as large amount of loosely dated objects will produce peaks at unreasonable values. (Consider a large amount of objects dated between 600 and 400 BCE all attributed to the year 500 BCE.)
+Other approaches, e.g. using the median date of each object, may in some cases produce similar outcomes, but create other problems. A lot of information is lost on the way when employing averaged or median data, as large amount of loosely dated objects will produce peaks at unreasonable values. (Consider a large amount of objects dated between 600 and 400 BCE all attributed to the year 500 BCE.)
 
 ```{r barplot}
 Beazley$DAT_mean <- (Beazley$DAT_max + Beazley$DAT_min) / 2
 library(ggplot2)
 ggplot(Beazley, aes(x = DAT_mean, fill = Technique)) + 
-  geom_histogram(binwidth = 25, position = "dodge") + plot_theme + plot_fill
+  geom_histogram(binwidth = 25, position = "dodge") + Plot_Theme + Plot_Fill
 ```
 
 Employing dating steps will even out unreasonable peaks. Note especially the gap between -425 and -300 in the plot above, that is -- in the plot below -- filled with a constant amount of objects in each year. This is due to the data containing large amounts of objects dating from -400 to -300 BCE. Of course, due to duplicating each object numerous times (see table below), the counts represented on the y-axis now inform us of the maximum amount of objects that might be dated to a given bin rather than the actual amount.
@@ -77,32 +78,32 @@ system.time(inscr_steps <- datsteps(Inscr_Bithynia, stepsize = 25))[3]
 system.time(inscr_steps <- datsteps(Inscr_Bithynia, stepsize = "auto"))[3]
 ```
 
-Using larger step sizes is only recommended if the stepsize of 1 year leads to significant delays in processing while yielding not additional information. If one where to look at a total time span of 10000 years, step sizes of 1 no longer seem very reasonable, as such detailed changes should not be visible or graspable at all, and using steps of 100 years will lead to the same outcome. As classical archaeologists a duration of more than 1000 years mostly exceeds our area of study. We seem to get good results with stepsizes between 1 and 25.
+Using larger step sizes is only recommended if the stepsize of 1 year leads to significant delays in processing while yielding not additional information. If one where to look at a total time span of 10000 years, step sizes of 1 no longer seem very reasonable or rather neccessary, as such detailed changes should not be visible or graspable at all, and using steps of 100 years will lead to the same outcome. As classical archaeologists a duration of more than 1000 years mostly exceeds our area of study. We seem to get good results with stepsizes between 1 and 25.
 
 
 
 
 ```{r steps1}
 library(datplot)
-result <- datsteps(Beazley, stepsize = 5)
+result <- datsteps(Beazley, stepsize = 25)
 ggplot(result, aes(x = DAT_step, fill = variable)) + 
-  geom_histogram(binwidth = 25, position = "dodge") + plot_theme + plot_fill
+  geom_histogram(binwidth = 25, position = "dodge") + Plot_Theme + Plot_Fill
 ```
 
 
 
 
-`datsteps()` can also calculate a stepsize on its own. It equals the closest possible dating of any object. 
+`datsteps()` can also calculate a stepsize on its own. It equals the closest possible dating of any object. As the stepsize used is saved in an attribute, this can be recycled to dynamically chose the bindwidth for histograms:
 
 ```{r steps2}
 result <- datsteps(Beazley, stepsize = "auto")
-ggplot(result, aes(x = DAT_step, fill = variable)) + 
-  geom_histogram(binwidth = 25, position = "dodge") + plot_theme + plot_fill
+ggplot(result, aes(x = DAT_step, fill = variable)) + Plot_Theme + Plot_Fill + 
+  geom_histogram(binwidth = attributes(result)$stepsize, position = "dodge")
 ```
 
 
 ```{r stepstable, echo = FALSE}
-kable(head(result))
+knitr::kable(head(result))
 ```
 
 Due to the impossibility of displaying object counts as well, it is ideal to use kernel density estimates for visualization. The density plot below shows the result. The peak at around -500 indicates that is area has the highest overlay, so a large part of the objects in our sample have been dated around this time. The same distribution can also be seen in the bar plots above. This, however, is not yet very informative. 
@@ -127,31 +128,31 @@ result <- scaleweight(result, var = 2)
 ```
 
 ```{r scaleweighttable, echo = FALSE}
-kable(head(result))
+knitr::kable(head(result))
 ```
 
 
   
 ## Plots for the distribution of objects across time
 
-In the case of the beazley archives data [@BAPD] we can clearly see what we knew before: Black-figure pottery is older than red-figure pottery. (The data are from a random sample of athenian pottery from the beazley archive, n = 1000. Computation of the dating steps may not work with very, very large datasets, or simply take up a lot of time.)
+In the case of the Beazley archives data [@BAPD] we can clearly see what we knew before: Black-figure pottery is older than red-figure pottery. (The data are from a random sample of athenian pottery from the Beazley archive, n = 1000.)
 
 ```{r ggplot, warning=FALSE}
 ggplot(data = result, aes(x = DAT_step, 
                           fill = variable,
                           weight = weight)) +
-  geom_density(alpha = 0.5) +
-  xlab("Dating") + plot_theme + plot_fill
+  geom_density(alpha = 0.5, bw = attributes(result)$stepsize) +
+  xlab("Dating") + Plot_Theme + Plot_Fill
 ```
 
 
-Please note that the plot does change when the weights are omitted (see plot below). When every step is valued equally, a lot of steps fall into the end of the 4th century (as mentioned above), since they were dated as e.g. "-400 to -300". The impact here is not very huge, as the dating ranges of the objects do not vary greatly. However, the differences can be very dramatic for more heterogenious data.
+Please note that the plot does change when the weights are omitted (see plot below). When every step is valued equally, a lot of steps fall into the end of the 4th century (as mentioned above), since they were dated as e.g. "-400 to -300". The impact here is not very huge, as the dating ranges of the objects do not vary greatly. However, the differences can be very dramatic for more heterogeneous data.
 
 ```{r ggplot without weight, warning=FALSE}
 ggplot(data = result, aes(x = DAT_step, 
                           fill = variable)) +
-  geom_density(alpha = 0.5) +
-  xlab("Dating") + plot_theme + plot_fill
+  geom_density(alpha = 0.5, bw = attributes(result)$stepsize) +
+  xlab("Dating") + Plot_Theme + Plot_Fill
 ```
 
 We also added a function that calculated the value needed to scale the density curve to the axis of a Histogram of the dating steps. Please note that the histogram will not show the actual objects counts, but the counts of the maximum possible objects dated to the corresponding year resp. bin. The value to scale the density curve for a combined plot with a histogram can be obtained via `get.histogramscale`: 
@@ -163,9 +164,10 @@ histogramscale <- get.histogramscale(result)
 
 
 ```{r ggplot-combination}
-ggplot(result, aes(x = DAT_step, fill = variable)) +
-  stat_density(alpha = 0.5, position = "dodge", aes(y = (..density..*histogramscale), weight = weight ))+
-  geom_histogram(alpha = 0.5, binwidth = 25, position = "dodge") + plot_theme + plot_fill +
+ggplot(result, aes(x = DAT_step, fill = variable)) + Plot_Theme + Plot_Fill +
+  stat_density(alpha = 0.5, position = "dodge", 
+               aes(y = (..density..*histogramscale), weight = weight ))+
+  geom_histogram(alpha = 0.5, binwidth = attributes(result)$stepsize, position = "dodge") +
   labs(y = "maximum number of objects per year", x = "Dating")
 ```
 
