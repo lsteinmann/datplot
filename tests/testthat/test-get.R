@@ -9,7 +9,16 @@ attributes(teststeps_wrong)$stepsize <- NULL
 #str(teststeps_wrong)
 
 
-test_that("multiplication works", {
-  #expect_type(get.histogramscale(teststeps), c("numeric", "double", "integer"))
-  expect_error(get.histogramscale(teststeps_wrong))
+
+test_that("right errors are returned", {
+  expect_error(get.histogramscale(teststeps_wrong, binwidth = "stepsize"), regexp = "dataframe as returned by datsteps")
+  expect_error(get.histogramscale(teststeps_wrong), regexp = "dataframe as returned by datsteps")
+  expect_error(get.histogramscale(testdfsteps, binwidth = "börek"), regexp = "or use")
+  expect_error(get.histogramscale(20), regexp = "cannot be used with a number")
+})
+
+
+test_that("returns number", {
+  expect_true(check.number(get.histogramscale(testdfsteps)))
+  expect_true(check.number(get.histogramscale(20, binwidth = 5)))
 })

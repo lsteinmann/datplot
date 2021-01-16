@@ -18,7 +18,7 @@
 #' @export datsteps
 
 datsteps <- function(DAT_df, stepsize = 25) {
-
+  DAT_df <- as.data.frame(DAT_df)
   # Checking the overall structure
   check.structure(DAT_df)
 

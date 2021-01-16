@@ -130,6 +130,9 @@ get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
     if (timespan > (stepsize*0.6)) {
       # If the timespan exceeds 60% of the stepsize, three steps will be created corresponding to minimum, mean and maximum dating
       sequence <- c(datmin, round(((datmin+datmax)/2), digits = 0), datmax)
+    } else if (timespan == 0) {
+      # for objects dated to one year, only use one year!
+      sequence <- datmin
     } else {
       # if the timespan is less than 60% of the stepsize, just two values corresponding to minimum and maximum dating will be returned
       sequence <- c(datmin, datmax)
@@ -142,7 +145,7 @@ get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
     if (resid >= (stepsize/2)) {
       # if the residual is larger or equals half the stepsize, the stepsize is temporarily modified to fit the as many values
       # as it would with the length of the sequence generated
-      stepsize_mod <- (datmax-datmin)/length(sequence)
+      stepsize_mod <- (datmax-datmin)/(length(sequence)+1) ## length(sequence + 1 might be better!)
       sequence <- seq(datmin, datmax, stepsize_mod)
       # then rounds all values except first and last, which need to stay as minumum and maximum date
       sequence[-c(1,length(sequence))] <- round(sequence[-c(1,length(sequence))], digits = 0)
@@ -203,17 +206,14 @@ create.sub.objects <- function(DAT_mat, stepsize) {
   for (i in 1:nrow(DAT_mat)) {
     sequence <- NULL
     sequence <- get.step.sequence(DAT_mat[i,"datmin"], DAT_mat[i,"datmax"], stepsize)
-    for (step in sequence) {
-      wip <- as.vector(DAT_mat[i,])
-      wip[5] <- step
-      wip[4] <- wip[4] #/ length(sequence)
-      first_na <- match(NA, result[,1])
-      result[first_na,1] <- wip[1]
-      result[first_na,3] <- wip[2]
-      result[first_na,4] <- wip[3]
-      result[first_na,5] <- wip[4]
-      result[first_na,6] <- wip[5]
-    }
+
+    first_na <- match(NA, result[,1])
+    last_row <- first_na + (length(sequence)-1)
+    result[first_na:last_row,1] <- DAT_mat[i,1]
+    result[first_na:last_row,3] <- DAT_mat[i,2]
+    result[first_na:last_row,4] <- DAT_mat[i,3]
+    result[first_na:last_row,5] <- DAT_mat[i,4]
+    result[first_na:last_row,6] <- sequence
   }
   result <- result[-c(match(NA, result[,1]):nrow(result)), ]
   return(result)
@@ -231,13 +231,8 @@ create.sub.objects <- function(DAT_mat, stepsize) {
 
 
 check.number <- function(value) {
-  result <- is.integer(value)
-  if (result == FALSE) {
-    result <- is.numeric(value)
-    if  (result == FALSE) {
-      result <- is.double(value)
-    }
-  }
+  result <- c(is.integer(value), is.numeric(value), is.double(value))
+  result <- any(result)
   return(result)
 }
 
@@ -256,15 +251,16 @@ check.structure <- function(DAT_df) {
   names(dat_df_structure) <- c("is.df", "is.id", "is.var", "is.minDAT", "is.maxDAT")
 
   dat_df_structure["is.df"] <- is.data.frame(DAT_df)
-  dat_df_structure["is.id"] <- is.character(DAT_df[,1])
-  dat_df_structure["is.var"] <- is.factor(DAT_df[,2])
-  dat_df_structure[c("is.minDAT", "is.maxDAT")] <- c(check.number(DAT_df[,3]), check.number(DAT_df[,4]))
+  dat_df_structure["is.id"] <- is.character(DAT_df[,1, drop = TRUE])
+  dat_df_structure["is.var"] <- is.factor(DAT_df[,2, drop = TRUE])
+  dat_df_structure[c("is.minDAT", "is.maxDAT")] <- c(check.number(DAT_df[,3, drop = TRUE]),
+                                                     check.number(DAT_df[,4, drop = TRUE]))
 
   if (dat_df_structure[1] == FALSE) {
     result <- FALSE
     stop("datsteps requires an object of class data.frame")
   } else { result <- TRUE }
-  if (any(dat_df_structure[4:5] == FALSE)) {
+  if (any(dat_df_structure[c("is.minDAT", "is.maxDAT")] == FALSE)) {
     result <- FALSE
     stop("The 3rd or 4th columns of your data.frame are not numbers.")
   } else { result <- TRUE }
