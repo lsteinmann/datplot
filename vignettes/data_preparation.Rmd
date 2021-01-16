@@ -323,7 +323,8 @@ knitr::kable(na.omit(inscriptions)[sample(1:nrow(na.omit(inscriptions)), 15),c(6
 
 We can now make a 'test run' using datplot with the stepsize-value set to 5 in order to save as much time as possible[^3] and check for errors first. We have to select exactly 4 columns in the correct order of: Identifier, Grouping Variable, Minimum Dating, Maximum Dating. We transform the output from the pipe operator to a `data.frame` before handing it to `datstepts()`, as **datplot** needs this format.
 
-[^3]: Using different stepsizes is a bit of an artifact left over from a less efficient version of datplot, where is processing would take more than a minute if stepsize was set to 1, so I would usually start out with 100 or 25 just to look for errors and problems. This, however, is technically not necessary in any way. The function now works faster, though there is room for improvement, as it may still take up to 5 seconds or so.
+
+[^3]: Using different stepsizes is a bit of an artifact left over from a less efficient version of datplot, where is processing would take more than a minute if stepsize was set to 1, so I would usually start out with 100 or 25 just to look for errors and problems and to not lose much time. This, however, is technically not necessary in any way. The function now works faster, though there is a lot of room for improvement, as it may still take several seconds or longer, but generally not several minutes. We determined that the feature might still be useful, and therefore it was not removed.
 
 ```{r warning = TRUE, message = TRUE, out.lines = 20}
 #inscriptions$
@@ -355,9 +356,9 @@ inscriptions[which(inscriptions$ID == "I_2725"),c("DAT_min", "DAT_max")] <-
 
 Note that `datsteps()` changes the date and proceeds, but warns you of the possibility of errors. It is therefore recommended to check the data mentioned in that warning. As we 'fixed' out data set, we should save it again, so that the same error will not occur twice:
 
-```{r }
-write.table(inscriptions, file = "../data-raw/inscriptions.csv", 
-            fileEncoding = "UTF-8", sep = ";", row.names = FALSE)
+```{r eval = FALSE}
+#write.table(inscriptions, file = "../data-raw/inscriptions.csv", 
+#            fileEncoding = "UTF-8", sep = ";", row.names = FALSE)
 ```
 
 
@@ -400,7 +401,6 @@ library(devtools)
 # either
 install_github("lsteinmann/datplot") # (redacted)
 # or 
-install_local(path = "../datplot_0.1.0.tar.gz")
 install_local(path = "../datplot_x.x.x.tar.gz")
 ```
 
