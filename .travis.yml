@@ -2,3 +2,19 @@
 
 language: R
 cache: packages
+latex: false
+
+r:
+  - oldrel
+  - release
+
+matrix:
+  include:
+    - dist: trusty
+    - dist: xenial
+    - os: osx
+        osx_image: beta-xcode6.1
+        disable_homebrew: true
+    - os: osx
+        osx_image: xcode7.3
+        disable_homebrew: true
