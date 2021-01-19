@@ -1,27 +1,4 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: R
-
 cache: packages
-
-latex: false
-
-matrix:
-  include:
-  - r: release
-    - os: linux
-  - r: oldrel
-    - os: linux
-  - r: release
-    - os: osx
-      osx_image: beta-xcode6.1
-      disable_homebrew: true
-
-addons:
-  apt:
-    packages:
-      - libgit2-dev
-
-script:
-  - R CMD build . --compact-vignettes=gs+qpdf
-  - R CMD check *tar.gz --as-cran
