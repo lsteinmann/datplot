@@ -1,20 +1,14 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: R
+
 cache: packages
 latex: false
 
-r:
-  - oldrel
-  - release
-
 matrix:
   include:
-    - dist: trusty
-    - dist: xenial
+    - r: 3.3
+    - r: release
     - os: osx
-        osx_image: beta-xcode6.1
-        disable_homebrew: true
-    - os: osx
-        osx_image: xcode7.3
-        disable_homebrew: true
+      osx_image: xcode7.3
+      disable_homebrew: true
