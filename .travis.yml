@@ -1,10 +1,14 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: R
+
 cache: packages
+latex: false
 
-
-addons:
-  apt:
-    packages:
-      - libgit2-dev
+matrix:
+  include:
+    - r: 3.3
+    - r: release
+    - os: osx
+      osx_image: xcode7.3
+      disable_homebrew: true
