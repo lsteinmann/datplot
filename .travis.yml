@@ -2,19 +2,24 @@
 
 language: R
 
+cache: packages
+
+latex: false
+
 matrix:
   include:
-  - r:
-    - oldrel
-    - release
-    addons:
-      apt:
-        packages:
-          - libgit2-dev
-
   - r: release
-    os: osx
-    osx_image: xcode7.3
+  - r: oldrel
+  - r: release
+    - os: osx
+      osx_image: beta-xcode6.1
+      disable_homebrew: true
 
+addons:
+  apt:
+    packages:
+      - libgit2-dev
 
-
+script:
+  - R CMD build . --compact-vignettes=gs+qpdf
+  - R CMD check *tar.gz --as-cran
