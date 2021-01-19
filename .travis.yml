@@ -9,7 +9,9 @@ latex: false
 matrix:
   include:
   - r: release
+    - os: linux
   - r: oldrel
+    - os: linux
   - r: release
     - os: osx
       osx_image: beta-xcode6.1
