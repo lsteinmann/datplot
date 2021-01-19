@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 )
 
 library(knitr)
+library(ggplot2)
 
 Plot_Theme <- theme(panel.background = element_blank(), 
         panel.grid.major = element_line(color = "grey60", linetype = "dashed"),
@@ -68,14 +69,8 @@ Employing dating steps will even out unreasonable peaks. Note especially the gap
 The method datplot uses for partitioning steps an be explained as follows: If any given object had been dated as '475 to 425 BC' and steps of 25 years were used for each object, this would result in the creation of three sub-objects with the respective dating of: 475 BC, 450 BC, 425 BC. For an interval of 5 years, the same object would be partitioned into 11 sub-objects, each dating to 475 BC, 470 BC, 465 BC, 460 BC, 455 BC, 450 BC, 445 BC, 440 BC, 435 BC, 430 BC and 425 BC respectively. In order to keep the data comparable, the interval (expressed as the stepsize-variable in the R-package) must be chosen globally for all objects. As the time span an object is dated to can in many cases not be divided without remainder by the value given as a stepsize (i.e. may only be divided with the modulus of the division being greater than 0), datplot resolves these conflicts by temporarily modifying the size of steps for the objects in question without deviating significantly from the size set beforehand, so that the output is representative and comparable. Objects which are dated to a time span undercutting the stepsize-variable can either be assigned to one year (for objects dated precisely to one year), to two years (for objects dated to a number of years less than or equal to 40% of the stepsize) or to three years (for objects dated to a number of years exceeding 60% of the stepsize).
 
 ```{r warning = FALSE}
-data("Inscr_Bithynia")
-library(tidyverse)
-Inscr_Bithynia <- Inscr_Bithynia %>%
-  select(ID, Location, DAT_min, DAT_max) %>%
-  na.omit() 
-
-system.time(inscr_steps <- datsteps(Inscr_Bithynia, stepsize = 25))[3]
-system.time(inscr_steps <- datsteps(Inscr_Bithynia, stepsize = "auto"))[3]
+system.time(result <- datsteps(Beazley, stepsize = 25))[3]
+system.time(result <- datsteps(Beazley, stepsize = 1))[3]
 ```
 
 Using larger step sizes is only recommended if the stepsize of 1 year leads to significant delays in processing while yielding not additional information. If one where to look at a total time span of 10000 years, step sizes of 1 no longer seem very reasonable or rather neccessary, as such detailed changes should not be visible or graspable at all, and using steps of 100 years will lead to the same outcome. As classical archaeologists a duration of more than 1000 years mostly exceeds our area of study. We seem to get good results with stepsizes between 1 and 25.
@@ -93,7 +88,7 @@ ggplot(result, aes(x = DAT_step, fill = variable)) +
 
 
 
-`datsteps()` can also calculate a stepsize on its own. It equals the closest possible dating of any object. As the stepsize used is saved in an attribute, this can be recycled to dynamically chose the bindwidth for histograms:
+`datsteps()` can also calculate a stepsize on its own. It equals the closest possible dating of any object. As the stepsize used is saved in an attribute, this can be recycled to dynamically chose the binwidth for histograms:
 
 ```{r steps2}
 result <- datsteps(Beazley, stepsize = "auto")
@@ -141,7 +136,7 @@ In the case of the Beazley archives data [@BAPD] we can clearly see what we knew
 ggplot(data = result, aes(x = DAT_step, 
                           fill = variable,
                           weight = weight)) +
-  geom_density(alpha = 0.5, bw = attributes(result)$stepsize) +
+  geom_density(alpha = 0.5) +
   xlab("Dating") + Plot_Theme + Plot_Fill
 ```
 
@@ -151,9 +146,25 @@ Please note that the plot does change when the weights are omitted (see plot bel
 ```{r ggplot without weight, warning=FALSE}
 ggplot(data = result, aes(x = DAT_step, 
                           fill = variable)) +
-  geom_density(alpha = 0.5, bw = attributes(result)$stepsize) +
+  geom_density(alpha = 0.5) +
   xlab("Dating") + Plot_Theme + Plot_Fill
 ```
+
+As the dating in the Beazley dataset is rather uniform, the weight does not make a big difference. This is dramatically different, however, for datasets with truly heterogeneous dating ranges such as the Inscriptions of Bithynia data included in the package: 
+
+```{r, warning = FALSE}
+data("Inscr_Bithynia")
+Inscr_Bithynia <- na.omit(Inscr_Bithynia[,c(1,3,8,9)])
+result_bith <- scaleweight(datsteps(Inscr_Bithynia, stepsize = "auto"), var = "all")
+
+ggplot(result_bith, aes(x = DAT_step)) + Plot_Theme + Plot_Fill +
+  geom_density(alpha = 0.5, fill = "grey30") + xlab("Dating")
+
+ggplot(result_bith, aes(x = DAT_step, weight = weight)) + Plot_Theme + Plot_Fill +
+  geom_density(alpha = 0.5, fill = "grey30") + xlab("Dating")
+```
+
+
 
 We also added a function that calculated the value needed to scale the density curve to the axis of a Histogram of the dating steps. Please note that the histogram will not show the actual objects counts, but the counts of the maximum possible objects dated to the corresponding year resp. bin. The value to scale the density curve for a combined plot with a histogram can be obtained via `get.histogramscale`: 
 
