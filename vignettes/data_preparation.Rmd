@@ -9,7 +9,7 @@ vignette: >
 ---
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
+  collapse = TRUE, fig.width = 7,
   comment = "#>"
 )
 ```
@@ -39,9 +39,9 @@ inscriptions <- readxl::read_excel(system.file('extdata', 'Bithynia_Inscriptions
 summary(inscriptions)
 ```
 
-A large amount of the initial data was provided by the [Searchable Greek Inscriptions Tool of the Packard Humanities Institute](https://inscriptions.packhum.org/). Those inscriptions (n = `r nrow(inscriptions[-is.na(inscriptions$ikey),])`) can be referenced in the database with their `ikey`. The data set was supplemented with `r nrow(inscriptions[is.na(inscriptions$ikey),])` inscriptions that were manually gathered from different sources. The relevant citations are to be found in the `Source` column. Additional information on the creation and curation of this data set can be found in the publication mentioned above [@weissova2019]. 
+A large amount of the initial data was provided by the [Searchable Greek Inscriptions Tool of the Packard Humanities Institute](https://inscriptions.packhum.org/) and the [Epigraphische Datenbank Heidelberg](https://edh-www.adw.uni-heidelberg.de/home). Those inscriptions (n = `r nrow(inscriptions[-is.na(inscriptions$ikey),])`) can be referenced in the databases with their `ikey`. The data set was supplemented with `r nrow(inscriptions[is.na(inscriptions$ikey),])` inscriptions that were manually gathered from different sources. The relevant citations are to be found in the `Source` column. Additional information on the creation and curation of this data set can be found in the publication mentioned above [@weissova2019]. 
 
-The original files consists of five columns which each row representing a single inscription: `ikey` contains the reference to the [Searchable Greek Inscriptions Tool of the Packard Humanities Institute](https://inscriptions.packhum.org/). `Location` refers to the find spot of the inscription. `Source` states the source of the data. `Chronological Frame` contains the dating in a verbose format, such as "Roman Imperial Period". `Language` records the language in which the inscription was written, which can either be Latin, Greek, or both. 
+The original files consists of five columns which each row representing a single inscription: `ikey` contains the reference to the [Searchable Greek Inscriptions Tool of the Packard Humanities Institute](https://inscriptions.packhum.org/), indicated via `PH` as a prefix, or to the [Epigraphische Datenbank Heidelberg](https://edh-www.adw.uni-heidelberg.de/home), indicated via `HD` as a prefix. `Location` refers to the find spot of the inscription. `Source` states the source of the data. `Chronological Frame` contains the dating in a verbose format, such as "Roman Imperial Period". `Language` records the language in which the inscription was written, which can either be Latin, Greek, or both. 
 
 
 # Data Preparation, Cleaning and Reformatting
@@ -480,7 +480,7 @@ ggplot(data = inscr_steps,
 
 Another option would be to separate the variables with `facet_wrap`, which is not as condensed and does not support the option to scale the densities in the graph for maximum visibility, as `geom_density_ridges()` automatically does (see Documentation of `ggridges`). In our case this leads to a worse visibility of smaller density curves:
 
-```{r}
+```{r fig.height = 10}
 ggplot(data = inscr_steps, aes(x = DAT_step, fill = variable, weight = weight)) +
   geom_density(alpha = 0.9) +
   scale_fill_discrete(guide = FALSE) +
@@ -489,7 +489,7 @@ ggplot(data = inscr_steps, aes(x = DAT_step, fill = variable, weight = weight)) 
 
 Styling also helps very much to improve readability:
 
-```{r }
+```{r fig.height = 10}
 ggplot(data = inscr_steps, aes(x = DAT_step, fill = variable, weight = weight)) +
   geom_density(alpha = 0.9) +
   theme(panel.background = element_blank()) +
@@ -515,7 +515,7 @@ ggplot(data = inscr_steps, aes(x = DAT_step, fill = variable, weight = weight)) 
 
 In order to compare this output to generally more common visualizations, we can prepare a histogram of the original data. Here we have two possible approaches. We first prepare a two-part histogram for the upper and lower boundaries of the respective dating for each object. We select only three locations to keep the visualization short:
 
-```{r }
+```{r  fig.height = 6}
 inscr_clean %>% 
   select(ID, Location, DAT_min, DAT_max) %>%
   filter(Location %in% c("Prusias ad Hypium", "Nicomedia", "Apamea")) %>%
@@ -530,7 +530,7 @@ inscr_clean %>%
 
 Alternatively, we could display the mean of the Dating range: 
 
-```{r }
+```{r  fig.height = 6}
 inscr_clean %>% 
   transmute(ID, Location, Language, DAT_mean = ((DAT_min+DAT_max)/2)) %>%
   filter(Location %in% c("Prusias ad Hypium", "Nicomedia", "Apamea")) %>%

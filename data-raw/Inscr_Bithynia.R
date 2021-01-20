@@ -5,6 +5,20 @@ library(tidyverse)
 
 inscriptions <- readxl::read_excel(system.file('extdata', 'Bithynia_Inscriptions.xlsx', package = 'datplot', mustWork = TRUE))
 
+inscriptions <- inscriptions %>%
+  mutate(ikey = na_if(ikey, "N / A"),
+         ikey = gsub("2PH", "PH", ikey),
+         ikey = gsub("v", "PH", ikey),
+         URL = NA)
+
+repl <- grep("HD", inscriptions$ikey)
+inscriptions$URL[repl] <- paste("https://edh-www.adw.uni-heidelberg.de/edh/inschrift/",
+                                gsub("HD", "", inscriptions$ikey[repl]), sep = "")
+repl <- grep("PH", inscriptions$ikey)
+inscriptions$URL[repl] <- paste("https://epigraphy.packhum.org/text/",
+                                gsub("PH", "", inscriptions$ikey[repl]), sep = "")
+
+
 inscriptions$ID <- paste("I_", 1:nrow(inscriptions), sep = "")
 inscriptions <- inscriptions %>%
   rename(Dating = `Chronological Frame`) %>%
@@ -127,7 +141,7 @@ for (r in sel) {
 
 join_dating <- rbind(join_dating, num_dating[!is.na(num_dating$DAT_min),])
 num_dating <- num_dating[which(is.na(num_dating$DAT_min)),]
-unique(num_dating$Dating)[1:20]
+#unique(num_dating$Dating)[1:20]
 
 join_dating$DAT_min[which(join_dating$DAT_min == 0)] <- 1
 join_dating$DAT_max[which(join_dating$DAT_max == 0)] <- -1
@@ -153,7 +167,10 @@ inscriptions <- left_join(inscriptions, join_dating, by = "Dating")
 inscriptions[which(inscriptions$ID == "I_1162"),"DAT_max"] <- 63
 inscriptions[which(inscriptions$ID == "I_2725"),c("DAT_min", "DAT_max")] <- inscriptions[which(inscriptions$ID == "I_2725"),c("DAT_max", "DAT_min")]
 
-inscriptions <- inscriptions[,c(6,1:5,7:9)]
+
+
+inscriptions <- inscriptions[,c(7,1:5,8:10,6)]
+
 
 attr(inscriptions, "contact") <-
   "Anonymous Anonymous (anonymous@anonymous.com), Anonymous Anonymous (anonymous@anonymous.com)"
@@ -172,6 +189,7 @@ attr(inscriptions$uncertain_dating, "descr") <-
   "TRUE if Dating is not certain, FALSE if dating is certain"
 attr(inscriptions$DAT_min, "descr") <- "lower border of the dating timespan"
 attr(inscriptions$DAT_max, "descr") <- "uppper border of the dating timespan"
+attr(inscriptions$URL, "descr") <- "Link to the Inscription at https://inscriptions.packhum.org/"
 
 #write.table(inscriptions, file = "inscriptions.csv",
 #            fileEncoding = "UTF-8", sep = ";", row.names = FALSE)
