@@ -36,7 +36,7 @@ Installation
 
 Or via downloading the latest release and installing from the file: 
 
-    install_local(path = "../datplot_0.2.4.tar.gz")
+    devtools::install_local(path = "../datplot_0.2.4.tar.gz")
 
 Contact
 -------
