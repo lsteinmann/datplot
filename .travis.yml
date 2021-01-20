@@ -8,6 +8,11 @@ latex: false
 r_packages:
   - covr
 
+branches:
+  only:
+  - master
+  - packagedoc
+
 matrix:
   include:
     - r: 3.3
