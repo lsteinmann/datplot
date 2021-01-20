@@ -5,8 +5,6 @@ language: R
 cache: packages
 latex: false
 
-r_packages:
-  - covr
 
 branches:
   only:
@@ -26,5 +24,3 @@ addons:
     packages:
       - libgit2-dev
 
-after_success:
-  - Rscript -e 'library(covr); codecov()'
