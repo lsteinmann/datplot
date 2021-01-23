@@ -1,7 +1,7 @@
  <!-- badges: start -->
   [![R build status](https://github.com/lsteinmann/datplot/workflows/R-CMD-check/badge.svg)](https://github.com/lsteinmann/datplot/actions)
-  [![Travis Build Status](https://travis-ci.com/lsteinmann/datplot.svg?token=qpxyBQYqepYayg8rYHnD&branch=master)](https://travis-ci.com/lsteinmann/datplot)
-  [![Codecov test coverage](https://codecov.io/gh/lsteinmann/datplot/branch/master/graph/badge.svg)](https://codecov.io/gh/lsteinmann/datplot?branch=master)
+  [![Travis Build Status](https://travis-ci.com/lsteinmann/datplot.svg?token=qpxyBQYqepYayg8rYHnD&branch=main)](https://travis-ci.com/lsteinmann/datplot)
+  [![Codecov test coverage](https://codecov.io/gh/lsteinmann/datplot/branch/master/graph/badge.svg)](https://codecov.io/gh/lsteinmann/datplot?branch=main)
   <!-- badges: end -->
 
 datplot

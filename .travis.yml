@@ -8,7 +8,7 @@ latex: false
 
 branches:
   only:
-  - master
+  - main
   - packagedoc
 
 
