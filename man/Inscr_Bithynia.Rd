@@ -8,7 +8,7 @@
 A data frame with 2878 rows and 9 variables:
 \describe{
   \item{\code{ID}}{character COLUMN_DESCRIPTION}
-  \item{\code{ikey}}{character ID at \url{https://inscriptions.packhum.org/}, if available}
+  \item{\code{ikey}}{character ID at \url{https://inscriptions.packhum.org/} / \url{https://edh-www.adw.uni-heidelberg.de/home}, if available}
   \item{\code{Location}}{factor Findspot of the Inscription (City)}
   \item{\code{Source}}{character Corpus/Citation of the Inscription}
   \item{\code{Dating}}{character Original Chronological Assesment, may contain inconsistencies}
@@ -16,6 +16,7 @@ A data frame with 2878 rows and 9 variables:
   \item{\code{uncertain_dating}}{logical TRUE if Dating is not certain, FALSE if dating is certain}
   \item{\code{DAT_min}}{integer lower border of the dating timespan, negative values for BCE, positive values for CE}
   \item{\code{DAT_max}}{integer uppper border of the dating timespan, negative values for BCE, positive values for CE}
+  \item{\code{URL}}{Link to the inscription (if available) at \url{https://inscriptions.packhum.org/} or \url{https://edh-www.adw.uni-heidelberg.de/home}}
 }
 }
 \source{

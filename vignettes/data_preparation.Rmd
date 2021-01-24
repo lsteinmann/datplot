@@ -9,16 +9,16 @@ vignette: >
 ---
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
+  collapse = TRUE, fig.width = 7,
   comment = "#>"
 )
 ```
 
-Archaeological data as it can be found "in the wild" rarely conforms to the formats that we need for any kind of statistical analysis. This vignette is intended as a way of demonstrating a possibility of data cleaning on a data set as it can frequently be found in archaeological literature, or put together during archaeological research. The data is prepared for use with the `datplot`-package. An analysis based on this data can be found as a case study in the paper "DATPLOT: A NEW R-PACKAGE FOR THE VISUALIZATION OF DATE RANGES IN ARCHAEOLOGY" [@datplotarticle] by the authors of this package. 
+Archaeological data as it can be found "in the wild" rarely conforms to the formats suitable for any kind of statistical analysis. This vignette is intended as a way of demonstrating a possibility of data cleaning on a data set as it can frequently be found in archaeological literature, or put together during archaeological research. The data is prepared for use with the `datplot`-package. An analysis based on this data can be found as a case study in the paper "datplot: A new R-Package for the Visualization of Date Ranges in Archaeology" [@datplotarticle, redacted] by the authors of this package. 
 
-This vignette details the preparation of manually gathered archaeological data, in this case the inscriptions of Bithynia data set, that is included in this package. The information was compiled for a publication on the inscriptions of ancient Bithynia [@weissova2019]. This vignette is meant as guidance for archaeologists looking to employ the [datplot-package (redacted)](https://github.com/anonymousgit/datplot), and finding themselves in need of reformatting their data without much experience in programming languages. It points to certain problems arising with data sets and lists as they are typically used by many (classical) archaeologists and suggests solutions for these issues, which may also be adapted to other data as well as fields.
+The inscriptions of Bithynia data set, that is included in this package, was compiled for a publication analyzing the settlement patterns and road systems in ancient Bithynia [@weissova2019]. The vignette is thus meant as guidance for archaeologists looking to employ the [datplot-package (redacted)](https://github.com/anonymousgit/datplot), and finding themselves in need of reformatting their data without much experience in programming languages. It points to certain problems arising with data sets, which are often incarnated in the form of spreadsheets. The Bithynia data set is a typical example of the structure of data as it is used by many (classical) archaeologists. The process of cleaning it highlights solutions for the issues encountered with such spreadsheets, and may also be adapted to other data as well as fields.
 
-First, we attach the packages to be used in this vignette: 
+First, we attach the packages to be used in the vignette: 
 
 ```{r message = FALSE}
 library(tidyverse)
@@ -32,51 +32,53 @@ library(reshape2)
 
 # The "Inscriptions of Bithynia" data set
 
-The manually curated data that B. Weissová prepared for her dissertation was saved as an Excel-file[^1]. As this is very often the case, we will continue directly from this original file, which B. Weissová kindly permitted to be published along this package. The original file is available [in this repositories (redacted)](https://github.com/anonymousgit/datplot) "inst/extdata/"-subfolder. It can be loaded into R without further complications using the `read_excel()`-function from the package `readxl`. Alternatively, the file is suited for storage as a *.tsv-file, which is also provided in the same folder for better long-term support. 
+The manually curated data that B. Weissova prepared for her dissertation was saved as an Excel-spreadsheet. As this is very often the case, we continue directly from this original file, which is available [in this repositories (redacted)](https://github.com/anonymousgit/datplot) "inst/extdata/"-subfolder. It can be loaded into R without further complications using the `read_excel()`-function from the package `readxl`. Alternatively, the file is suited for storage as a *.tsv-file, which is also provided in the same folder for better long-term support. 
 
 ```{r }
-inscriptions <- readxl::read_excel(system.file('extdata', 'Bithynia_Inscriptions.xlsx', package = 'datplot', mustWork = TRUE))
+inscriptions <- readxl::read_excel(system.file('extdata', 'Bithynia_Inscriptions.xlsx', 
+                                               package = 'datplot', mustWork = TRUE))
 summary(inscriptions)
 ```
 
-A large amount of the initial data was provided by the [Searchable Greek Inscriptions Tool of the Packard Humanities Institute](https://inscriptions.packhum.org/). Those inscriptions (n = `r nrow(inscriptions[-is.na(inscriptions$ikey),])`) can be referenced in the database with their `ikey`. The data set was supplemented with `r nrow(inscriptions[is.na(inscriptions$ikey),])` inscriptions that were manually gathered from different sources. The relevant citations are to be found in the `Source` column. Additional information on the creation and curation of this data set can be found in the publication mentioned above [@weissova2019]. 
+A large amount of the initial data was provided by the [Searchable Greek Inscriptions Tool of the Packard Humanities Institute](https://inscriptions.packhum.org/) and the [Epigraphische Datenbank Heidelberg](https://edh-www.adw.uni-heidelberg.de/home). Those inscriptions (n = `r nrow(inscriptions[-is.na(inscriptions$ikey),])`) can be referenced in the databases with their `ikey`. The data set was supplemented with `r nrow(inscriptions[is.na(inscriptions$ikey),])` inscriptions that were manually gathered from different sources. The relevant citations are to be found in the `Source` column. Additional information on the creation and curation of this data set can be found in the publication mentioned above [@weissova2019]. 
 
-The original files consists of five columns which each row representing a single inscription: `ikey` contains the reference to the [Searchable Greek Inscriptions Tool of the Packard Humanities Institute](https://inscriptions.packhum.org/). `Location` refers to the find spot of the inscription. `Source` states the source of the data. `Chronological Frame` contains the dating in a verbose format, such as "Roman Imperial Period". `Language` records the language in which the inscription was written, which can either be Latin, Greek, or both. 
+The original file consists of five columns which each row representing a single inscription: `ikey` contains the reference to the [Searchable Greek Inscriptions Tool of the Packard Humanities Institute](https://inscriptions.packhum.org/), indicated via `PH` as a prefix, or to the [Epigraphische Datenbank Heidelberg](https://edh-www.adw.uni-heidelberg.de/home), indicated via `HD` as a prefix. `Location` refers to the find spot of the inscription. `Source` states the source of the data. `Chronological Frame` contains the dating in a verbose format, such as "Roman Imperial Period". `Language` records the language in which the inscription was written, which can either be Latin, Greek, or both. 
 
 
 # Data Preparation, Cleaning and Reformatting
 
-The data set is not yet suited for analysis, as some variables, especially the chronological frame, have many inconsistencies. For further processing we should also be sure to include an identifier-column. As `r nrow(inscriptions) - length(unique(inscriptions$ikey))` inscriptions do not have an ikey-Value, which might have otherwise been a good candidate for identification, we chose to create a new automatically generated ID, so that every inscription will be individually identifiable.
+The data set is not yet suited for analysis, as some variables, especially the chronological frame, have many inconsistencies. For further processing, we should also be sure to include an identifier-column. As `r nrow(inscriptions) - length(unique(inscriptions$ikey))` inscriptions do not have an ikey-Value, which might have otherwise been a good candidate for identification, we chose to create a new automatically generated ID, so that every inscription can be individually identifiable.
 
 ```{r }
 inscriptions$ID <- paste("I_", 1:nrow(inscriptions), sep = "")
 ```
 
-Two of the variables of this data set are almost ready for further use, i.e. Location and Language. A look at their unique values reveals only small inconsistencies that can easily be fixed.
+Two of the variables of this data set are almost ready for further use, i.e. Location and Language. A look at their unique values reveals only small inconsistencies that can be easily fixed:
 
 ```{r }
 unique(inscriptions$Location)
 unique(inscriptions$Language)
 ```
 
-Using functions from the `tidyverse` package family, we can easily transform the columns, adding proper NA-values if there is no dating and clearing out the redundant variable values from Location and Language. Furthermore, we rename the column containing the chronological estimate to `Dating` as it is more convenient to work with a shorter name.
+Using functions from the `tidyverse` package family, we can easily transform the columns. We rename the "Chronological Frame" to `Dating`, as shorter names without spaces are more convenient to work with, and add proper NA-values if there is no chronological assessment. With `mutate()` and `replace()` we also clear out the redundant variable values from `Location` and `Language`:
 
 ```{r message=FALSE}
 inscriptions <- inscriptions %>% 
   rename(Dating = `Chronological Frame`) %>%
-  mutate(Language = replace(Language, Language == "Gr/Lat", "Greek/Latin"),
+  mutate(Dating = na_if(Dating, "---"),
+         Language = replace(Language, Language == "Gr/Lat", "Greek/Latin"),
          Language = replace(Language, Language == "Gr / Lat", "Greek/Latin"),
          Language = factor(Language, levels = c("Greek", "Latin", "Greek/Latin")),
          Location = replace(Location, str_detect(Location, "unknown"), "unknown"),
          Location = replace(Location, 
                             Location == "Prusias ad Mare (Keramed)", 
                             "Prusias ad Mare"),
-         Location = factor(Location),
-         Dating = na_if(Dating, "---"))
+         Location = factor(Location))
 ```
 
 
 This conversion leaves us with a more compact overview of the data sets contents:
+
 ```{r}
 summary(inscriptions)
 ```
@@ -95,7 +97,7 @@ inscriptions$Dating <- gsub("\\?", "", inscriptions$Dating)
 
 ### Creating a Concordance for Periods
 
-The next step is sorting out values from the `Dating` variable that have to be manually entered, such as the "Roman Imperial Period". We achieve this by excluding all values that contain a number, preparing a table in which we can manually enter the desired dating span and saving it as a .csv-file. After adding the values manually, we reload the file. The manually edited concordance can be found in the "inst/extdata/"-subfolder [of this repository (redacted)](https://github.com/anonymousgit/datplot) in the file `periods_edit.csv` and corresponds to the chronological assessment of periods used in the original publication [@weissova2019, 42].
+The next step is sorting out values from the `Dating` variable that have to be manually entered, such as the "Roman Imperial Period". We achieve this by excluding all values that contain a number, preparing a table in which we can manually enter the desired dating span and saving it as a .csv-file. After adding the values manually, we reload the file. The manually edited concordance can be found in the "inst/extdata/"-subfolder [of this repository (redacted)](https://github.com/anonymousgit/datplot) in the file `periods_edit.csv` and corresponds with the chronological assessment of periods used in the original publication [@weissova2019, 42].
 
 ```{r }
 sel <- grepl("[0-9]", inscriptions$Dating)
@@ -115,7 +117,7 @@ It is of course possible to add the corresponding values in R. Since the process
 
 ### Reformatting of Partially Numerical Dating Values
 
-There remains, however, a large amount of values that is not covered in this concordance. We can easily automate some of the conversions as a series of steps, that we store in another `data.frame` called `num_dating`, containing all the unique values that contain some form of numerical dating.
+There remains, however, a large amount of values that is not covered in this concordance. We can easily automate some of the conversions as a series of steps that we store in another `data.frame` called `num_dating`, encompassing all the unique values that contain some form of a numerical dating.
 
 ```{r }
 num_dating <- data.frame("Dating" = unique(inscriptions$Dating[which(sel == TRUE)]))
@@ -123,9 +125,9 @@ num_dating$DAT_min <- NA
 num_dating$DAT_max <- NA
 ```
 
-First, there is a number of inscriptions dated to a single year. We select these using a regular expression with `grep()`[^2] and can simply delete the character-part of the values so that only the specified year remains and is stored in both of the `DAT_`-variables. We do this separately for AD and BC-values since BC needs to be stored as a negative number.
+First, there is a number of inscriptions dated to a single year. We select these using a regular expression with `grep()`[^1] and can simply delete the character-part of the values so that only the specified year remains and is stored in both of the `DAT_`-variables. We do this separately for AD and BC-values since BC needs to be stored as a negative number.
 
-[^2]: For information and guidance on regular expressions see e.g. [https://regex101.com/](https://regex101.com/). However, R has a slightly different handling of escape characters. Information can be found in the R-Documentation under `?regex` or [here](https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html).
+[^1]: For information and guidance on regular expressions see e.g. [https://regex101.com/](https://regex101.com/). However, R has a slightly different handling of escape characters. Information can be found in the R-Documentation under `?regex` or [here](https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html).
 
 
 ```{r }
@@ -236,7 +238,7 @@ for (r in sel) {
 knitr::kable(na.omit(na.omit(num_dating)[sample(1:nrow(na.omit(num_dating)), 10),]))
 ```
 
-Putting aside the finished values makes it easier to spot errors in further processing:
+Again, putting aside the finished values makes it easier to spot errors in further processing:
 
 ```{r }
 join_dating <- rbind(join_dating, num_dating[!is.na(num_dating$DAT_min),])
@@ -245,7 +247,7 @@ num_dating <- num_dating[which(is.na(num_dating$DAT_min)),]
 
 ### Reformatting of Imprecise Dating Values
 
-For dates that are around a certain value, i.e. of the format "ca. 190 AD", we are not able to make a more informed decision than guess about what the researchers providing this assessment had in mind. This might also change from inscription to inscription. While a closer look at the individual inscriptions may yield a more sensible estimate, this seems not feasible as part of the data preparation process. It seems that in most cases, if the dating can be as precise as a span of around 10 years, researchers tend to emphasize this. Therefore we decided to take a total span of 20 years, i.e. 10 years before and 10 years after the mentioned value, reflecting some uncertainty on the precision and duration of the estimate. "ca. 190 AD" thus becomes "180--200 AD", with the same mechanism for BC in negative values.
+For dates that are around a certain value, i.e. of the format "ca. 190 AD", we are not able to make a more informed decision than guess about what the researchers providing this assessment had in mind. This might also change from inscription to inscription. While a closer look at the individual inscriptions may yield a more sensible estimate, this seems not feasible as part of the data preparation process. It seems that in most cases, if the dating can be as precise as a span of around 10 years, researchers tend to emphasize this. Therefore, we decided to take a total span of 20 years, i.e. 10 years before and 10 years after the mentioned value, reflecting some uncertainty on the precision and duration of the estimate. "ca. 190 AD" thus becomes "180--200 AD", with the same mechanism for BC in negative values.
 
 
 ```{r }
@@ -268,9 +270,9 @@ for (r in sel) {
 knitr::kable(na.omit(na.omit(num_dating)))#[sample(1:nrow(na.omit(num_dating)), 10),]))
 ```
 
-### Creating a Second Concordance for Verbose Chronological Assesments
+### Creating a Second Concordance for Verbose Chronological Assessments
 
-Again saving the finished values in `join_dating` leaves us with the list of not yet converted values as seen in `num_dating`s `Dating`-variable.
+Again, saving the finished values in `join_dating` leaves us with the list of not yet converted values as seen in `num_dating`s `Dating`-variable.
 
 ```{r }
 join_dating <- rbind(join_dating, num_dating[!is.na(num_dating$DAT_min),])
@@ -278,9 +280,9 @@ num_dating <- num_dating[which(is.na(num_dating$DAT_min)),]
 unique(num_dating$Dating)[1:20]
 ```
 
-Due to the heterogeneous nature of these `r nrow(num_dating)` values, we decided to convert them manually again. Our criteria for translating terms like "beginning of" are the following: "beginning of", "end of", "early", "late" are -- similarly to ca. -- all translated to 20 years, as we assume that more information would have been given if the time span was greater than a quarter century. For the other values, we employed the same criteria as seen above in the automated process. For another transformation used later on we decided to treat e.g. -199 / 100 as the beginning of century, and e.g. -100 / 199 as the end of the century and did so accordingly in the manual assignment. Since the data is epigraphical, in the case of "before" or "after" (i.e. terminus ante/post quem) dates, we assume some connection to a datable event, and therefore add or subtract a span of 10 years, which is, however, still rather arbitrary. 
+Due to the heterogeneous nature of these `r nrow(num_dating)` values, we decided to convert them manually again. Our criteria for translating terms like "beginning of" are the following: "beginning of", "end of", "early", "late" are -- similarly to ca. -- all translated to 20 years, as we assume that more information would have been given if the time span was greater than a quarter century. For the other values, we employed the same criteria as seen above in the automated process. We decided to measure the 'beginning of a century' at e.g. -199 for BC values and 100 for AD values, and accordingly identify the 'end of a century' with the values e.g. -100 (BC) / 199 (AD). Since the data is epigraphical, in the case of "before" or "after" (i.e. terminus ante/post quem) dates, we assume some connection to a datable event, and therefore add or subtract a span of 10 years, which is, however, still rather arbitrary. 
 
-As a last step, we switch the in some cases automatically assigned year 0, so that it will be treated as either 1 or -1:
+As the last step, we switch the -- in some cases automatically assigned -- year 0, so that it will be treated as either 1 or -1:
 ```{r}
 join_dating$DAT_min[which(join_dating$DAT_min == 0)] <- 1
 join_dating$DAT_max[which(join_dating$DAT_max == 0)] <- -1
@@ -313,15 +315,15 @@ inscriptions <- left_join(inscriptions, join_dating, by = "Dating")
 The `DAT_`-variables -- as we can now see -- contain the desired information: 
 
 ```{r echo = FALSE}
-knitr::kable(na.omit(inscriptions)[sample(1:nrow(na.omit(inscriptions)), 15),c(6,2,4,8,9)])
+knitr::kable(na.omit(inscriptions)[sample(nrow(na.omit(inscriptions)), 15),c(6,2,4,8,9)])
 ```
 
 ## Fixing mistakes
 
-We can now make a 'test run' using datplot with the stepsize-value set to 5 in order to save as much time as possible[^3] and check for errors first. We have to select exactly 4 columns in the correct order of: Identifier, Grouping Variable, Minimum Dating, Maximum Dating. We transform the output from the pipe operator to a `data.frame` before handing it to `datstepts()`, as **datplot** needs this format.
+We can now make a 'test run' using datplot with the stepsize-value set to 5 in order to save as much time as possible[^2] and check for errors first. We have to select exactly 4 columns in the correct order of: Identifier, Grouping Variable, Minimum Dating, Maximum Dating. We transform the output from the pipe operator to a `data.frame` before handing it to `datstepts()`, as **datplot** needs this format.
 
 
-[^3]: Using different stepsizes is a bit of an artifact left over from a less efficient version of datplot, where is processing would take more than a minute if stepsize was set to 1, so I would usually start out with 100 or 25 just to look for errors and problems and to not lose much time. This, however, is technically not necessary in any way. The function now works faster, though there is a lot of room for improvement, as it may still take several seconds or longer, but generally not several minutes. We determined that the feature might still be useful, and therefore it was not removed.
+[^2]: Using different stepsizes is a bit of an artifact left over from a less efficient version of datplot, where is processing would take more than a minute if stepsize was set to 1, so I would usually start out with 100 or 25 just to look for errors and problems and to not lose much time. This, however, is technically not necessary in any way. The function now works faster, though there is a lot of room for improvement, as it may still take several seconds or longer, but generally not several minutes. We determined that the feature might still be useful, and therefore it was not removed.
 
 ```{r warning = TRUE, message = TRUE, out.lines = 20}
 #inscriptions$
@@ -335,7 +337,11 @@ inscr_steps <- inscriptions %>%
 There are indeed problems in the data. The first of the three warnings issued by `datsteps()` informs us that we may have assigned some values wrong: "Warning: Dating seems to be in wrong order at ID I_1162, I_2725 (Index: 637, 1458). Dates have been switched, but be sure to check your original data for possible mistakes." If dates are in the wrong order, **datplot** will automatically switch them before proceeding. This, however, might not always be the correct way of handling the situation, as other errors might have occurred as well. Therefore, we should check the data again using the Index-Values or IDs provided by datplots warning: 
 
 ```{r }
-knitr::kable(inscriptions[c(637,1458),c(6,2,4,7,8,9)])
+inscriptions %>% 
+  select(ID, Location, Dating, uncertain_dating, DAT_min, DAT_max) %>%
+  na.omit() %>%
+  slice(637, 1458) %>%
+  kable()
 ```
 
 The problem here is twofold. In the first entry, our automated translation of the dating could not handle the format "62/3" and thus returned a wrong value for `DAT_max`. If we had a truly large data set, we should correct this in the original reformatting process. In this case, it is more efficient to fix this problem right now in the fastest possible way.
@@ -397,7 +403,7 @@ We can now begin using the **datplot**-package...
 library(datplot)
 ```
 
-...and can actually try to use `datsteps()`, first with a `stepsize` of 25 years[^3]:
+...and can actually try to use `datsteps()`, first with a `stepsize` of 25 years:
 
 ```{r warning=TRUE, out.lines = 13}
 inscr_steps <- inscr_clean %>% 
@@ -409,11 +415,11 @@ inscr_steps <- inscr_clean %>%
 
 `datsteps()` tells us that a number or objects are dated to one year, asking us if this is correct. We included this output to avoid errors occurring through faulty values, as objects dated to one year have a very high impact on the outcome. It might help to spot problems or discrepancies in datasets as well, as the warning about the order of dating above has already shown.
 
-In a second step we scale the weights according to our grouping variable (Location), so that the sum of weights in each group equals 1, which is important for displaying the weight correctly in a density plot.
+In a second step, we scale the weights according to our grouping variable (Location), so that the sum of weights in each group equals 1, which is important for displaying the weight correctly in a density plot.
 
 # Visualizing the Output of `datsteps()`
 
-To get a general impression of the data set and the possibilities of visualization, we explore and recommend different plot methods below. The simplest and fastest way to plot the output with base r is the `plot()` function in combination with the `density()` function: 
+To get a general impression of the data set and the possibilities of visualization, we explore and recommend different plot methods below. The simplest and fastest way to plot the output with base R is the `plot()` function in combination with the `density()` function: 
 
 ```{r}
 plot(density(inscr_steps$DAT_step))
@@ -478,18 +484,18 @@ ggplot(data = inscr_steps,
 
 ## Using `ggplot2` and `facet_wrap()`
 
-Another option would be to separate the variables with `facet_wrap`, which is not as condensed and does not support the option to scale the densities in the graph for maximum visibility, as `geom_density_ridges()` automatically does (see Documentation of `ggridges`). In our case this leads to a worse visibility of smaller density curves:
+Another option is to separate the variables with `facet_wrap`, which is not as condensed and does not support the option to scale the densities in the graph for maximum visibility, as `geom_density_ridges()` automatically does (see Documentation of `ggridges`). In our case, this leads to a worse visibility of smaller density curves:
 
-```{r}
+```{r fig.height = 10}
 ggplot(data = inscr_steps, aes(x = DAT_step, fill = variable, weight = weight)) +
   geom_density(alpha = 0.9) +
   scale_fill_discrete(guide = FALSE) +
   facet_wrap(variable ~ ., ncol = 1)
 ```
 
-Styling also helps very much to improve readability:
+Styling also helps very much to improve the graphs readability:
 
-```{r }
+```{r fig.height = 10}
 ggplot(data = inscr_steps, aes(x = DAT_step, fill = variable, weight = weight)) +
   geom_density(alpha = 0.9) +
   theme(panel.background = element_blank()) +
@@ -511,11 +517,11 @@ ggplot(data = inscr_steps, aes(x = DAT_step, fill = variable, weight = weight)) 
        caption = attributes(inscriptions)$source)
 ```
 
-# How Does Datplot and Kernel Densiy Estimation Perform Compared to Histograms?
+# How Does Datplot and Kernel Density Estimation Perform Compared to Histograms?
 
 In order to compare this output to generally more common visualizations, we can prepare a histogram of the original data. Here we have two possible approaches. We first prepare a two-part histogram for the upper and lower boundaries of the respective dating for each object. We select only three locations to keep the visualization short:
 
-```{r }
+```{r  fig.height = 6}
 inscr_clean %>% 
   select(ID, Location, DAT_min, DAT_max) %>%
   filter(Location %in% c("Prusias ad Hypium", "Nicomedia", "Apamea")) %>%
@@ -530,7 +536,7 @@ inscr_clean %>%
 
 Alternatively, we could display the mean of the Dating range: 
 
-```{r }
+```{r  fig.height = 6}
 inscr_clean %>% 
   transmute(ID, Location, Language, DAT_mean = ((DAT_min+DAT_max)/2)) %>%
   filter(Location %in% c("Prusias ad Hypium", "Nicomedia", "Apamea")) %>%
@@ -543,7 +549,7 @@ inscr_clean %>%
 ```
 
 
-While this also gives us an impression of the distribution, we seem to have lost some information on the way. Many inscriptions were dated to large time spans, and those have now been gathered into their mean value. The upside is that the histograms would actually show us the real count of inscriptions, which density graphs cannot. 
+While this also gives us an impression of the distribution, it seems some information got lost on the way. Many inscriptions were dated to large time spans, and those have now been gathered into their mean value. The upside is that the histograms show the real count of inscriptions, which density graphs cannot. 
 
 We have shown in this vignette, how a data set as it is often encountered by archaeologists can be prepared and formatted in order to be processed by datplot. Furthermore, we have made some suggestions on visualisation. This vignette hopes to help researchers that are not yet very familiar with the processes of data cleaning to solutions for their own projects.
 
