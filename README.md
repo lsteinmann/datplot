@@ -1,7 +1,7 @@
  <!-- badges: start -->
-  [![R build status](https://github.com/lsteinmann/datplot/workflows/R-CMD-check/badge.svg)](https://github.com/lsteinmann/datplot/actions)
-  [![Travis Build Status](https://travis-ci.com/lsteinmann/datplot.svg?token=qpxyBQYqepYayg8rYHnD&branch=main)](https://travis-ci.com/lsteinmann/datplot)
-  [![Codecov test coverage](https://codecov.io/gh/lsteinmann/datplot/branch/master/graph/badge.svg)](https://codecov.io/gh/lsteinmann/datplot?branch=main)
+  [![R build status](https://github.com/anonymousgit/datplot/workflows/R-CMD-check/badge.svg)](https://github.com/anonymousgit/datplot/actions)
+  [![Travis Build Status](https://travis-ci.com/anonymousgit/datplot.svg?token=qpxyBQYqepYayg8rYHnD&branch=main)](https://travis-ci.com/anonymousgit/datplot)
+  [![Codecov test coverage](https://codecov.io/gh/anonymousgit/datplot/branch/master/graph/badge.svg)](https://codecov.io/gh/anonymousgit/datplot?branch=main)
   <!-- badges: end -->
 
 datplot
@@ -32,7 +32,7 @@ Installation
 -------
 'datplot' is not currently on CRAN. It can be installed from GitHub with devtools:
 
-    devtools::install_github("lsteinmann/datplot")
+    devtools::install_github("anonymousgit/datplot")
 
 Or via downloading the latest release and installing from the file: 
 
