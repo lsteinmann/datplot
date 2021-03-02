@@ -9,19 +9,23 @@
 
 * This is a new release.
 
+## R CMD check results (rhub)
 
--- datplot 1.0.0: NOTE
-
-  Build ID:   datplot_1.0.0.tar.gz-14e66d68ffe14a698a1bd5bf13525202
-  Platform:   Windows Server 2008 R2 SP1, R-devel, 32/64 bit
-  Submitted:  10m 46.2s ago
-  Build time: 5m 49.7s
-
-> checking CRAN incoming feasibility ... NOTE
-  Maintainer: 'Lisa Steinmann <lisa.steinmann@rub.de>'
+Maintainer: 'Lisa Steinmann <lisa.steinmann@rub.de>'
   
   New submission
+  
+  Found the following (possibly) invalid URLs:
+      From: README.md
+    URL: https://codecov.io/gh/lsteinmann/datplot
+      Status: Error
+        	schannel: next InitializeSecurityContext failed: SEC_E_ILLEGAL_MESSAGE (0x80090326) - This error usually occurs when a fatal SSL/TLS alert is received (e.g. handshake failed).
+      Message: libcurl error code 35:
 
 0 errors √ | 0 warnings √ | 1 note x
 
+## Notes
 
+Sometimes a Note states that there are UTF-8 and Latin1 marked characters. 
+I think it is because of the raw data, and doesn't seem to influence 
+the package build on any system (using travis).

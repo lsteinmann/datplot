@@ -1,30 +1,45 @@
-Package: datplot
 Type: Package
-Title: Preparation of Object Dating Ranges for Density Plots (Aoristic Analysis)
+Package: datplot
+Title: Preparation of Object Dating Ranges for Density Plots
+    (Aoristic Analysis)
 Version: 1.0.0
-Authors@R:c(person("Lisa", "Steinmann", comment = c(ORCID = "0000-0002-2215-1243"), role = c("aut", "cre"), email = "lisa.steinmann@rub.de"), 
-            person("Barbora", "Weissova", comment = c(ORCID = "0000-0002-3297-6855"), role = "ctb", email = "barbora.weissova@rub.de"))
+Authors@R: 
+    c(person(given = "Lisa",
+             family = "Steinmann",
+             role = c("aut", "cre"),
+             email = "lisa.steinmann@rub.de",
+             comment = c(ORCID = "0000-0002-2215-1243")),
+      person(given = "Barbora",
+             family = "Weissova",
+             role = "ctb",
+             email = "barbora.weissova@rub.de",
+             comment = c(ORCID = "0000-0002-3297-6855")))
 Maintainer: Lisa Steinmann <lisa.steinmann@rub.de>
-Description: Converting date ranges into dating 'steps' eases the visualization of changes in e.g. pottery consumption, style and other variables over time. This package provides tools to process and prepare data for visualization and employs the concept of aoristic analysis.
+Description: Converting date ranges into dating 'steps' eases
+    the visualization of changes in e.g. pottery consumption, style and
+    other variables over time. This package provides tools to process and
+    prepare data for visualization and employs the concept of aoristic
+    analysis.
 License: CC BY-SA 4.0
 URL: https://github.com/lsteinmann/datplot
 BugReports: https://github.com/lsteinmann/datplot/issues
-Encoding: UTF-8
-LazyData: true
-RoxygenNote: 7.1.1
+Depends: 
+    R (>= 3.3)
 Suggests: 
-    testthat,
+    covr,
     devtools,
-    knitr,
-    rmarkdown,
     dplyr,
-    stringr,
     forcats,
     ggplot2,
     ggridges,
+    knitr,
     readxl,
     reshape2,
-    covr
-Depends: 
-    R (>= 3.3)
-VignetteBuilder: knitr
+    rmarkdown,
+    stringr,
+    testthat
+VignetteBuilder: 
+    knitr
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
