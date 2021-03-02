@@ -219,3 +219,4 @@ Inscr_Bithynia <- inscriptions
 #inscriptions[which(inscriptions$DAT_max == 0),c(1,2,4,5,8,9)]
 
 usethis::use_data(Inscr_Bithynia, overwrite = TRUE)
+
