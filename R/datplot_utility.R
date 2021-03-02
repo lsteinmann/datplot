@@ -30,7 +30,7 @@ generate.stepsize <- function(DAT_mat) {
 #'
 #' @param DAT_df a dataframe with 4 variable: ID, group, minimum date (int/num)
 #' maximum date (int/num)
-#' @param DAT_err a vector containing the indizes of the dates which are
+#' @param DAT_err a vector containing the indices of the dates which are
 #' in wrong order
 #'
 #' @return corrected DAT_mat
@@ -127,7 +127,7 @@ calculate.outputrows <- function(DAT_mat, stepsize) {
 #' beforehand, either three values are generated for objects that are dated to
 #' a range of more then 60% of the stepsize (min, mean, max), or two values for
 #' objects dated to a timespan of less or equal to 60% of the stepsize.
-#' If they can be devided without residual, the normal sequence is returned.
+#' If they can be divided without residual, the normal sequence is returned.
 #' If there is a residual, the stepsize is modified depending on how large the
 #' residual is. (TODO: There is still a problem here that needs fixing.)
 #'

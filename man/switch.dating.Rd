@@ -10,7 +10,7 @@ switch.dating(DAT_df, DAT_err)
 \item{DAT_df}{a dataframe with 4 variable: ID, group, minimum date (int/num)
 maximum date (int/num)}
 
-\item{DAT_err}{a vector containing the indizes of the dates which are
+\item{DAT_err}{a vector containing the indices of the dates which are
 in wrong order}
 }
 \value{

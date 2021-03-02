@@ -34,7 +34,7 @@ library(reshape2)
 
 # The "Inscriptions of Bithynia" data set
 
-The manually curated data that B. Weissova prepared for her dissertation was saved as an Excel-spreadsheet. As this is very often the case, we continue directly from this original file, which is available [in this repositories](https://github.com/lsteinmann/datplot) "inst/extdata/"-subfolder. It can be loaded into R without further complications using the `read_excel()`-function from the package `readxl`. Alternatively, the file is suited for storage as a *.tsv-file, which is also provided in the same folder for better long-term support. 
+The manually curated data that B. Weissova prepared for her dissertation was saved as an Excel-spreadsheet. As this is very often the case, we continue directly from this original file, which is available [in this repositories](https://github.com/lsteinmann/datplot) "inst/extdata/"-sub-directory. It can be loaded into R without further complications using the `read_excel()`-function from the package `readxl`. Alternatively, the file is suited for storage as a *.tsv-file, which is also provided in the same directory for better long-term support. 
 
 ```{r }
 inscriptions <- readxl::read_excel(system.file("extdata",
@@ -103,7 +103,7 @@ inscriptions$Dating <- gsub("\\?", "", inscriptions$Dating)
 
 ### Creating a Concordance for Periods
 
-The next step is sorting out values from the `Dating` variable that have to be manually entered, such as the "Roman Imperial Period". We achieve this by excluding all values that contain a number, preparing a table in which we can manually enter the desired dating span and saving it as a .csv-file. After adding the values manually, we reload the file. The manually edited concordance can be found in the "inst/extdata/"-subfolder [of this repository](https://github.com/lsteinmann/datplot) in the file `periods_edit.csv` and corresponds with the chronological assessment of periods used in the original publication [@weissova2019, 42].
+The next step is sorting out values from the `Dating` variable that have to be manually entered, such as the "Roman Imperial Period". We achieve this by excluding all values that contain a number, preparing a table in which we can manually enter the desired dating span and saving it as a .csv-file. After adding the values manually, we reload the file. The manually edited concordance can be found in the "inst/extdata/"-sub-directory [of this repository](https://github.com/lsteinmann/datplot) in the file `periods_edit.csv` and corresponds with the chronological assessment of periods used in the original publication [@weissova2019, 42].
 
 ```{r }
 sel <- grepl("[0-9]", inscriptions$Dating)
@@ -301,7 +301,7 @@ join_dating$DAT_min[which(join_dating$DAT_min == 0)] <- 1
 join_dating$DAT_max[which(join_dating$DAT_max == 0)] <- -1
 ```
 
-We then have to reload the corrected data. The values that we put aside in the `join_dating` `data.frame` beforehand serve as the basis for our new `data.frame` that we use as a look-up table. As the variables were treated as character-strings, we need to convert them to a numeric format first. We append the newly loaded manually assigned values to this data.frame. Again, to keep this process as transparent as possible, we included the *.csv-Table in the "inst/extdata/" subfolder as "num_dating_edit.csv".
+We then have to reload the corrected data. The values that we put aside in the `join_dating` `data.frame` beforehand serve as the basis for our new `data.frame` that we use as a look-up table. As the variables were treated as character-strings, we need to convert them to a numeric format first. We append the newly loaded manually assigned values to this data.frame. Again, to keep this process as transparent as possible, we included the *.csv-Table in the "inst/extdata/" sub-directory as "num_dating_edit.csv".
 
 ```{r }
 #write.csv(num_dating, file = "../data-raw/num_dating.csv", 
@@ -576,7 +576,7 @@ inscr_clean %>%
 
 While this also gives us an impression of the distribution, it seems some information got lost on the way. Many inscriptions were dated to large time spans, and those have now been gathered into their mean value. The upside is that the histograms show the real count of inscriptions, which density graphs cannot. 
 
-We have shown in this vignette, how a data set as it is often encountered by archaeologists can be prepared and formatted in order to be processed by datplot. Furthermore, we have made some suggestions on visualisation. This vignette hopes to help researchers that are not yet very familiar with the processes of data cleaning to solutions for their own projects.
+We have shown in this vignette, how a data set as it is often encountered by archaeologists can be prepared and formatted in order to be processed by datplot. Furthermore, we have made some suggestions on visualization. This vignette hopes to help researchers that are not yet very familiar with the processes of data cleaning to solutions for their own projects.
 
 
 # References
