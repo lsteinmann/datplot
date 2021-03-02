@@ -7,11 +7,14 @@
 generate.stepsize(DAT_mat)
 }
 \arguments{
-\item{DAT_mat}{a matrix as prepared by datsteps(), resp. a matrix witch columns "datmin" and "datmax" containing numeric/integer value of the dating ranges.}
+\item{DAT_mat}{a matrix as prepared by datsteps(), resp. a matrix witch
+columns "datmin" and "datmax" containing numeric/integer value of the
+dating ranges.}
 }
 \value{
 stepsize
 }
 \description{
-Determines stepsize by selecting the absolute minimum value between the upper and lower end of all dating ranges.
+Determines stepsize by selecting the absolute minimum value
+between the upper and lower end of all dating ranges.
 }

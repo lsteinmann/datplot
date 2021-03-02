@@ -9,8 +9,9 @@ scaleweight(DAT_df, var = c("all", 2), val = 5)
 \arguments{
 \item{DAT_df}{a dataframe}
 
-\item{var}{the index of the column that should be used as the group variable, OR "all"
-(note: all non-numeric values will result in the weight being scaled accross all objects)}
+\item{var}{the index of the column that should be used
+as the group variable, OR "all" (note: all non-numeric values will
+result in the weight being scaled accross all objects)}
 
 \item{val}{the column that should be scaled (value / sum(values))}
 }

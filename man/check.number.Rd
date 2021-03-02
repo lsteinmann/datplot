@@ -13,5 +13,6 @@ check.number(value)
 TRUE if value is any kind of number, FALSE if value is not
 }
 \description{
-Checks if value is either numeric, integer or double and and returns TRUE.
+Checks if value is either numeric, integer or double
+and and returns TRUE.
 }

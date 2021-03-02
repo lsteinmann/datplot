@@ -12,8 +12,10 @@ calculate.outputrows(DAT_mat, stepsize)
 \item{stepsize}{the stepsize given to or by datsteps()}
 }
 \value{
-the number of rows create.sub.objects should at least produce in order to fit all steps
+the number of rows create.sub.objects should at least produce in
+order to fit all steps
 }
 \description{
-an approximation(!) of the rows that will be needed to fit all the steps of the dating
+an approximation(!) of the rows that will be needed to fit
+all the steps of the dating
 }

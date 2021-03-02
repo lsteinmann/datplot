@@ -7,17 +7,24 @@
 datsteps(DAT_df, stepsize = 25)
 }
 \arguments{
-\item{DAT_df}{a dataframe with 4 variables: ID, group, minimum date (int/num) maximum date (int/num), _must_ be in this order, colnames are irrelevant; each object _must_ be one row.}
+\item{DAT_df}{a dataframe with 4 variables: ID, group, minimum date (int/num)
+maximum date (int/num), _must_ be in this order, colnames are irrelevant;
+each object _must_ be one row.}
 
-\item{stepsize}{defaults to 5. Number of years that should be used as an interval for creating dating steps.}
+\item{stepsize}{defaults to 5. Number of years that should be used as an
+interval for creating dating steps.}
 }
 \value{
-a larger dataframe with a number of steps for each object as well as a 'weight' value, that is a quantification of how well the object is dated (lesser value means object is dated to larger timespans, i.e. with less confidence)
+a larger dataframe with a number of steps for each object as well
+as a 'weight' value, that is a quantification of how well the object is
+dated (lesser value means object is dated to larger timespans,
+i.e. with less confidence)
 }
 \description{
-Requires a dataframe with 4 variables: ID (ideally factor), group (ideally factor),
-minimum date (int/numeric) and maximum date (int/numeric). It's expected that dates BCE are
-displayed as negative values while dates CE are positive values. Ignoring this will cause problems
+Requires a dataframe with 4 variables: ID (ideally factor),
+group (ideally factor), minimum date (int/numeric) and maximum date
+(int/numeric). It's expected that dates BCE are displayed as negative
+values while dates CE are positive values. Ignoring this will cause problems
 in any case.
 }
 \examples{

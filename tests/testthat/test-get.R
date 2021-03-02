@@ -11,10 +11,14 @@ attributes(teststeps_wrong)$stepsize <- NULL
 
 
 test_that("right errors are returned", {
-  expect_error(get.histogramscale(teststeps_wrong, binwidth = "stepsize"), regexp = "dataframe as returned by datsteps")
-  expect_error(get.histogramscale(teststeps_wrong), regexp = "dataframe as returned by datsteps")
-  expect_error(get.histogramscale(testdfsteps, binwidth = "börek"), regexp = "or use")
-  expect_error(get.histogramscale(20), regexp = "cannot be used with a number")
+  expect_error(get.histogramscale(teststeps_wrong, binwidth = "stepsize"),
+               regexp = "dataframe as returned by datsteps")
+  expect_error(get.histogramscale(teststeps_wrong),
+               regexp = "dataframe as returned by datsteps")
+  expect_error(get.histogramscale(testdfsteps, binwidth = "börek"),
+               regexp = "or use")
+  expect_error(get.histogramscale(20),
+               regexp = "cannot be used with a number")
 })
 
 

@@ -14,9 +14,10 @@ https://www.beazley.ox.ac.uk/pottery/default.htm
 data(Beazley)
 }
 \description{
-A test dataset containing a data.frame how it should ideally be arranged to work with datplot.
-Data are gathered from the Beazley Archive Pottery Database (BAPD) -- https://www.beazley.ox.ac.uk/pottery/default.htm
-and transformed to work with datplot
+A test dataset containing a data.frame how it should ideally be arranged
+to work with datplot.Data are gathered from the Beazley Archive Pottery
+Database (BAPD) -- https://www.beazley.ox.ac.uk/pottery/default.htm and
+transformed to work with datplot
 }
 \details{
 \itemize{

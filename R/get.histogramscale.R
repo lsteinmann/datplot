@@ -1,14 +1,18 @@
 #' @title Scaling Factor for Combined Histogramm Plots
 #'
-#' @description Requires a dataframe as produced by datsteps() or a number as DAT_df_steps. Calculated the value with which the
-#' y-axis of a density graph should be multplied in order to be visible in the corresponding histogram.
+#' @description Requires a dataframe as produced by datsteps() or a number as
+#' DAT_df_steps. Calculated the value with which the y-axis of a density graph
+#' should be multplied in order to be visible in the corresponding histogram.
 #'
-#' @param DAT_df_steps a dataframe as returned by datsteps (works also with a single number and a vector)
-#' @param binwidth the bandwidth to use for the density function and histogram. Should be stepsize used to
-#' create the dataframe. If a df as returned by datsteps() is given, stepsize can be automatically assigned
+#' @param DAT_df_steps a dataframe as returned by datsteps (works also with a
+#' single number and a vector)
+#' @param binwidth the bandwidth to use for the density function and histogram.
+#' Should be stepsize used to create the dataframe. If a df as returned by
+#' datsteps() is given, stepsize can be automatically assigned
 #' using the corresponding attribute (binwidth = "stepsize")
 #'
-#' @return the value with which to scale the density curve to a histogram plot so that both will be visible
+#' @return the value with which to scale the density curve to a histogram
+#' plot so that both will be visible
 #'
 #' @examples
 #' DAT_df_steps <- datsteps(DAT_df[1:100,], stepsize = 25)

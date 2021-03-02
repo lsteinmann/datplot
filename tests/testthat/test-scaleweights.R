@@ -8,8 +8,12 @@ testdf_steps <- datsteps(testdf)
 
 test_that("scaleweight appends attribute", {
   expect_equal(2 * 2, 4)
-  expect_match(as.character(attributes(scaleweight(testdf_steps, var = "all")$weight)), regexp = "all objects")
-  expect_match(as.character(attributes(scaleweight(testdf_steps, var = 2)$weight)), regexp = "by variable")
+  expect_match(as.character(attributes(scaleweight(testdf_steps,
+                                                   var = "all")$weight)),
+               regexp = "all objects")
+  expect_match(as.character(attributes(scaleweight(testdf_steps,
+                                                   var = 2)$weight)),
+               regexp = "by variable")
 })
 
 

@@ -11,8 +11,9 @@ A data frame with 5000 rows and 4 variables
 data(DAT_df)
 }
 \description{
-A test dataset containing a data.frame how it should ideally be arranged to work with datplot.
-Data are not real and illustrate some common problems such as lower and upper dating in the wrong columns.
+A test dataset containing a data.frame how it should ideally be arranged
+to work with datplot. Data are not real and illustrate some common problems
+such as lower and upper dating in the wrong columns.
 }
 \details{
 \itemize{

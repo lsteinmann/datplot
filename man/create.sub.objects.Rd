@@ -9,18 +9,23 @@ create.sub.objects(DAT_mat, stepsize)
 \arguments{
 \item{DAT_mat}{a matrix with 3 variables as prepared by datsteps()}
 
-\item{stepsize}{Number of years that should be used as an interval for creating dating steps.}
+\item{stepsize}{Number of years that should be used as an interval for
+creating dating steps.}
 }
 \value{
-a longer matrix of the same structure to be further processed by datsteps() with a number of steps for each object
+a longer matrix of the same structure to be further processed by
+datsteps() with a number of steps for each object
 }
 \description{
-Requires a matrix with 4 named columns as datsteps will hand to the function:
-* "index" (identifier so the values can later be reassigned to their ID and variable),
+Requires a matrix with 4 named columns as datsteps will
+hand to the function:
+* "index" (identifier so the values can later be reassigned to their ID and
+variable),
 * "datmin" (minimum dating as any kind of number),
 * "datmax" (maximum dating as any kind of number),
 * "weight" (as created by get.weights),
 * "step" (empty).
-It's expected that dates BCE are displayed as negative values while dates CE are positive values.
-Ignoring this will cause problems in any case, that would be fixed automatically by switch.dating().
+It's expected that dates BCE are displayed as negative values while dates
+CE are positive values. Ignoring this will cause problems in any case, that
+would be fixed automatically by switch.dating().
 }

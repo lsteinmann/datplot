@@ -17,10 +17,12 @@ get.step.sequence(datmin = 0, datmax = 100, stepsize = 25)
 sequence of steps to be created by create.sub.objects()
 }
 \description{
-Produces an appropriate sequence of years between the minimum and maximum dating.
-If they cannot be properly devided by the stepsize set beforehand, either three values are generated for
-objects that are dated to a range of more then 60% of the stepsize (min, mean, max), or two values for
+Produces an appropriate sequence of years between the minimum
+and maximum dating. If they cannot be properly devided by the stepsize set
+beforehand, either three values are generated for objects that are dated to
+a range of more then 60% of the stepsize (min, mean, max), or two values for
 objects dated to a timespan of less or equal to 60% of the stepsize.
-If they can be devided without residual, the normal sequence is returned. If there is a residual, the stepsize
-is modified depending on how large the residual is. (TODO: There is still a problem here that needs fixing.)
+If they can be devided without residual, the normal sequence is returned.
+If there is a residual, the stepsize is modified depending on how large the
+residual is. (TODO: There is still a problem here that needs fixing.)
 }
