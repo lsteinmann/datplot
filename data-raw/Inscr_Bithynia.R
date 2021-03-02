@@ -73,8 +73,8 @@ num_dating$DAT_min[sel] <- paste("-", gsub(" BC", "", num_dating$Dating[sel]),
 num_dating$DAT_max[sel] <- paste("-", gsub(" BC", "", num_dating$Dating[sel]),
                                  sep = "")
 
-join_dating <- rbind(join_dating, num_dating[!is.na(num_dating$DAT_min),])
-num_dating <- num_dating[which(is.na(num_dating$DAT_min)),]
+join_dating <- rbind(join_dating, num_dating[!is.na(num_dating$DAT_min), ])
+num_dating <- num_dating[which(is.na(num_dating$DAT_min)), ]
 
 num_dating$Dating <- as.character(num_dating$Dating)
 
@@ -111,50 +111,50 @@ for (r in sel) {
 sel <- grep("^[0-9]{1,3}–[0-9]{1,3} BC", num_dating$Dating)
 for (r in sel) {
   split <- strsplit(x = num_dating$Dating[r], split = "–| ")
-  num_dating$DAT_min[r] <- 0-as.numeric(split[[1]][1])
-  num_dating$DAT_max[r] <- 0-as.numeric(split[[1]][2])
+  num_dating$DAT_min[r] <- 0 - as.numeric(split[[1]][1])
+  num_dating$DAT_max[r] <- 0 - as.numeric(split[[1]][2])
 }
 
-join_dating <- rbind(join_dating, num_dating[!is.na(num_dating$DAT_min),])
-num_dating <- num_dating[which(is.na(num_dating$DAT_min)),]
+join_dating <- rbind(join_dating, num_dating[!is.na(num_dating$DAT_min), ])
+num_dating <- num_dating[which(is.na(num_dating$DAT_min)), ]
 
 sel <- grep("^[0-9]{1}[a-z]{2} c\\. AD$", num_dating$Dating)
 for (r in sel) {
   split <- strsplit(x = num_dating$Dating[r], split = "[a-z]{2} c\\.")
   split <- as.numeric(split[[1]][1])
-  num_dating$DAT_min[r] <- ((split-1)*100)
-  num_dating$DAT_max[r] <- ((split-1)*100)+99
+  num_dating$DAT_min[r] <- ((split - 1) * 100)
+  num_dating$DAT_max[r] <- ((split - 1) * 100) + 99
 }
 
 sel <- grep("^[0-9]{1}[a-z]{2} c\\. BC$", num_dating$Dating)
 for (r in sel) {
   split <- strsplit(x = num_dating$Dating[r], split = "[a-z]{2} c\\.")
   split <- as.numeric(split[[1]][1])
-  num_dating$DAT_min[r] <- 0-(split*100)+1
-  num_dating$DAT_max[r] <- 0-((split-1)*100)
+  num_dating$DAT_min[r] <- 0 - (split * 100) + 1
+  num_dating$DAT_max[r] <- 0 - ((split - 1) * 100)
 }
 
-join_dating <- rbind(join_dating, num_dating[!is.na(num_dating$DAT_min),])
-num_dating <- num_dating[which(is.na(num_dating$DAT_min)),]
+join_dating <- rbind(join_dating, num_dating[!is.na(num_dating$DAT_min), ])
+num_dating <- num_dating[which(is.na(num_dating$DAT_min)), ]
 
 sel <- grep("^ca\\. [0-9]{1,3} AD$", num_dating$Dating)
 for (r in sel) {
   split <- strsplit(x = num_dating$Dating[r], split = " ")
   split <- as.numeric(split[[1]][2])
-  num_dating$DAT_min[r] <- split-10
-  num_dating$DAT_max[r] <- split+10
+  num_dating$DAT_min[r] <- split - 10
+  num_dating$DAT_max[r] <- split + 10
 }
 sel <- grep("^ca\\. [0-9]{1,3} BC$", num_dating$Dating)
 for (r in sel) {
   split <- strsplit(x = num_dating$Dating[r], split = " ")
-  split <- 0-as.numeric(split[[1]][2])
-  num_dating$DAT_min[r] <- split-10
-  num_dating$DAT_max[r] <- split+10
+  split <- 0 - as.numeric(split[[1]][2])
+  num_dating$DAT_min[r] <- split - 10
+  num_dating$DAT_max[r] <- split + 10
 }
 
 
-join_dating <- rbind(join_dating, num_dating[!is.na(num_dating$DAT_min),])
-num_dating <- num_dating[which(is.na(num_dating$DAT_min)),]
+join_dating <- rbind(join_dating, num_dating[!is.na(num_dating$DAT_min), ])
+num_dating <- num_dating[which(is.na(num_dating$DAT_min)), ]
 #unique(num_dating$Dating)[1:20]
 
 join_dating$DAT_min[which(join_dating$DAT_min == 0)] <- 1
@@ -181,13 +181,13 @@ inscriptions <- left_join(inscriptions, join_dating, by = "Dating")
 
 
 # Manual error correction
-inscriptions[which(inscriptions$ID == "I_1162"),"DAT_max"] <- 63
-inscriptions[which(inscriptions$ID == "I_2725"),c("DAT_min", "DAT_max")] <-
-  inscriptions[which(inscriptions$ID == "I_2725"),c("DAT_max", "DAT_min")]
+inscriptions[which(inscriptions$ID == "I_1162"), "DAT_max"] <- 63
+inscriptions[which(inscriptions$ID == "I_2725"), c("DAT_min", "DAT_max")] <-
+  inscriptions[which(inscriptions$ID == "I_2725"), c("DAT_max", "DAT_min")]
 
 
 
-inscriptions <- inscriptions[,c(7,1:5,8:10,6)]
+inscriptions <- inscriptions[, c(7, 1:5, 8:10, 6)]
 
 
 attr(inscriptions, "contact") <-

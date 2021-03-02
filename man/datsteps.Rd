@@ -28,7 +28,7 @@ values while dates CE are positive values. Ignoring this will cause problems
 in any case.
 }
 \examples{
-DAT_df_steps <- datsteps(DAT_df[1:100,], stepsize = 25)
+DAT_df_steps <- datsteps(DAT_df[1:100, ], stepsize = 25)
 plot(density(DAT_df_steps$DAT_step))
 
 

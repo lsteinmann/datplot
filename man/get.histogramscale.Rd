@@ -25,7 +25,7 @@ DAT_df_steps. Calculated the value with which the y-axis of a density graph
 should be multiplied in order to be visible in the corresponding histogram.
 }
 \examples{
-DAT_df_steps <- datsteps(DAT_df[1:100,], stepsize = 25)
+DAT_df_steps <- datsteps(DAT_df[1:100, ], stepsize = 25)
 get.histogramscale(DAT_df_steps)
 
 get.histogramscale(DAT_df_steps$DAT_step, binwidth = 20)

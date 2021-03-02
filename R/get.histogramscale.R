@@ -15,7 +15,7 @@
 #' plot so that both will be visible
 #'
 #' @examples
-#' DAT_df_steps <- datsteps(DAT_df[1:100,], stepsize = 25)
+#' DAT_df_steps <- datsteps(DAT_df[1:100, ], stepsize = 25)
 #' get.histogramscale(DAT_df_steps)
 #'
 #' get.histogramscale(DAT_df_steps$DAT_step, binwidth = 20)

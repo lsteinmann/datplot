@@ -12,5 +12,5 @@ test_that("works for df", {
 
 
 test_that("works for vector", {
-  expect_equal(get.histogramscale(c(2,3,4,5), binwidth = 2), 8)
+  expect_equal(get.histogramscale(c(2, 3, 4, 5), binwidth = 2), 8)
 })

@@ -12,19 +12,21 @@
 #'
 #' @export scaleweight
 
-scaleweight <- function(DAT_df, var = c("all", 2), val = 5 ) {
+scaleweight <- function(DAT_df, var = c("all", 2), val = 5) {
   if (check.number(var)) {
     if (check.number(val)) {
-      uvar <- unique(DAT_df[,var])
+      uvar <- unique(DAT_df[, var])
       for (row in 1:length(uvar)) {
-        index <- which(DAT_df[,var] == uvar[row])
-        DAT_df[index,val] <-  DAT_df[index,val] / sum(DAT_df[index,val])
+        index <- which(DAT_df[, var] == uvar[row])
+        DAT_df[index, val] <-  DAT_df[index, val] / sum(DAT_df[index, val])
       }
-      attr(DAT_df[,val], "descr") <- "weight (scaled to sum of objects grouped by variable)"
-      } else { stop("val needs to be of a number (the index of the column that should be scaled)")}
+      attr(DAT_df[, val], "descr") <- "weight (scaled to sum of objects grouped by variable)"
     } else {
-    DAT_df[,val] <- DAT_df[,val] / sum(DAT_df[,val])
-    attr(DAT_df[,val], "descr") <- "weight (scaled to sum of all objects)"
+        stop("val needs to be of a number (the index of the column that should be scaled)")
+      }
+    } else {
+    DAT_df[, val] <- DAT_df[, val] / sum(DAT_df[, val])
+    attr(DAT_df[, val], "descr") <- "weight (scaled to sum of all objects)"
   }
 return(DAT_df)
 }

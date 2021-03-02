@@ -22,9 +22,10 @@ library(ggplot2)
 Plot_Theme <- theme(panel.background = element_blank(), 
         panel.grid.major = element_line(color = "grey60", linetype = "dashed"),
         panel.grid.minor = element_line(color = "grey80", linetype = "dashed"),
-        legend.position = c(0.9,0.85), 
+        legend.position = c(0.9, 0.85),
         legend.background = element_rect(fill = "white", color = "grey60"))
-Plot_Fill <- scale_fill_manual(name="Technique", values = c("gray30", "tomato3"))
+Plot_Fill <- scale_fill_manual(name = "Technique", values = c("gray30",
+                                                              "tomato3"))
 ```
 
 
@@ -45,7 +46,7 @@ library(datplot)
 data(Beazley)
 ```
 ```{r preptable, echo = FALSE}
-knitr::kable(Beazley[sample(1:nrow(Beazley), 10, replace = FALSE),])
+knitr::kable(Beazley[sample(1:nrow(Beazley), 10, replace = FALSE), ])
 ```
 
 ## How to Display a Range?
@@ -62,7 +63,7 @@ Other approaches, e.g. using the median date of each object, may in some cases p
 ```{r barplot}
 Beazley$DAT_mean <- (Beazley$DAT_max + Beazley$DAT_min) / 2
 library(ggplot2)
-ggplot(Beazley, aes(x = DAT_mean, fill = Technique)) + 
+ggplot(Beazley, aes(x = DAT_mean, fill = Technique)) +
   geom_histogram(binwidth = 25, position = "dodge") + Plot_Theme + Plot_Fill
 ```
 
@@ -81,7 +82,7 @@ Using larger step sizes is only recommended if the stepsize of 1 year leads to s
 ```{r steps1}
 library(datplot)
 result <- datsteps(Beazley, stepsize = 25)
-ggplot(result, aes(x = DAT_step, fill = variable)) + 
+ggplot(result, aes(x = DAT_step, fill = variable)) +
   geom_histogram(binwidth = 25, position = "dodge") + Plot_Theme + Plot_Fill
 ```
 
@@ -92,7 +93,7 @@ ggplot(result, aes(x = DAT_step, fill = variable)) +
 
 ```{r steps2}
 result <- datsteps(Beazley, stepsize = "auto")
-ggplot(result, aes(x = DAT_step, fill = variable)) + Plot_Theme + Plot_Fill + 
+ggplot(result, aes(x = DAT_step, fill = variable)) + Plot_Theme + Plot_Fill +
   geom_histogram(binwidth = attributes(result)$stepsize, position = "dodge")
 ```
 
@@ -135,7 +136,7 @@ knitr::kable(head(result))
 In the case of the Beazley archives data [@BAPD] we can clearly see what we knew before: Black-figure pottery is older than red-figure pottery. (The data are from a random sample of athenian pottery from the Beazley archive, n = 1000.)
 
 ```{r ggplot, warning=FALSE}
-ggplot(data = result, aes(x = DAT_step, 
+ggplot(data = result, aes(x = DAT_step,
                           fill = variable,
                           weight = weight)) +
   geom_density(alpha = 0.5) +
@@ -145,7 +146,7 @@ ggplot(data = result, aes(x = DAT_step,
 In case of this data, the changes between showing and omitting the weight are negligent. This, however, is **not** the case with more heterogeneously dated sets of objects (see the "Data Preparation and Visualization"-vignette). Please note that -- even with the Beazley-data -- the plot, however little, does change when the weights are omitted: 
 
 ```{r ggplot without weight, warning=FALSE}
-ggplot(data = result, aes(x = DAT_step, 
+ggplot(data = result, aes(x = DAT_step,
                           fill = variable)) +
   geom_density(alpha = 0.5) +
   xlab("Dating") + Plot_Theme + Plot_Fill
@@ -157,13 +158,15 @@ To quickly illustrate that we can plot two versions of the density from the Insc
 
 ```{r, warning = FALSE}
 data("Inscr_Bithynia")
-Inscr_Bithynia <- na.omit(Inscr_Bithynia[,c(1,3,8,9)])
-result_bith <- scaleweight(datsteps(Inscr_Bithynia, stepsize = "auto"), var = "all")
+Inscr_Bithynia <- na.omit(Inscr_Bithynia[, c(1, 3, 8, 9)])
+result_bith <- scaleweight(datsteps(Inscr_Bithynia, stepsize = "auto"),
+                           var = "all")
 
 ggplot(result_bith, aes(x = DAT_step)) + Plot_Theme + Plot_Fill +
   geom_density(alpha = 0.5, fill = "grey30") + xlab("Dating")
 
-ggplot(result_bith, aes(x = DAT_step, weight = weight)) + Plot_Theme + Plot_Fill +
+ggplot(result_bith, aes(x = DAT_step, weight = weight)) +
+  Plot_Theme + Plot_Fill +
   geom_density(alpha = 0.5, fill = "grey30") + xlab("Dating")
 ```
 
@@ -179,9 +182,10 @@ histogramscale <- get.histogramscale(result)
 
 ```{r ggplot-combination}
 ggplot(result, aes(x = DAT_step, fill = variable)) + Plot_Theme + Plot_Fill +
-  stat_density(alpha = 0.5, position = "dodge", 
-               aes(y = (..density..*histogramscale), weight = weight ))+
-  geom_histogram(alpha = 0.5, binwidth = attributes(result)$stepsize, position = "dodge") +
+  stat_density(alpha = 0.5, position = "dodge",
+               aes(y = (..density.. * histogramscale), weight = weight)) +
+  geom_histogram(alpha = 0.5, binwidth = attributes(result)$stepsize,
+                 position = "dodge") +
   labs(y = "maximum number of objects per year", x = "Dating")
 ```
 

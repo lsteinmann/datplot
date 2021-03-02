@@ -37,12 +37,14 @@ library(reshape2)
 The manually curated data that B. Weissova prepared for her dissertation was saved as an Excel-spreadsheet. As this is very often the case, we continue directly from this original file, which is available [in this repositories](https://github.com/lsteinmann/datplot) "inst/extdata/"-subfolder. It can be loaded into R without further complications using the `read_excel()`-function from the package `readxl`. Alternatively, the file is suited for storage as a *.tsv-file, which is also provided in the same folder for better long-term support. 
 
 ```{r }
-inscriptions <- readxl::read_excel(system.file('extdata', 'Bithynia_Inscriptions.xlsx', 
-                                               package = 'datplot', mustWork = TRUE))
+inscriptions <- readxl::read_excel(system.file("extdata",
+                                               "Bithynia_Inscriptions.xlsx",
+                                               package = "datplot",
+                                               mustWork = TRUE))
 summary(inscriptions)
 ```
 
-A large amount of the initial data was provided by the [Searchable Greek Inscriptions Tool of the Packard Humanities Institute](https://inscriptions.packhum.org/) and the [Epigraphische Datenbank Heidelberg](https://edh-www.adw.uni-heidelberg.de/home). Those inscriptions (n = `r nrow(inscriptions[-is.na(inscriptions$ikey),])`) can be referenced in the databases with their `ikey`. The data set was supplemented with `r nrow(inscriptions[is.na(inscriptions$ikey),])` inscriptions that were manually gathered from different sources. The relevant citations are to be found in the `Source` column. Additional information on the creation and curation of this data set can be found in the publication mentioned above [@weissova2019]. 
+A large amount of the initial data was provided by the [Searchable Greek Inscriptions Tool of the Packard Humanities Institute](https://inscriptions.packhum.org/) and the [Epigraphische Datenbank Heidelberg](https://edh-www.adw.uni-heidelberg.de/home). Those inscriptions (n = `r nrow(inscriptions[-is.na(inscriptions$ikey), ])`) can be referenced in the databases with their `ikey`. The data set was supplemented with `r nrow(inscriptions[is.na(inscriptions$ikey), ])` inscriptions that were manually gathered from different sources. The relevant citations are to be found in the `Source` column. Additional information on the creation and curation of this data set can be found in the publication mentioned above [@weissova2019]. 
 
 The original file consists of five columns which each row representing a single inscription: `ikey` contains the reference to the [Searchable Greek Inscriptions Tool of the Packard Humanities Institute](https://inscriptions.packhum.org/), indicated via `PH` as a prefix, or to the [Epigraphische Datenbank Heidelberg](https://edh-www.adw.uni-heidelberg.de/home), indicated via `HD` as a prefix. `Location` refers to the find spot of the inscription. `Source` states the source of the data. `Chronological Frame` contains the dating in a verbose format, such as "Roman Imperial Period". `Language` records the language in which the inscription was written, which can either be Latin, Greek, or both. 
 
@@ -65,15 +67,17 @@ unique(inscriptions$Language)
 Using functions from the `tidyverse` package family, we can easily transform the columns. We rename the "Chronological Frame" to `Dating`, as shorter names without spaces are more convenient to work with, and add proper NA-values if there is no chronological assessment. With `mutate()` and `replace()` we also clear out the redundant variable values from `Location` and `Language`:
 
 ```{r message=FALSE}
-inscriptions <- inscriptions %>% 
+inscriptions <- inscriptions %>%
   rename(Dating = `Chronological Frame`) %>%
   mutate(Dating = na_if(Dating, "---"),
          Language = replace(Language, Language == "Gr/Lat", "Greek/Latin"),
          Language = replace(Language, Language == "Gr / Lat", "Greek/Latin"),
-         Language = factor(Language, levels = c("Greek", "Latin", "Greek/Latin")),
-         Location = replace(Location, str_detect(Location, "unknown"), "unknown"),
-         Location = replace(Location, 
-                            Location == "Prusias ad Mare (Keramed)", 
+         Language = factor(Language, levels = c("Greek", "Latin",
+                                                "Greek/Latin")),
+         Location = replace(Location, str_detect(Location, "unknown"),
+                            "unknown"),
+         Location = replace(Location,
+                            Location == "Prusias ad Mare (Keramed)",
                             "Prusias ad Mare"),
          Location = factor(Location))
 ```
@@ -108,10 +112,12 @@ periods$DAT_min <- NA
 periods$DAT_max <- NA
 #write.csv(periods, file = "../data-raw/periods.csv", fileEncoding = "UTF-8")
 # .... Manual editing of the resulting table, saving it as "periods_edit.csv".
-join_dating <- read.csv(file = system.file('extdata', 'periods_edit.csv', 
-                                           package = 'datplot', mustWork = TRUE), 
-                        row.names = 1, 
-                        colClasses = c("character", "character", "integer", "integer"),
+join_dating <- read.csv(file = system.file('extdata', 'periods_edit.csv',
+                                           package = 'datplot',
+                                           mustWork = TRUE),
+                        row.names = 1,
+                        colClasses = c("character", "character",
+                                       "integer", "integer"),
                         encoding = "UTF-8")
 ```
 
@@ -137,22 +143,25 @@ sel <- grep("^[0-9]{1,3} AD$", num_dating$Dating)
 num_dating$DAT_min[sel] <- gsub(" AD", "", num_dating$Dating[sel]) 
 num_dating$DAT_max[sel] <- gsub(" AD", "", num_dating$Dating[sel]) 
 sel <- grep("^[0-9]{1,3} BC$", num_dating$Dating)
-num_dating$DAT_min[sel] <- paste("-", gsub(" BC", "", num_dating$Dating[sel]), sep = "")
-num_dating$DAT_max[sel] <- paste("-", gsub(" BC", "", num_dating$Dating[sel]), sep = "")
+num_dating$DAT_min[sel] <- paste("-", gsub(" BC", "", num_dating$Dating[sel]), 
+                                 sep = "")
+num_dating$DAT_max[sel] <- paste("-", gsub(" BC", "", num_dating$Dating[sel]), 
+                                 sep = "")
 ```
 
 As a demonstration, this is the resulting table (`num_dating`) of up to this point converted values:
 
 ```{r echo = FALSE}
 require(knitr)
-knitr::kable(na.omit(na.omit(num_dating)[sample(1:nrow(na.omit(num_dating)), 10),]))
+knitr::kable(na.omit(na.omit(num_dating)[sample(1:nrow(na.omit(num_dating)), 
+                                                10), ]))
 ```
 
 Since we frequently check the values in `num_dating` to look for errors, we append the finished rows to `join_dating`, which we later use as a look-up-table for our data set, and remove the finished rows from `num_dating`.
 
 ```{r }
-join_dating <- rbind(join_dating, num_dating[!is.na(num_dating$DAT_min),])
-num_dating <- num_dating[which(is.na(num_dating$DAT_min)),]
+join_dating <- rbind(join_dating, num_dating[!is.na(num_dating$DAT_min), ])
+num_dating <- num_dating[which(is.na(num_dating$DAT_min)), ]
 ```
 
 We have to convert the `Dating` variable from `factor` to `character` now, so we can use the `strsplit()`-function on the values:
@@ -196,22 +205,23 @@ for (r in sel) {
 sel <- grep("^[0-9]{1,3}–[0-9]{1,3} BC", num_dating$Dating)
 for (r in sel) {
   split <- strsplit(x = num_dating$Dating[r], split = "–| ")
-  num_dating$DAT_min[r] <- 0-as.numeric(split[[1]][1])
-  num_dating$DAT_max[r] <- 0-as.numeric(split[[1]][2])
+  num_dating$DAT_min[r] <- 0 - as.numeric(split[[1]][1])
+  num_dating$DAT_max[r] <- 0 - as.numeric(split[[1]][2])
 }
 ```
 
 Another look at the data set can help us to check for possible errors.
 
 ```{r echo = FALSE}
-knitr::kable(na.omit(na.omit(num_dating)[sample(1:nrow(na.omit(num_dating)), 10),]))
+knitr::kable(na.omit(na.omit(num_dating)[sample(1:nrow(na.omit(num_dating)),
+                                                10), ]))
 ```
 
 Putting aside the finished values again makes it easier to spot errors in the process:
 
 ```{r }
-join_dating <- rbind(join_dating, num_dating[!is.na(num_dating$DAT_min),])
-num_dating <- num_dating[which(is.na(num_dating$DAT_min)),]
+join_dating <- rbind(join_dating, num_dating[!is.na(num_dating$DAT_min), ])
+num_dating <- num_dating[which(is.na(num_dating$DAT_min)), ]
 ```
 
 ### Reformatting of Inscriptions Dated to Complete Centuries
@@ -223,28 +233,29 @@ sel <- grep("^[0-9]{1}[a-z]{2} c\\. AD$", num_dating$Dating)
 for (r in sel) {
   split <- strsplit(x = num_dating$Dating[r], split = "[a-z]{2} c\\.")
   split <- as.numeric(split[[1]][1])
-  num_dating$DAT_min[r] <- ((split-1)*100)
-  num_dating$DAT_max[r] <- ((split-1)*100)+99
+  num_dating$DAT_min[r] <- ((split - 1) * 100)
+  num_dating$DAT_max[r] <- ((split - 1) * 100) + 99
 }
 
 sel <- grep("^[0-9]{1}[a-z]{2} c\\. BC$", num_dating$Dating)
 for (r in sel) {
   split <- strsplit(x = num_dating$Dating[r], split = "[a-z]{2} c\\.")
   split <- as.numeric(split[[1]][1])
-  num_dating$DAT_min[r] <- 0-(split*100)+1
-  num_dating$DAT_max[r] <- 0-((split-1)*100)
+  num_dating$DAT_min[r] <- 0-(split * 100) + 1
+  num_dating$DAT_max[r] <- 0-((split - 1) * 100)
 }
 
 ```
 ```{r echo = FALSE}
-knitr::kable(na.omit(na.omit(num_dating)[sample(1:nrow(na.omit(num_dating)), 10),]))
+knitr::kable(na.omit(na.omit(num_dating)[sample(1:nrow(na.omit(num_dating)), 
+                                                10), ]))
 ```
 
 Again, putting aside the finished values makes it easier to spot errors in further processing:
 
 ```{r }
-join_dating <- rbind(join_dating, num_dating[!is.na(num_dating$DAT_min),])
-num_dating <- num_dating[which(is.na(num_dating$DAT_min)),]
+join_dating <- rbind(join_dating, num_dating[!is.na(num_dating$DAT_min), ])
+num_dating <- num_dating[which(is.na(num_dating$DAT_min)), ]
 ```
 
 ### Reformatting of Imprecise Dating Values
@@ -257,19 +268,19 @@ sel <- grep("^ca\\. [0-9]{1,3} AD$", num_dating$Dating)
 for (r in sel) {
   split <- strsplit(x = num_dating$Dating[r], split = " ")
   split <- as.numeric(split[[1]][2])
-  num_dating$DAT_min[r] <- split-10
-  num_dating$DAT_max[r] <- split+10
+  num_dating$DAT_min[r] <- split - 10
+  num_dating$DAT_max[r] <- split + 10
 }
 sel <- grep("^ca\\. [0-9]{1,3} BC$", num_dating$Dating)
 for (r in sel) {
   split <- strsplit(x = num_dating$Dating[r], split = " ")
   split <- 0-as.numeric(split[[1]][2])
-  num_dating$DAT_min[r] <- split-10
-  num_dating$DAT_max[r] <- split+10
+  num_dating$DAT_min[r] <- split - 10
+  num_dating$DAT_max[r] <- split + 10
 }
 ```
 ```{r echo = FALSE}
-knitr::kable(na.omit(na.omit(num_dating)))#[sample(1:nrow(na.omit(num_dating)), 10),]))
+knitr::kable(na.omit(na.omit(num_dating)))
 ```
 
 ### Creating a Second Concordance for Verbose Chronological Assessments
@@ -277,8 +288,8 @@ knitr::kable(na.omit(na.omit(num_dating)))#[sample(1:nrow(na.omit(num_dating)), 
 Again, saving the finished values in `join_dating` leaves us with the list of not yet converted values as seen in `num_dating`s `Dating`-variable.
 
 ```{r }
-join_dating <- rbind(join_dating, num_dating[!is.na(num_dating$DAT_min),])
-num_dating <- num_dating[which(is.na(num_dating$DAT_min)),]
+join_dating <- rbind(join_dating, num_dating[!is.na(num_dating$DAT_min), ])
+num_dating <- num_dating[which(is.na(num_dating$DAT_min)), ]
 unique(num_dating$Dating)[1:20]
 ```
 
@@ -293,13 +304,15 @@ join_dating$DAT_max[which(join_dating$DAT_max == 0)] <- -1
 We then have to reload the corrected data. The values that we put aside in the `join_dating` `data.frame` beforehand serve as the basis for our new `data.frame` that we use as a look-up table. As the variables were treated as character-strings, we need to convert them to a numeric format first. We append the newly loaded manually assigned values to this data.frame. Again, to keep this process as transparent as possible, we included the *.csv-Table in the "inst/extdata/" subfolder as "num_dating_edit.csv".
 
 ```{r }
-#write.csv(num_dating, file = "../data-raw/num_dating.csv", fileEncoding = "UTF-8")
-num_dating <- read.csv(file = system.file('extdata', 'num_dating_edit.csv', 
+#write.csv(num_dating, file = "../data-raw/num_dating.csv", 
+#          fileEncoding = "UTF-8")
+num_dating <- read.csv(file = system.file('extdata', 'num_dating_edit.csv',
                                           package = 'datplot', mustWork = TRUE), 
                        encoding = "UTF-8",
-                       row.names = 1, 
-                       colClasses = c("character", "character", "integer", "integer"))
-join_dating <- join_dating %>% 
+                       row.names = 1,
+                       colClasses = c("character", "character",
+                                      "integer", "integer"))
+join_dating <- join_dating %>%
   mutate(DAT_min = as.integer(DAT_min),
          DAT_max = as.integer(DAT_max)) %>%
   rbind(num_dating)
@@ -317,7 +330,8 @@ inscriptions <- left_join(inscriptions, join_dating, by = "Dating")
 The `DAT_`-variables -- as we can now see -- contain the desired information: 
 
 ```{r echo = FALSE}
-knitr::kable(na.omit(inscriptions)[sample(nrow(na.omit(inscriptions)), 15),c(6,2,4,8,9)])
+knitr::kable(na.omit(inscriptions)[sample(nrow(na.omit(inscriptions)), 15),
+                                   c(6, 2, 4, 8, 9)])
 ```
 
 ## Fixing mistakes
@@ -328,18 +342,17 @@ We can now make a 'test run' using datplot with the stepsize-value set to 5 in o
 [^2]: Using different stepsizes is a bit of an artifact left over from a less efficient version of datplot, where is processing would take more than a minute if stepsize was set to 1, so I would usually start out with 100 or 25 just to look for errors and problems and to not lose much time. This, however, is technically not necessary in any way. The function now works faster, though there is a lot of room for improvement, as it may still take several seconds or longer, but generally not several minutes. We determined that the feature might still be useful, and therefore it was not removed.
 
 ```{r warning = TRUE, message = TRUE, out.lines = 20}
-#inscriptions$
-inscr_steps <- inscriptions %>% 
+inscr_steps <- inscriptions %>%
   select(ID, Location, DAT_min, DAT_max) %>%
   na.omit() %>%
-  as.data.frame() %>% 
+  as.data.frame() %>%
   datplot::datsteps(stepsize = 5)
 ```
 
 There are indeed problems in the data. The first of the three warnings issued by `datsteps()` informs us that we may have assigned some values wrong: "Warning: Dating seems to be in wrong order at ID I_1162, I_2725 (Index: 637, 1458). Dates have been switched, but be sure to check your original data for possible mistakes." If dates are in the wrong order, **datplot** will automatically switch them before proceeding. This, however, might not always be the correct way of handling the situation, as other errors might have occurred as well. Therefore, we should check the data again using the Index-Values or IDs provided by datplots warning: 
 
 ```{r }
-inscriptions %>% 
+inscriptions %>%
   select(ID, Location, Dating, uncertain_dating, DAT_min, DAT_max) %>%
   na.omit() %>%
   slice(637, 1458) %>%
@@ -408,9 +421,9 @@ library(datplot)
 ...and can actually try to use `datsteps()`, first with a `stepsize` of 25 years:
 
 ```{r warning=TRUE, out.lines = 13}
-inscr_steps <- inscr_clean %>% 
-  select(ID, Location, DAT_min, DAT_max) %>%  
-  as.data.frame() %>% 
+inscr_steps <- inscr_clean %>%
+  select(ID, Location, DAT_min, DAT_max) %>%
+  as.data.frame() %>%
   datplot::datsteps(stepsize = 25) %>%
   datplot::scaleweight(var = 2)
 ```
@@ -432,7 +445,8 @@ plot(density(inscr_steps$DAT_step))
 A somewhat crowded overview containing the Locations of all Inscriptions can easily be achieved when using `ggplot2` and its `geom_density()`-method, which is based on the same procedure as the `density()`-function used above. A result may look like this:
 
 ```{r }
-ggplot(data = inscr_steps, aes(x = DAT_step, fill = variable, weight = weight)) +
+ggplot(data = inscr_steps, aes(x = DAT_step, fill = variable,
+                               weight = weight)) +
   geom_density(alpha = 0.3)
 ```
 
@@ -451,12 +465,13 @@ The weights calculated by **datplot** (internally using the `get.weights()`-func
 Since the graph is very crowded in this layout, we actually recommend using `geom_density_ridges` from the `ggridges`-package. Since the package has no built in support for assigning weight, we have to use `stat = "density"`, which will reference the `density()`-function to get the appropriate calculations:
 
 ```{r}
-ggplot(data = inscr_steps, 
-       aes(x = DAT_step, 
-           y = fct_rev(as_factor(variable)), 
-           fill = variable, 
+ggplot(data = inscr_steps,
+       aes(x = DAT_step,
+           y = fct_rev(as_factor(variable)),
+           fill = variable,
            weight = weight)) +
-  geom_density_ridges(aes(height = ..density..), stat = "density", alpha = 0.9) +
+  geom_density_ridges(aes(height = ..density..),
+                      stat = "density", alpha = 0.9) +
   scale_fill_discrete(guide = FALSE)
 ```
 Styling will help to make the plots more readable:
@@ -464,20 +479,23 @@ Styling will help to make the plots more readable:
 ```{r }
 bluegreen <- colorRampPalette(c("#8dae25", "#17365c"))
 
-ggplot(data = inscr_steps, 
-       aes(x = DAT_step, 
-           y = fct_rev(as_factor(variable)), 
-           fill = variable, 
+ggplot(data = inscr_steps,
+       aes(x = DAT_step,
+           y = fct_rev(as_factor(variable)),
+           fill = variable,
            weight = weight)) +
   geom_density_ridges(aes(height = ..density..), stat = "density", alpha = 0.9) +
-  scale_x_continuous(breaks = seq(from = -800, to = 800, by = 100), 
+  scale_x_continuous(breaks = seq(from = -800, to = 800, by = 100),
                      limits = c(-800,800), name = "") +
-  geom_vline(xintercept = 0, alpha = 0.5, lwd = 1) + 
+  geom_vline(xintercept = 0, alpha = 0.5, lwd = 1) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5),
         panel.background = element_blank(),
-        panel.grid.major.x = element_line(linetype = "dashed", color = "gray30"),
-        panel.grid.minor.x = element_line(linetype = "dotted", color = "gray80"))  +
-  scale_fill_manual(guide=FALSE, values = bluegreen(length(unique(inscr_steps$variable)))) +
+        panel.grid.major.x = element_line(linetype = "dashed",
+                                          color = "gray30"),
+        panel.grid.minor.x = element_line(linetype = "dotted",
+                                          color = "gray80")) +
+  scale_fill_manual(guide=FALSE,
+                    values = bluegreen(length(unique(inscr_steps$variable)))) +
   labs(title = "Epigraphic Evidence from Bithynia",
        subtitle = "Spatio-temporal distribution",
        y = "administrative centres",
@@ -489,7 +507,8 @@ ggplot(data = inscr_steps,
 Another option is to separate the variables with `facet_wrap`, which is not as condensed and does not support the option to scale the densities in the graph for maximum visibility, as `geom_density_ridges()` automatically does (see Documentation of `ggridges`). In our case, this leads to a worse visibility of smaller density curves:
 
 ```{r fig.height = 10}
-ggplot(data = inscr_steps, aes(x = DAT_step, fill = variable, weight = weight)) +
+ggplot(data = inscr_steps, aes(x = DAT_step, 
+                               fill = variable, weight = weight)) +
   geom_density(alpha = 0.9) +
   scale_fill_discrete(guide = FALSE) +
   facet_wrap(variable ~ ., ncol = 1)
@@ -498,10 +517,12 @@ ggplot(data = inscr_steps, aes(x = DAT_step, fill = variable, weight = weight)) 
 Styling also helps very much to improve the graphs readability:
 
 ```{r fig.height = 10}
-ggplot(data = inscr_steps, aes(x = DAT_step, fill = variable, weight = weight)) +
+ggplot(data = inscr_steps, aes(x = DAT_step,
+                               fill = variable, weight = weight)) +
   geom_density(alpha = 0.9) +
   theme(panel.background = element_blank()) +
-  scale_fill_manual(guide=FALSE, values = bluegreen(length(unique(inscr_steps$variable)))) +
+  scale_fill_manual(guide=FALSE,
+                    values = bluegreen(length(unique(inscr_steps$variable)))) +
   scale_x_continuous(breaks = seq(from = -800, to = 800, by = 100),
                      limits = c(-800,800), name = "") +
   facet_wrap(variable ~ ., ncol = 1) +
@@ -512,8 +533,10 @@ ggplot(data = inscr_steps, aes(x = DAT_step, fill = variable, weight = weight)) 
         axis.ticks.y = element_blank(),
         axis.title.y = element_blank(),
         panel.background = element_blank(),
-        panel.grid.major.x = element_line(linetype = "dashed", color = "gray30"),
-        panel.grid.minor.x = element_line(linetype = "dotted", color = "gray80"))  +
+        panel.grid.major.x = element_line(linetype = "dashed",
+                                          color = "gray30"),
+        panel.grid.minor.x = element_line(linetype = "dotted",
+                                          color = "gray80")) +
   labs(title = "Epigraphic Evidence from Bithynia",
        subtitle = "Spatio-temporal distribution",
        caption = attributes(inscriptions)$source)
@@ -528,11 +551,11 @@ inscr_clean %>%
   select(ID, Location, DAT_min, DAT_max) %>%
   filter(Location %in% c("Prusias ad Hypium", "Nicomedia", "Apamea")) %>%
   reshape2::melt(id.vars = c("ID", "Location")) %>%
-  ggplot(aes(x = value, fill = variable)) + 
+  ggplot(aes(x = value, fill = variable)) +
   geom_histogram(binwidth = 25, position = "dodge") +
   facet_wrap(. ~ Location, ncol = 1) +
-  labs(title = "Distribution of Dated Inscriptions in Bithynia (selection)", 
-       x = "Dating", y = "Number of Inscriptions") + 
+  labs(title = "Distribution of Dated Inscriptions in Bithynia (selection)",
+       x = "Dating", y = "Number of Inscriptions") +
   theme(legend.position = "top")
 ```
 
@@ -540,13 +563,13 @@ Alternatively, we could display the mean of the Dating range:
 
 ```{r  fig.height = 6}
 inscr_clean %>% 
-  transmute(ID, Location, Language, DAT_mean = ((DAT_min+DAT_max)/2)) %>%
+  transmute(ID, Location, Language, DAT_mean = ((DAT_min + DAT_max)/2)) %>%
   filter(Location %in% c("Prusias ad Hypium", "Nicomedia", "Apamea")) %>%
   reshape2::melt(id.vars = c("ID", "Location", "Language")) %>%
-  ggplot(aes(x = value, fill = Language)) + 
+  ggplot(aes(x = value, fill = Language)) +
   geom_histogram(binwidth = 25) +
   facet_wrap(. ~ Location, ncol = 1) +
-  labs(title = "Distribution of Dated Inscriptions in Bithynia (selection)", 
+  labs(title = "Distribution of Dated Inscriptions in Bithynia (selection)",
        x = "Dating", y = "Number of Inscriptions")
 ```
 

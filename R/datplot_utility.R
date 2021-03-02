@@ -12,9 +12,9 @@
 #' @export generate.stepsize
 
 generate.stepsize <- function(DAT_mat) {
-  timespans <- abs(DAT_mat[,"datmin"] - DAT_mat[,"datmax"])
+  timespans <- abs(DAT_mat[, "datmin"] - DAT_mat[, "datmax"])
   stepsize <- min(timespans)
-  if(stepsize < 1) {
+  if (stepsize < 1) {
     stepsize <- 1
   }
   print(paste("Using stepsize = ", stepsize, " (auto).", sep = ""))
@@ -38,7 +38,7 @@ generate.stepsize <- function(DAT_mat) {
 #' @export switch.dating
 
 switch.dating <- function(DAT_df, DAT_err) {
-  DAT_df[DAT_err,3:4] <- DAT_df[DAT_err,4:3]
+  DAT_df[DAT_err, 3:4] <- DAT_df[DAT_err, 4:3]
   return(DAT_df)
 }
 
@@ -62,20 +62,20 @@ switch.dating <- function(DAT_df, DAT_err) {
 
 get.weights <- function(DAT_min, DAT_max) {
   weights <- as.data.frame(matrix(ncol = 2, nrow = length(DAT_min)))
-  weights[,1] <- abs(DAT_min - DAT_max)
-  weights[,2] <- TRUE
-  if (any(weights[,1] == 0)) {
+  weights[, 1] <- abs(DAT_min - DAT_max)
+  weights[, 2] <- TRUE
+  if (any(weights[, 1] == 0)) {
     # store FALSE if any weights are zero to display the warning below
-    weights[which(weights[,1] == 0),2] <- FALSE
+    weights[which(weights[, 1] == 0), 2] <- FALSE
     # then store a weight of 1 as to treat objects with same min and max
     # dating (dated to one year precisely) as very influential
-    weights[which(weights[,1] == 0),1] <- 1
+    weights[which(weights[, 1] == 0), 1] <- 1
   }
   # weights have to be below 1
-  weights[,1] <- 1/weights[,1]
-  if (any(weights[,2] == FALSE)) {
+  weights[, 1] <- 1 / weights[, 1]
+  if (any(weights[, 2] == FALSE)) {
     warning(paste("Warning: DAT_min and DAT_max at Index: ",
-                  paste(which(weights[,2] == FALSE), collapse = ", "), ")",
+                  paste(which(weights[, 2] == FALSE), collapse = ", "), ")",
                   " have the same value! Is this correct? ",
                   "Please check the table for possible errors.", sep = ""))
   }
@@ -103,12 +103,15 @@ get.weights <- function(DAT_min, DAT_max) {
 # underestimating, but it hasnt happened since the last fix
 
 calculate.outputrows <- function(DAT_mat, stepsize) {
-  mean_year_index <- which(DAT_mat[,"datmax"] - DAT_mat[,"datmin"] < stepsize)
+  mean_year_index <- which(DAT_mat[, "datmax"] - DAT_mat[, "datmin"] < stepsize)
 
   if (length(mean_year_index) == 0) {
-    outputrows <- ceiling(sum(((abs(DAT_mat[,"datmax"] - DAT_mat[,"datmin"])) / stepsize) + 3))
+    absdiff <- abs(DAT_mat[, "datmax"] - DAT_mat[, "datmin"])
+    outputrows <- ceiling(sum((absdiff / stepsize) + 3))
   } else {
-    outputrows <- ceiling(sum(((abs(DAT_mat[-mean_year_index,"datmax"] - DAT_mat[-mean_year_index,"datmin"]))/stepsize)+3))
+    absdiff <- abs(DAT_mat[-mean_year_index, "datmax"] -
+                     DAT_mat[-mean_year_index, "datmin"])
+    outputrows <- ceiling(sum((absdiff / stepsize) + 3))
     outputrows <- outputrows + length(mean_year_index)
   }
   return(outputrows)
@@ -143,10 +146,10 @@ get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
   # First: If the stepsize is larger than the timespan, two different
   # strategies can be employed
   if (timespan %/% stepsize == 0) {
-    if (timespan > (stepsize*0.6)) {
+    if (timespan > (stepsize * 0.6)) {
       # If the timespan exceeds 60% of the stepsize, three steps will be
       # created corresponding to minimum, mean and maximum dating
-      sequence <- c(datmin, round(((datmin+datmax)/2), digits = 0), datmax)
+      sequence <- c(datmin, round(((datmin + datmax) / 2), digits = 0), datmax)
     } else if (timespan == 0) {
       # for objects dated to one year, only use one year!
       sequence <- datmin
@@ -159,21 +162,22 @@ get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
     # If the timespan can be devided at least once, first generate the sequence
     sequence <- seq(from = datmin, to = datmax, by = stepsize)
     # then check how many years the maximum dating would be off
-    resid <- datmax-sequence[length(sequence)]
-    if (resid >= (stepsize/2)) {
+    resid <- datmax - sequence[length(sequence)]
+    if (resid >= (stepsize / 2)) {
       # if the residual is larger or equals half the stepsize, the stepsize is
       # temporarily modified to fit the as many values
       # as it would with the length of the sequence generated
-      stepsize_mod <- (datmax-datmin)/(length(sequence)+1)
+      stepsize_mod <- (datmax - datmin) / (length(sequence) + 1)
       sequence <- seq(datmin, datmax, stepsize_mod)
       # then rounds all values except first and last, which need to stay as
       # minumum and maximum date
-      sequence[-c(1,length(sequence))] <- round(sequence[-c(1,length(sequence))],
-                                                digits = 0)
+      sequence[-c(1, length(sequence))] <-
+        round(sequence[-c(1, length(sequence))],
+              digits = 0)
     } else if (resid != 0) {
       # if the residual is smaller but also not 0, the sequence values at moved
       # by an appropriate fraction
-      move <- round(resid/(length(sequence)-1), digits = 0)
+      move <- round(resid / (length(sequence) - 1), digits = 0)
       sequence[2:length(sequence)] <- sequence[2:length(sequence)] + move
       # and the end of the sequence is reset as the maximum dating
       sequence[length(sequence)] <- datmax
@@ -222,9 +226,9 @@ get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
 create.sub.objects <- function(DAT_mat, stepsize) {
 
   outputrows <- calculate.outputrows(DAT_mat, stepsize)
-  result <- as.data.frame(matrix(ncol = 6, nrow = outputrows+100))
+  result <- as.data.frame(matrix(ncol = 6, nrow = outputrows + 100))
 
-  diffs <- DAT_mat[,"datmax"]-DAT_mat[,"datmin"]
+  diffs <- DAT_mat[, "datmax"] - DAT_mat[, "datmin"]
   diffs[diffs == 0] <- 1
 
   if (any(diffs < stepsize)) {
@@ -236,18 +240,18 @@ create.sub.objects <- function(DAT_mat, stepsize) {
 
   for (i in 1:nrow(DAT_mat)) {
     sequence <- NULL
-    sequence <- get.step.sequence(DAT_mat[i,"datmin"], DAT_mat[i,"datmax"],
+    sequence <- get.step.sequence(DAT_mat[i, "datmin"], DAT_mat[i, "datmax"],
                                   stepsize)
 
-    first_na <- match(NA, result[,1])
-    last_row <- first_na + (length(sequence)-1)
-    result[first_na:last_row,1] <- DAT_mat[i,1]
-    result[first_na:last_row,3] <- DAT_mat[i,2]
-    result[first_na:last_row,4] <- DAT_mat[i,3]
-    result[first_na:last_row,5] <- DAT_mat[i,4]
-    result[first_na:last_row,6] <- sequence
+    first_na <- match(NA, result[, 1])
+    last_row <- first_na + (length(sequence) - 1)
+    result[first_na:last_row, 1] <- DAT_mat[i, 1]
+    result[first_na:last_row, 3] <- DAT_mat[i, 2]
+    result[first_na:last_row, 4] <- DAT_mat[i, 3]
+    result[first_na:last_row, 5] <- DAT_mat[i, 4]
+    result[first_na:last_row, 6] <- sequence
   }
-  result <- result[-c(match(NA, result[,1]):nrow(result)), ]
+  result <- result[-c(match(NA, result[, 1]):nrow(result)), ]
   return(result)
 }
 
@@ -285,23 +289,25 @@ check.structure <- function(DAT_df) {
                                "is.minDAT", "is.maxDAT")
 
   dat_df_structure["is.df"] <- is.data.frame(DAT_df)
-  dat_df_structure["is.id"] <- is.character(DAT_df[,1, drop = TRUE])
-  dat_df_structure["is.var"] <- is.factor(DAT_df[,2, drop = TRUE])
-  dat_df_structure[c("is.minDAT", "is.maxDAT")] <- c(check.number(DAT_df[,3, drop = TRUE]),
-                                                     check.number(DAT_df[,4, drop = TRUE]))
+  dat_df_structure["is.id"] <- is.character(DAT_df[, 1, drop = TRUE])
+  dat_df_structure["is.var"] <- is.factor(DAT_df[, 2, drop = TRUE])
+  dat_df_structure[c("is.minDAT", "is.maxDAT")] <- c(check.number(DAT_df[, 3, drop = TRUE]),
+                                                     check.number(DAT_df[, 4, drop = TRUE]))
 
   if (dat_df_structure[1] == FALSE) {
     result <- FALSE
     stop("datsteps requires an object of class data.frame")
-  } else { result <- TRUE }
+  } else {
+    result <- TRUE
+    }
   if (any(dat_df_structure[c("is.minDAT", "is.maxDAT")] == FALSE)) {
     result <- FALSE
     stop("The 3rd or 4th columns of your data.frame are not numbers.")
-  } else { result <- TRUE }
+  } else {
+    result <- TRUE
+    }
   if (any(dat_df_structure[2:3] == FALSE)) {
     warning("It is recommended to use character vector for the ID column and factor for the variable column.")
   }
   return(result)
 }
-
-
