@@ -21,7 +21,9 @@ The inscriptions of Bithynia data set, that is included in this package, was com
 First, we attach the packages to be used in the vignette: 
 
 ```{r message = FALSE}
-library(tidyverse)
+library(dplyr)
+library(stringr)
+library(forcats)
 library(ggplot2)
 library(knitr)
 library(datplot)

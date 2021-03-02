@@ -1,6 +1,6 @@
 <!-- badges: start -->
   [![R-CMD-check](https://github.com/lsteinmann/datplot/workflows/R-CMD-check/badge.svg)](https://github.com/lsteinmann/datplot/actions)
-  [![Build Status](https://travis-ci.com/lsteinmann/datplot.svg?token=qpxyBQYqepYayg8rYHnD&branch=main)](https://travis-ci.com/lsteinmann/datplot)
+  [![Build Status](https://travis-ci.com/lsteinmann/datplot.svg?branch=main)](https://travis-ci.com/lsteinmann/datplot)
   [![codecov](https://codecov.io/gh/lsteinmann/datplot/branch/main/graph/badge.svg?token=CVNCAL9U4W)](https://codecov.io/gh/lsteinmann/datplot)
   [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4285912.svg)](https://doi.org/10.5281/zenodo.4285912)
   <!-- badges: end -->
@@ -44,4 +44,3 @@ Contact
 
 Please feel free to use this idea or the package in your research. I would be happy if you contacted me if you do, because I'm interested to know whether this helps anybody. Also, if you have other ideas, critique or improvements, I would be very glad to hear from you or review your pull requests and changes! 
 
-[![Licence](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)](http://creativecommons.org/licenses/by-sa/4.0/)

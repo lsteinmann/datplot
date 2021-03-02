@@ -1,12 +1,8 @@
 source(file = "../create_testing_df.R")
-library(datplot)
-library(devtools)
-library(testthat)
 
 testmat <- matrix(c(1,2,3,4,0,0,50,-200,5,-200,50,5), byrow = FALSE, ncol = 3)
 colnames(testmat) <- c("index", "datmin", "datmax")
 DAT_err <- which(testmat[,2] > testmat[,3])
-DAT_err
 
 
 test_that("generate.stepsize returns one", {
@@ -64,12 +60,10 @@ test_that("check.number returns true for numbers false for other", {
 
 
 test_that("check.structure works", {
-  expect_true(check.structure(testdf))
+  expect_true(suppressWarnings(check.structure(testdf)))
   expect_error(check.structure(testdf_wrong))
   expect_error(check.structure(testdf_wrong_two))
 })
-
-
 
 test_that("check.structure issues warning", {
   expect_warning(check.structure(testdf), regexp = "recommended")

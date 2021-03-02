@@ -1,6 +1,6 @@
 Package: datplot
 Type: Package
-Title: Preparation of object dating ranges for density plots (aoristic analysis)
+Title: Preparation of Object Dating Ranges for Density Plots (Aoristic Analysis)
 Version: 1.0.0
 Authors@R:c(person("Lisa", "Steinmann", comment = c(ORCID = "0000-0002-2215-1243"), role = c("aut", "cre"), email = "lisa.steinmann@rub.de"), 
             person("Barbora", "Weissova", comment = c(ORCID = "0000-0002-3297-6855"), role = "ctb", email = "barbora.weissova@rub.de"))
@@ -17,7 +17,9 @@ Suggests:
     devtools,
     knitr,
     rmarkdown,
-    tidyverse,
+    dplyr,
+    stringr,
+    forcats,
     ggplot2,
     ggridges,
     readxl,

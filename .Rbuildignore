@@ -4,3 +4,5 @@
 ^data-raw$
 ^\.travis\.yml$
 ^codecov\.yml$
+^cran-comments\.md$
+^todo\.R$
