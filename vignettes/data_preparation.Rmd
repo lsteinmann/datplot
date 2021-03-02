@@ -14,9 +14,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-Archaeological data as it can be found "in the wild" rarely conforms to the formats suitable for any kind of statistical analysis. This vignette is intended as a way of demonstrating a possibility of data cleaning on a data set as it can frequently be found in archaeological literature, or put together during archaeological research. The data is prepared for use with the `datplot`-package. An analysis based on this data can be found as a case study in the paper "datplot: A new R-Package for the Visualization of Date Ranges in Archaeology" [@datplotarticle, redacted] by the authors of this package. 
+Archaeological data as it can be found "in the wild" rarely conforms to the formats suitable for any kind of statistical analysis. This vignette is intended as a way of demonstrating a possibility of data cleaning on a data set as it can frequently be found in archaeological literature, or put together during archaeological research. The data is prepared for use with the `datplot`-package. An analysis based on this data can be found as a case study in the paper "datplot: A new R-Package for the Visualization of Date Ranges in Archaeology" [@datplotarticle] by the authors of this package. 
 
-The inscriptions of Bithynia data set, that is included in this package, was compiled for a publication analyzing the settlement patterns and road systems in ancient Bithynia [@weissova2019]. The vignette is thus meant as guidance for archaeologists looking to employ the [datplot-package (redacted)](https://github.com/anonymousgit/datplot), and finding themselves in need of reformatting their data without much experience in programming languages. It points to certain problems arising with data sets, which are often incarnated in the form of spreadsheets. The Bithynia data set is a typical example of the structure of data as it is used by many (classical) archaeologists. The process of cleaning it highlights solutions for the issues encountered with such spreadsheets, and may also be adapted to other data as well as fields.
+The inscriptions of Bithynia data set, that is included in this package, was compiled for a publication analyzing the settlement patterns and road systems in ancient Bithynia [@weissova2019]. The vignette is thus meant as guidance for archaeologists looking to employ the [datplot-package](https://github.com/lsteinmann/datplot), and finding themselves in need of reformatting their data without much experience in programming languages. It points to certain problems arising with data sets, which are often incarnated in the form of spreadsheets. The Bithynia data set is a typical example of the structure of data as it is used by many (classical) archaeologists. The process of cleaning it highlights solutions for the issues encountered with such spreadsheets, and may also be adapted to other data as well as fields.
 
 First, we attach the packages to be used in the vignette: 
 
@@ -32,7 +32,7 @@ library(reshape2)
 
 # The "Inscriptions of Bithynia" data set
 
-The manually curated data that B. Weissova prepared for her dissertation was saved as an Excel-spreadsheet. As this is very often the case, we continue directly from this original file, which is available [in this repositories (redacted)](https://github.com/anonymousgit/datplot) "inst/extdata/"-subfolder. It can be loaded into R without further complications using the `read_excel()`-function from the package `readxl`. Alternatively, the file is suited for storage as a *.tsv-file, which is also provided in the same folder for better long-term support. 
+The manually curated data that B. Weissova prepared for her dissertation was saved as an Excel-spreadsheet. As this is very often the case, we continue directly from this original file, which is available [in this repositories](https://github.com/lsteinmann/datplot) "inst/extdata/"-subfolder. It can be loaded into R without further complications using the `read_excel()`-function from the package `readxl`. Alternatively, the file is suited for storage as a *.tsv-file, which is also provided in the same folder for better long-term support. 
 
 ```{r }
 inscriptions <- readxl::read_excel(system.file('extdata', 'Bithynia_Inscriptions.xlsx', 
@@ -97,7 +97,7 @@ inscriptions$Dating <- gsub("\\?", "", inscriptions$Dating)
 
 ### Creating a Concordance for Periods
 
-The next step is sorting out values from the `Dating` variable that have to be manually entered, such as the "Roman Imperial Period". We achieve this by excluding all values that contain a number, preparing a table in which we can manually enter the desired dating span and saving it as a .csv-file. After adding the values manually, we reload the file. The manually edited concordance can be found in the "inst/extdata/"-subfolder [of this repository (redacted)](https://github.com/anonymousgit/datplot) in the file `periods_edit.csv` and corresponds with the chronological assessment of periods used in the original publication [@weissova2019, 42].
+The next step is sorting out values from the `Dating` variable that have to be manually entered, such as the "Roman Imperial Period". We achieve this by excluding all values that contain a number, preparing a table in which we can manually enter the desired dating span and saving it as a .csv-file. After adding the values manually, we reload the file. The manually edited concordance can be found in the "inst/extdata/"-subfolder [of this repository](https://github.com/lsteinmann/datplot) in the file `periods_edit.csv` and corresponds with the chronological assessment of periods used in the original publication [@weissova2019, 42].
 
 ```{r }
 sel <- grepl("[0-9]", inscriptions$Dating)
@@ -369,7 +369,7 @@ Note that `datsteps()` changes the date and proceeds, but warns you of the possi
 
 For later use and publication, we add explanations of the variables and metadata to the R-object and store them in the *.rda file. As a backup, we also save the finished table as a .csv-file, suitable for archiving. The .csv-Table, however, does not contain the additional information added as attributes. 
 
-All files are available [in this repository (redacted)](https://github.com/anonymousgit/datplot) and as part of this package for further use by other researchers. We kindly ask you to cite @weissova2019, the Packard Humanities Institute and this repository at [github.com/anonymousgit/datplot (redacted)](https://github.com/anonymousgit/datplot) as sources.
+All files are available [in this repository](https://github.com/lsteinmann/datplot) and as part of this package for further use by other researchers. We kindly ask you to cite @weissova2019, the Packard Humanities Institute and this repository at [https://github.com/lsteinmann/datplot](https://github.com/lsteinmann/datplot) as sources.
 
 The dataset can be loaded into R by simply calling
 ```{r}
@@ -441,7 +441,7 @@ ggplot(data = inscr_steps, aes(x = DAT_step, fill = variable)) +
   geom_density(alpha = 0.3)
 ```
 
-The weights calculated by **datplot** (internally using the `get.weights()`-function) are a way of assigning an importance to the objects in question. They relate to the range an object is dated to (more detailed information on the process is available in (redacted)). Therefore, any objects dated to large time spans as for example "Roman Imperial Period" ranging from 31 BC to 395 AD in our data set, are contributing to the curve significantly less than any object dated to one exact year. At times it can be very useful to look at both outputs and discuss them separately. We will look at a case study of a single city later on to clarify this.
+The weights calculated by **datplot** (internally using the `get.weights()`-function) are a way of assigning an importance to the objects in question. They relate to the range an object is dated to (more detailed information on the process is available in [@datplotarticle]). Therefore, any objects dated to large time spans as for example "Roman Imperial Period" ranging from 31 BC to 395 AD in our data set, are contributing to the curve significantly less than any object dated to one exact year. At times it can be very useful to look at both outputs and discuss them separately. We will look at a case study of a single city later on to clarify this.
 
 
 ## Using `ggplot2` and `ggridges`

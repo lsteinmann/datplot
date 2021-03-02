@@ -173,13 +173,13 @@ inscriptions <- inscriptions[,c(7,1:5,8:10,6)]
 
 
 attr(inscriptions, "contact") <-
-  "Anonymous Anonymous (anonymous@anonymous.com), Anonymous Anonymous (anonymous@anonymous.com)"
+  "Barbora Weissova (Barbora.Weissova@ruhr-uni-bochum.de), Lisa Steinmann (lisa.steinmann@rub.de)"
 attr(inscriptions, "time_created") <- Sys.Date()
 attr(inscriptions, "source") <-
   "Data: https://inscriptions.packhum.org/ and
   B. Weissová, Regional Economy, Settlement Patterns and the Road System in Bithynia
   (4th century BC - 6th century AD) (Diss. FU Berlin 2019)"
-attr(inscriptions, "source_repo") <- "Anonymous Anonymous"
+attr(inscriptions, "source_repo") <- "https://github.com/lsteinmann/datplot"
 attr(inscriptions$ikey, "descr") <- "ID at https://inscriptions.packhum.org/"
 attr(inscriptions$Location, "descr") <- "Findspot"
 attr(inscriptions$Source, "descr") <- "Corpus/Citation of the Inscription"

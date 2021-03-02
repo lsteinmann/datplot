@@ -1,7 +1,7 @@
- <!-- badges: start -->
-  [![R build status](https://github.com/anonymousgit/datplot/workflows/R-CMD-check/badge.svg)](https://github.com/anonymousgit/datplot/actions)
-  [![Travis Build Status](https://travis-ci.com/anonymousgit/datplot.svg?token=qpxyBQYqepYayg8rYHnD&branch=main)](https://travis-ci.com/anonymousgit/datplot)
-  [![Codecov test coverage](https://codecov.io/gh/anonymousgit/datplot/branch/master/graph/badge.svg)](https://codecov.io/gh/anonymousgit/datplot?branch=main)
+<!-- badges: start -->
+  [![R-CMD-check](https://github.com/lsteinmann/datplot/workflows/R-CMD-check/badge.svg)](https://github.com/lsteinmann/datplot/actions)
+  [![Travis build status](https://travis-ci.com/lsteinmann/datplot.svg?branch=main)](https://travis-ci.com/lsteinmann/datplot)
+  [![Codecov test coverage](https://codecov.io/gh/lsteinmann/datplot/branch/main/graph/badge.svg)](https://codecov.io/gh/lsteinmann/datplot?branch=main)
   <!-- badges: end -->
 
 datplot
@@ -17,7 +17,7 @@ This package proposes implements the concepts of aoristic analysis to prepare ar
 
 after installing the package, or on GitHub in the /vignettes/ directory. Density plots are easy to understand and are usually aesthetically pleasing. They do omit a some information, such as individual counts, that bar histograms can communicate better. On the other hand, ranges can be incorporated into the visualization as well to regard the variety of timespans archaeological objects may be dated to.
 
-I imagine this to be mostly useful for surveys and other analysis aimed at the longue duree. The package has been published along with a case study on the Inscriptions of Bithynia, which are now included as a Data object in the datplot-package itself, in (citation). 
+I imagine this to be mostly useful for surveys and other analysis aimed at the longue duree. The package will be published along with a case study on the Inscriptions of Bithynia, which are now included as a Data object in the datplot-package itself. [The paper has been accepted and the citation will be added as soon as it exists.] 
 
 ![Attic Pottery from BAPD by Date](inst/extdata/demo_readme.png "Attic Pottery from BAPD by Date")
 
@@ -32,11 +32,11 @@ Installation
 -------
 'datplot' is not currently on CRAN. It can be installed from GitHub with devtools:
 
-    devtools::install_github("anonymousgit/datplot")
+    devtools::install_github("lsteinmann/datplot")
 
 Or via downloading the latest release and installing from the file: 
 
-    devtools::install_local(path = "../datplot_0.2.4.tar.gz")
+    devtools::install_local(path = "../datplot_1.0.0.tar.gz")
 
 Contact
 -------
