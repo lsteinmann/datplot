@@ -191,11 +191,13 @@ inscriptions <- inscriptions[,c(7,1:5,8:10,6)]
 
 
 attr(inscriptions, "contact") <-
-  "Barbora Weissova (Barbora.Weissova@ruhr-uni-bochum.de), Lisa Steinmann (lisa.steinmann@rub.de)"
+  "Barbora Weissova (Barbora.Weissova@ruhr-uni-bochum.de),
+Lisa Steinmann (lisa.steinmann@rub.de)"
 attr(inscriptions, "time_created") <- Sys.Date()
 attr(inscriptions, "source") <-
   "Data: https://inscriptions.packhum.org/ and
-  B. Weissová, Regional Economy, Settlement Patterns and the Road System in Bithynia
+  B. Weissova, Regional Economy,
+  Settlement Patterns and the Road System in Bithynia
   (4th century BC - 6th century AD) (Diss. FU Berlin 2019)"
 attr(inscriptions, "source_repo") <- "https://github.com/lsteinmann/datplot"
 attr(inscriptions$ikey, "descr") <- "ID at https://inscriptions.packhum.org/"
@@ -207,7 +209,8 @@ attr(inscriptions$uncertain_dating, "descr") <-
   "TRUE if Dating is not certain, FALSE if dating is certain"
 attr(inscriptions$DAT_min, "descr") <- "lower border of the dating timespan"
 attr(inscriptions$DAT_max, "descr") <- "uppper border of the dating timespan"
-attr(inscriptions$URL, "descr") <- "Link to the Inscription at https://inscriptions.packhum.org/"
+attr(inscriptions$URL, "descr") <- "Link to the Inscription at
+https://inscriptions.packhum.org/"
 
 #write.table(inscriptions, file = "inscriptions.csv",
 #            fileEncoding = "UTF-8", sep = ";", row.names = FALSE)

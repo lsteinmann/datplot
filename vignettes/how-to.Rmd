@@ -75,7 +75,7 @@ system.time(result <- datsteps(Beazley, stepsize = 25))[3]
 system.time(result <- datsteps(Beazley, stepsize = 1))[3]
 ```
 
-Using larger step sizes is only recommended if the stepsize of 1 year leads to significant delays in processing while yielding no additional information. If one where to look at a total time span of 10000 years, step sizes of 1 no longer seem very reasonable or rather neccessary, as such detailed changes should not be visible or graspable at all, and using steps of 100 years will lead to the same outcome. As classical archaeologists a duration of more than 1000 years mostly exceeds our area of study. We seem to get good results with stepsizes between 1 and 25.
+Using larger step sizes is only recommended if the stepsize of 1 year leads to significant delays in processing while yielding no additional information. If one where to look at a total time span of 10000 years, step sizes of 1 no longer seem very reasonable or rather necessary, as such detailed changes should not be visible or graspable at all, and using steps of 100 years will lead to the same outcome. As classical archaeologists a duration of more than 1000 years mostly exceeds our area of study. We seem to get good results with stepsizes between 1 and 25.
 
 
 ```{r steps1}
@@ -117,7 +117,7 @@ plot(dens)
 
 ## Scaling the Weight along Groups of Objects
 
-In order to display the objects seperated into groups, the weights first have to be scaled along group membership, so that the sum of all weights in a group will equal 1. datplots function `scaleweight()` does exactly that for a dataframe as it was returned by `datsteps()`. A column that contains the variables for group membership needs to indicated.
+In order to display the objects separated into groups, the weights first have to be scaled along group membership, so that the sum of all weights in a group will equal 1. datplots function `scaleweight()` does exactly that for a dataframe as it was returned by `datsteps()`. A column that contains the variables for group membership needs to indicated.
 
 
 ```{r scaleweight}
@@ -167,7 +167,7 @@ ggplot(result_bith, aes(x = DAT_step, weight = weight)) + Plot_Theme + Plot_Fill
   geom_density(alpha = 0.5, fill = "grey30") + xlab("Dating")
 ```
 
-## Including Histograms for an Impression of Quantitiy
+## Including Histograms for an Impression of Quantity
 
 We also added a function that calculated the value needed to scale the density curve to the axis of a Histogram of the dating steps. Please note that the histogram will not show the actual objects counts, but the counts of the maximum possible objects dated to the corresponding year resp. bin. The value to scale the density curve for a combined plot with a histogram can be obtained via `get.histogramscale`: 
 

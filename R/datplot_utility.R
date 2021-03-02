@@ -25,7 +25,7 @@ generate.stepsize <- function(DAT_mat) {
 #'
 #' @description Requires a dataframe with 4 variables: ID (ideally factor),
 #' group (ideally factor), minimum date (int/numeric) and
-#' maximum date (int/numeric) and DAT_err as a vector of indizes where
+#' maximum date (int/numeric) and DAT_err as a vector of indices where
 #' dating is in wrong order.
 #'
 #' @param DAT_df a dataframe with 4 variable: ID, group, minimum date (int/num)
@@ -120,7 +120,7 @@ calculate.outputrows <- function(DAT_mat, stepsize) {
 #' @title Calculate the sequence of dating steps (internal)
 #'
 #' @description Produces an appropriate sequence of years between the minimum
-#' and maximum dating. If they cannot be properly devided by the stepsize set
+#' and maximum dating. If they cannot be properly divided by the stepsize set
 #' beforehand, either three values are generated for objects that are dated to
 #' a range of more then 60% of the stepsize (min, mean, max), or two values for
 #' objects dated to a timespan of less or equal to 60% of the stepsize.

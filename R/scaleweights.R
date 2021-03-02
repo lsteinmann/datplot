@@ -5,7 +5,7 @@
 #' @param DAT_df a dataframe
 #' @param var the index of the column that should be used
 #' as the group variable, OR "all" (note: all non-numeric values will
-#' result in the weight being scaled accross all objects)
+#' result in the weight being scaled across all objects)
 #' @param val the column that should be scaled (value / sum(values))
 #'
 #' @return the same dataframe, with scaled values in the specifies column

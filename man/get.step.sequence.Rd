@@ -18,7 +18,7 @@ sequence of steps to be created by create.sub.objects()
 }
 \description{
 Produces an appropriate sequence of years between the minimum
-and maximum dating. If they cannot be properly devided by the stepsize set
+and maximum dating. If they cannot be properly divided by the stepsize set
 beforehand, either three values are generated for objects that are dated to
 a range of more then 60% of the stepsize (min, mean, max), or two values for
 objects dated to a timespan of less or equal to 60% of the stepsize.

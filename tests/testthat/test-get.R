@@ -3,7 +3,7 @@ source(file = "../create_testing_df.R")
 
 testdf <- create.testing.df()
 
-testdfsteps <- scaleweight(datsteps(testdf))
+testdfsteps <- suppressWarnings(scaleweight(datsteps(testdf)))
 teststeps_wrong <- testdfsteps
 attributes(teststeps_wrong)$stepsize <- NULL
 #str(teststeps_wrong)
@@ -26,3 +26,4 @@ test_that("returns number", {
   expect_true(check.number(get.histogramscale(testdfsteps)))
   expect_true(check.number(get.histogramscale(20, binwidth = 5)))
 })
+

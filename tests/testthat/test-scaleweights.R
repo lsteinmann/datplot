@@ -3,7 +3,7 @@ source(file = "../create_testing_df.R")
 
 testdf <- create.testing.df()
 
-testdf_steps <- datsteps(testdf)
+testdf_steps <- suppressWarnings(datsteps(testdf))
 
 
 test_that("scaleweight appends attribute", {

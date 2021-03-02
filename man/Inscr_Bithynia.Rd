@@ -12,7 +12,7 @@ A data frame with 2878 rows and 9 variables:
   / \url{https://edh-www.adw.uni-heidelberg.de/home}, if available}
   \item{\code{Location}}{factor Findspot of the Inscription (City)}
   \item{\code{Source}}{character Corpus/Citation of the Inscription}
-  \item{\code{Dating}}{character Original Chronological Assesment,
+  \item{\code{Dating}}{character Original Chronological Assessment,
   may contain inconsistencies}
   \item{\code{Language}}{factor Language of the Inscription,
   can either be Latin, Greek, or both}
@@ -20,7 +20,7 @@ A data frame with 2878 rows and 9 variables:
   FALSE if dating is certain}
   \item{\code{DAT_min}}{integer lower border of the dating timespan,
   negative values for BCE, positive values for CE}
-  \item{\code{DAT_max}}{integer uppper border of the dating timespan,
+  \item{\code{DAT_max}}{integer upper border of the dating timespan,
   negative values for BCE, positive values for CE}
   \item{\code{URL}}{Link to the inscription (if available) at
   \url{https://inscriptions.packhum.org/} or
@@ -28,7 +28,7 @@ A data frame with 2878 rows and 9 variables:
 }
 }
 \source{
-Weissová, Barbora. 2019. “Regional Economy, Settlement Patterns and
+Weissova, Barbora. 2019. “Regional Economy, Settlement Patterns and
 the Road System in Bithynia (4th Century BC - 6th Century AD). Spatial and
 Quantitative Analysis.” Dissertation, Berlin: Freie Universität Berlin.
 \url{https://refubium.fu-berlin.de/handle/fub188/23730},
@@ -38,7 +38,7 @@ partially after \url{https://inscriptions.packhum.org/}
 Inscr_Bithynia
 }
 \description{
-The data set was gathered by Barbora Weissov\'a and published
+The data set was gathered by Barbora Weissova and published
 as part of her dissertation “Regional Economy, Settlement Patterns and the
 Road System in Bithynia (4th Century BC - 6th Century AD). Spatial and
 Quantitative Analysis.”.
