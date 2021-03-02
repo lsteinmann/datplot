@@ -7,7 +7,7 @@
 get.histogramscale(DAT_df_steps, binwidth = "stepsize")
 }
 \arguments{
-\item{DAT_df_steps}{a dataframe as returned by datsteps}
+\item{DAT_df_steps}{a dataframe as returned by datsteps (works also with a single number and a vector)}
 
 \item{binwidth}{the bandwidth to use for the density function and histogram. Should be stepsize used to
 create the dataframe. If a df as returned by datsteps() is given, stepsize can be automatically assigned
@@ -24,6 +24,7 @@ y-axis of a density graph should be multplied in order to be visible in the corr
 DAT_df_steps <- datsteps(DAT_df[1:100,], stepsize = 25)
 get.histogramscale(DAT_df_steps)
 
+get.histogramscale(DAT_df_steps$DAT_step, binwidth = 20)
 get.histogramscale(500, binwidth = 20)
 
 }

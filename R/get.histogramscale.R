@@ -28,7 +28,7 @@ get.histogramscale <- function(DAT_df_steps, binwidth = "stepsize") {
     if (class(DAT_df_steps) == "data.frame") {
       nrow <- nrow(DAT_df_steps)
     }
-    if (is.vector(DAT_df_steps)) {
+    if (is.atomic(DAT_df_steps)) {
       nrow <- length(DAT_df_steps)
     }
     if (binwidth == "stepsize") {
