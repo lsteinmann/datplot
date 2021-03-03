@@ -38,9 +38,15 @@ Installation
 Or via downloading the latest release and installing from the file: 
 
     devtools::install_local(path = "../datplot_1.0.0.tar.gz")
+    
+In case you are unable to find the vignettes after installing from github directly, try: 
+
+    devtools::install_github("lsteinmann/datplot", build_vignettes = TRUE)
+
+But you may have to install vignette dependencies manually (see suggests in the DESCRIPTION). Anyone who has the tidyverse installed should encounter no issues.
 
 Contact
 -------
 
-Please feel free to use this idea or the package in your research. I would be happy if you contacted me if you do, because I'm interested to know whether this helps anybody. Also, if you have other ideas, critique or improvements, I would be very glad to hear from you or review your pull requests and changes! 
+Please feel free to use and change the code to your liking. I would be happy if you contacted me if you do, because I'm interested to know whether this helps anybody. Also, if you have any ideas, critique or improvements, I would be very glad to hear from you! 
 
