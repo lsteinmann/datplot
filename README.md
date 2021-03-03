@@ -26,7 +26,7 @@ I imagine this to be mostly useful for surveys and other analysis aimed at the l
 
 Recommendation
 -------
-People interested in employing this method should also consider taking a look at [ISAAKiel's package aoristAAR](https://github.com/ISAAKiel/aoristAAR/), or at [archSeries](github.com/davidcorton/archSeries), [tabula](github.com/nfrerebeau/tabula/) and [rtefact](github.com/ahb108/rtefact). 
+People interested in employing this method should also consider taking a look at [ISAAKiel's package aoristAAR](https://github.com/ISAAKiel/aoristAAR/), or at [archSeries](https://github.com/davidcorton/archSeries), [tabula](https://github.com/tesselle/tabula) and [rtefact](https://github.com/ahb108/rtfact). 
 
 
 Installation 
