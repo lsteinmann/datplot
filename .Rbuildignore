@@ -6,3 +6,5 @@
 ^codecov\.yml$
 ^cran-comments\.md$
 ^todo\.R$
+^CRAN-RELEASE$
+^LICENSE\.md$

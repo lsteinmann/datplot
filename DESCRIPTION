@@ -20,7 +20,7 @@ Description: Converting date ranges into dating 'steps' eases
     other variables over time. This package provides tools to process and
     prepare data for visualization and employs the concept of aoristic
     analysis.
-License: CC BY-SA 4.0
+License: GPL (>= 3)
 URL: https://github.com/lsteinmann/datplot
 BugReports: https://github.com/lsteinmann/datplot/issues
 Depends: 

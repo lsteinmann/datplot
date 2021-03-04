@@ -1,9 +1,10 @@
 <!-- badges: start -->
-  [![R-CMD-check](https://github.com/lsteinmann/datplot/workflows/R-CMD-check/badge.svg)](https://github.com/lsteinmann/datplot/actions)
-  [![Build Status](https://travis-ci.com/lsteinmann/datplot.svg?branch=main)](https://travis-ci.com/lsteinmann/datplot)
-  [![codecov](https://codecov.io/gh/lsteinmann/datplot/branch/main/graph/badge.svg?token=CVNCAL9U4W)](https://codecov.io/gh/lsteinmann/datplot)
-  [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4285912.svg)](https://doi.org/10.5281/zenodo.4285912)
-  <!-- badges: end -->
+[![CRAN status](https://www.r-pkg.org/badges/version/datplot)](https://CRAN.R-project.org/package=datplot)
+[![R-CMD-check](https://github.com/lsteinmann/datplot/workflows/R-CMD-check/badge.svg)](https://github.com/lsteinmann/datplot/actions)
+[![Build Status](https://travis-ci.com/lsteinmann/datplot.svg?branch=main)](https://travis-ci.com/lsteinmann/datplot)
+[![codecov](https://codecov.io/gh/lsteinmann/datplot/branch/main/graph/badge.svg?token=CVNCAL9U4W)](https://codecov.io/gh/lsteinmann/datplot)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4285912.svg)](https://doi.org/10.5281/zenodo.4285912)
+<!-- badges: end -->
 
 datplot
 =======
