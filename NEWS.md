@@ -3,7 +3,7 @@
 
 * Added a `NEWS.md` file to track changes to the package
 * some style corrections
-* First release for submission to CRAN
+* First release for submission to CRAN, accepted -> datplot is now on CRAN
 
 ---
 

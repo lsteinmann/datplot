@@ -32,7 +32,12 @@ People interested in employing this method should also consider taking a look at
 
 Installation 
 -------
-'datplot' is not currently on CRAN. It can be installed from GitHub with devtools:
+'datplot' is on CRAN with version 1.0.0. 
+
+    install.packages("datplot")
+
+
+Later versions can be installed from GitHub with devtools:
 
     devtools::install_github("lsteinmann/datplot")
 
