@@ -22,13 +22,11 @@ This package proposes implements the concepts of aoristic analysis to prepare ar
 
 after installing the package, or on GitHub in the /vignettes/ directory. Density plots are easy to understand and are usually aesthetically pleasing. They do omit a some information, such as individual counts, that bar histograms can communicate better. On the other hand, ranges can be incorporated into the visualization as well to regard the variety of timespans archaeological objects may be dated to.
 
-I imagine this to be mostly useful for surveys and other analysis aimed at the longue duree. The package will be published along with a case study on the Inscriptions of Bithynia, which are now included as a Data object in the datplot-package itself. [The paper has been accepted and the citation will be added as soon as it exists.] 
-
 ![Attic Pottery from BAPD by Date](inst/extdata/demo_readme.png "Attic Pottery from BAPD by Date")
 
 Publication
 -------
-The package has been published along with a case study on inscriptions from Bithynia: [Steinmann, L., & Weissova, B. (2021). Datplot: A New R Package for the Visualization of Date Ranges in Archaeology. Advances in Archaeological Practice, 1-11. doi:10.1017/aap.2021.8](https://doi.org/10.1017/aap.2021.8).
+The package has been published along with a case study on inscriptions from Bithynia: [Steinmann, L., & Weissova, B. (2021). Datplot: A New R Package for the Visualization of Date Ranges in Archaeology. Advances in Archaeological Practice, 1-11. doi:10.1017/aap.2021.8](https://doi.org/10.1017/aap.2021.8). Data used in the case study is included in the package.
 
 Recommendation
 -------
