@@ -1,3 +1,6 @@
+# datplot 1.0.1
+* change process to get.weights() to add 1 to all weights to possibly get more 
+meaningful values
 
 # datplot 1.0.0
 

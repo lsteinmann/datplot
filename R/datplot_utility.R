@@ -64,12 +64,16 @@ get.weights <- function(DAT_min, DAT_max) {
   weights <- as.data.frame(matrix(ncol = 2, nrow = length(DAT_min)))
   weights[, 1] <- abs(DAT_min - DAT_max)
   weights[, 2] <- TRUE
-  if (any(weights[, 1] == 0)) {
+  # FIX: add 1 to all weights so that same values always state 1 year, and
+  # two years are actually recognized as such etc. etc. (many thanks to
+  # Christian Gugl for pointing this out to me)
+  weights[, 1] <- weights[, 1] + 1
+  if (any(weights[, 1] == 1)) {
     # store FALSE if any weights are zero to display the warning below
-    weights[which(weights[, 1] == 0), 2] <- FALSE
+    weights[which(weights[, 1] == 1), 2] <- FALSE
     # then store a weight of 1 as to treat objects with same min and max
     # dating (dated to one year precisely) as very influential
-    weights[which(weights[, 1] == 0), 1] <- 1
+    # weights[which(weights[, 1] == 0), 1] <- 1
   }
   # weights have to be below 1
   weights[, 1] <- 1 / weights[, 1]

@@ -24,6 +24,5 @@ testdf[1, 3:4] <- c(4, 4)
 
 test_that("error for wrong value of stepsize", {
   expect_warning(datsteps(testdf), regexp = "the same value")
-  expect_failure(expect_warning(datsteps(testdf, stepsize = 1),
-                                regexp = "larger than the range of"))
+  expect_warning(datsteps(testdf), regexp = "larger than the range of")
 })
