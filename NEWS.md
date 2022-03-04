@@ -1,6 +1,7 @@
 # datplot 1.0.1
-* change process to get.weights() to add 1 to all weights to possibly get more 
-meaningful values
+
+* Change calculation in `get.weights()` to `1 / (abs(DAT_min - DAT_max) + 1)` to get real probability values for each year. This only has a real effect when using a stepsize of 1, as it makes the weight-values usable as "dating probability".
+* Clean up `calculate.outputrows()` somewhat.
 
 # datplot 1.0.0
 
