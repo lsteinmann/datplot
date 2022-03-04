@@ -27,7 +27,7 @@ after installing the package, or on GitHub in the /vignettes/ directory. Density
 
 Publication
 -------
-The package has been published along with a case study on inscriptions from Bithynia: [Steinmann, L., & Weissova, B. (2021). Datplot: A New R Package for the Visualization of Date Ranges in Archaeology. Advances in Archaeological Practice, 1-11. doi:10.1017/aap.2021.8](https://doi.org/10.1017/aap.2021.8). Data used in the case study is included in the package.
+The package at version 1.0.0 has been published along with a case study on inscriptions from Bithynia: [Steinmann, L., & Weissova, B. (2021). Datplot: A New R Package for the Visualization of Date Ranges in Archaeology. Advances in Archaeological Practice, 1-11. doi:10.1017/aap.2021.8](https://doi.org/10.1017/aap.2021.8). Data used in the case study is included in the package.
 
 Recommendation
 -------
