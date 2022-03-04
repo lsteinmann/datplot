@@ -21,7 +21,7 @@ plot so that both will be visible
 }
 \description{
 Requires a dataframe as produced by datsteps() or a number as
-DAT_df_steps. Calculated the value with which the y-axis of a density graph
+DAT_df_steps. Calculates the value with which the y-axis of a density graph
 should be multiplied in order to be visible in the corresponding histogram.
 }
 \examples{
