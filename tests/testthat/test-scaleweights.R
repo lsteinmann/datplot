@@ -18,7 +18,11 @@ test_that("scaleweight appends attribute", {
 
 
 test_that("val accepts only numbers", {
-  expect_error(scaleweight(testdf_steps, val = "no"))
-  expect_error(scaleweight(testdf_steps, val = 8))
+  expect_error(scaleweight(testdf_steps, var = "all", val = "no"))
+  expect_error(scaleweight(testdf_steps, var = "all", val = 8))
 })
 
+test_that("var accepts only numbers or 'all' ", {
+  expect_error(scaleweight(testdf_steps, var = "blobb"))
+  expect_s3_class(scaleweight(testdf_steps, var = 3), "data.frame")
+})

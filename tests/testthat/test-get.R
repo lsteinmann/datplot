@@ -1,7 +1,7 @@
 source(file = "../create_testing_df.R")
 testdf <- create.testing.df()
 
-testdfsteps <- suppressWarnings(scaleweight(datsteps(testdf)))
+testdfsteps <- suppressWarnings(scaleweight(datsteps(testdf), var = "all"))
 teststeps_wrong <- testdfsteps
 attributes(teststeps_wrong)$stepsize <- NULL
 
