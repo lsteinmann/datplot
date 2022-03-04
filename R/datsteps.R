@@ -62,7 +62,7 @@ datsteps <- function(DAT_df, stepsize = 25) {
 
   # calculate the weights
   weights <- get.weights(DAT_mat[, "datmin"], DAT_mat[, "datmax"])
-  DAT_mat[, "weight"] <- weights[, 1]
+  DAT_mat[, "weight"] <- weights
 
   # Process the dating to create the steps
   DAT_res <- create.sub.objects(DAT_mat, stepsize)

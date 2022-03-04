@@ -26,7 +26,7 @@ get.histogramscale <- function(DAT_df_steps, binwidth = "stepsize") {
   if (check.number(DAT_df_steps) & length(DAT_df_steps) == 1) {
     nrow <- DAT_df_steps
     if (binwidth == "stepsize") {
-      stop("'binwidth == stepsize' cannot be used with a number, supply either a dataframe as returned by datsteps or a numerical binwidth")
+      stop("'binwidth == 'stepsize'' cannot be used with a number, supply either a dataframe as returned by datsteps or a numerical binwidth")
     }
   } else {
     if (class(DAT_df_steps) == "data.frame") {
