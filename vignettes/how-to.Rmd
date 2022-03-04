@@ -200,7 +200,7 @@ With the update to v.1.0.1 the calculation of weights has slightly changed. When
 
 This now opens the possibility to calculate the cumulative probability for each successive year -- also suggested by Christian Gugl --, which is useful in the case of numismatic research, where it reflects the rising probability of minting. The cumulative probability has been introduced as an option in v.1.1 and is calculated in a separate column when setting `cumulative = TRUE` in the `datsteps()`-function. Please note that the cumulative probability/weight does not work (and does not mean anything) for stepsizes larger than 1!
 
-```{r cumulative demo}
+```{r cumulative demo, fig.height = 10}
 data("Inscr_Bithynia")
 Inscr_Bithynia <- na.omit(Inscr_Bithynia[, c(1, 3, 8, 9)])
 Inscr_Bithynia <- Inscr_Bithynia[sample(1:nrow(Inscr_Bithynia), 5), ]
