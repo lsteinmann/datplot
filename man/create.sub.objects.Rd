@@ -4,13 +4,15 @@
 \alias{create.sub.objects}
 \title{Create sub-objects for each object in a dataframe (internal)}
 \usage{
-create.sub.objects(DAT_mat, stepsize)
+create.sub.objects(DAT_mat, stepsize, cumulative = FALSE)
 }
 \arguments{
 \item{DAT_mat}{a matrix with 3 variables as prepared by datsteps()}
 
 \item{stepsize}{Number of years that should be used as an interval for
 creating dating steps.}
+
+\item{cumulative}{TRUE if a column for cumulative weights should be added}
 }
 \value{
 a longer matrix of the same structure to be further processed by

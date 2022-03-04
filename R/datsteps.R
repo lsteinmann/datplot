@@ -11,6 +11,9 @@
 #' each object _must_ be one row.
 #' @param stepsize defaults to 5. Number of years that should be used as an
 #' interval for creating dating steps.
+#' @param cumulative TRUE if a column for cumulative weights ("cumul_weights")
+#' should be calculated (this only seems reasonable for a stepsize of 1, as
+#' the summed probability in larger stepsizes does not mean anything)
 #'
 #' @return a larger dataframe with a number of steps for each object as well
 #' as a 'weight' value, that is a quantification of how well the object is
@@ -24,7 +27,7 @@
 #'
 #' @export datsteps
 
-datsteps <- function(DAT_df, stepsize = 25) {
+datsteps <- function(DAT_df, stepsize = 25, cumulative = FALSE) {
   DAT_df <- as.data.frame(DAT_df)
   # Checking the overall structure
   check.structure(DAT_df)
@@ -64,8 +67,13 @@ datsteps <- function(DAT_df, stepsize = 25) {
   weights <- get.weights(DAT_mat[, "datmin"], DAT_mat[, "datmax"])
   DAT_mat[, "weight"] <- weights[, 1]
 
+  # warning for stepsizes above 1 and cumulative weight
+  if (cumulative & stepsize != 1) {
+    warning("Using cumulative weight and a stepsize of > 1 is not useful.")
+  }
+
   # Process the dating to create the steps
-  DAT_res <- create.sub.objects(DAT_mat, stepsize)
+  DAT_res <- create.sub.objects(DAT_mat, stepsize, cumulative)
 
   # convert to data.frame again and store the variable and ID in the correct
   # order, using the matrix index as reference
@@ -74,8 +82,12 @@ datsteps <- function(DAT_df, stepsize = 25) {
   result[, 1] <- DAT_df[result[, 1], 1]
 
   # names and attributes
-  colnames(result) <- c("ID", "variable", "DAT_min", "DAT_max",
-                        "weight", "DAT_step")
+  colnames <- c("ID", "variable", "DAT_min", "DAT_max",
+                "weight", "DAT_step")
+  if(cumulative) {
+    colnames <- c(colnames, "cumul_weight")
+  }
+  colnames(result) <- colnames
   attr(result$DAT_step, "descr") <- "step"
   attr(result$weight, "descr") <- "weight"
   attr(result, "stepsize") <- stepsize

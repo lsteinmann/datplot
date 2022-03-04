@@ -2,7 +2,7 @@ Type: Package
 Package: datplot
 Title: Preparation of Object Dating Ranges for Density Plots
     (Aoristic Analysis)
-Version: 1.0.1
+Version: 1.1.0
 Authors@R: 
     c(person(given = "Lisa",
              family = "Steinmann",

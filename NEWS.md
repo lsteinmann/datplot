@@ -1,3 +1,10 @@
+
+# datplot 1.1.0
+* add an option to directly calculate the cumulative weight (which only works
+if it is used with a stepsize of 1, because otherwise the cumulative weight
+does not mean anything.)
+
+
 # datplot 1.0.1
 * change process to get.weights() to add 1 to all weights to possibly get more 
 meaningful values

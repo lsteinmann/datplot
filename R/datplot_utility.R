@@ -221,17 +221,21 @@ get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
 #' @param DAT_mat a matrix with 3 variables as prepared by datsteps()
 #' @param stepsize Number of years that should be used as an interval for
 #' creating dating steps.
+#' @param cumulative TRUE if a column for cumulative weights should be added
 #'
 #' @return a longer matrix of the same structure to be further processed by
 #' datsteps() with a number of steps for each object
 #'
 #' @export create.sub.objects
 
-create.sub.objects <- function(DAT_mat, stepsize) {
+create.sub.objects <- function(DAT_mat, stepsize, cumulative = FALSE) {
 
   outputrows <- calculate.outputrows(DAT_mat, stepsize)
-  result <- as.data.frame(matrix(ncol = 6, nrow = outputrows + 100))
-
+  if (cumulative) {
+    result <- as.data.frame(matrix(ncol = 7, nrow = outputrows + 100))
+  } else {
+    result <- as.data.frame(matrix(ncol = 6, nrow = outputrows + 100))
+  }
   diffs <- DAT_mat[, "datmax"] - DAT_mat[, "datmin"]
   diffs[diffs == 0] <- 1
 
@@ -254,6 +258,10 @@ create.sub.objects <- function(DAT_mat, stepsize) {
     result[first_na:last_row, 4] <- DAT_mat[i, 3]
     result[first_na:last_row, 5] <- DAT_mat[i, 4]
     result[first_na:last_row, 6] <- sequence
+    if (cumulative) {
+      result[first_na:last_row, 7] <- cumsum(rep(DAT_mat[i, 4],
+                                                 length(sequence)))
+    }
   }
   result <- result[-c(match(NA, result[, 1]):nrow(result)), ]
   return(result)

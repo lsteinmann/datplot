@@ -90,3 +90,13 @@ test_that("create.sub.objects issues no warning", {
   expect_warning(create.sub.objects(DAT_mat, stepsize = 5),
                  regexp = "stepsize is larger")
 })
+
+test_that("create.sub.objects adds cumulative weight", {
+  expect_equal(ncol(create.sub.objects(DAT_mat, stepsize = 1,
+                                       cumulative = TRUE)),
+               7)
+  expect_equal(ncol(create.sub.objects(DAT_mat, stepsize = 1,
+                                       cumulative = FALSE)),
+               6)
+})
+
