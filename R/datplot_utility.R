@@ -93,13 +93,13 @@ get.weights <- function(DAT_min, DAT_max) {
 
 
 # TODO: as stated, this is still an approximation and overestimates the number.
-# in testing, there were cases of
-# underestimating, but it hasnt happened since the last fix
+# in testing, there were cases of underestimating, but it hasnt happened
+# since the last fix
 
 calculate.outputrows <- function(DAT_mat, stepsize) {
   total_years <- abs(DAT_mat[, "datmax"] - DAT_mat[, "datmin"]) + 1
   mean_year_index <- which(total_years < stepsize)
-  outputrows <- ceiling(sum((total_years / stepsize) + 3))
+  outputrows <- sum(ceiling(total_years / stepsize) + 2)
 
   if (length(mean_year_index) != 0) {
     outputrows <- outputrows + length(mean_year_index)
@@ -155,17 +155,17 @@ get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
     resid <- datmax - sequence[length(sequence)]
     if (resid >= (stepsize / 2)) {
       # if the residual is larger or equals half the stepsize, the stepsize is
-      # temporarily modified to fit the as many values
+      # temporarily modified to fit as many values
       # as it would with the length of the sequence generated
       stepsize_mod <- (datmax - datmin) / (length(sequence) + 1)
       sequence <- seq(datmin, datmax, stepsize_mod)
       # then rounds all values except first and last, which need to stay as
-      # minumum and maximum date
+      # minimum and maximum date
       sequence[-c(1, length(sequence))] <-
         round(sequence[-c(1, length(sequence))],
               digits = 0)
     } else if (resid != 0) {
-      # if the residual is smaller but also not 0, the sequence values at moved
+      # if the residual is smaller but also not 0, the sequence values are moved
       # by an appropriate fraction
       move <- round(resid / (length(sequence) - 1), digits = 0)
       sequence[2:length(sequence)] <- sequence[2:length(sequence)] + move
@@ -216,7 +216,7 @@ get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
 create.sub.objects <- function(DAT_mat, stepsize) {
 
   outputrows <- calculate.outputrows(DAT_mat, stepsize)
-  result <- as.data.frame(matrix(ncol = 6, nrow = outputrows + 100))
+  result <- as.data.frame(matrix(ncol = 6, nrow = outputrows))
 
   diffs <- (DAT_mat[, "datmax"] - DAT_mat[, "datmin"]) + 1
 
@@ -240,6 +240,7 @@ create.sub.objects <- function(DAT_mat, stepsize) {
     result[first_na:last_row, 5] <- DAT_mat[i, 4]
     result[first_na:last_row, 6] <- sequence
   }
+
   result <- result[-c(match(NA, result[, 1]):nrow(result)), ]
   return(result)
 }
