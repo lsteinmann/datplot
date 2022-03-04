@@ -26,3 +26,9 @@ test_that("error for wrong value of stepsize", {
   expect_warning(datsteps(testdf), regexp = "the same value")
   expect_warning(datsteps(testdf), regexp = "larger than the range of")
 })
+
+testdf$variable <- as.factor(testdf$variable)
+test_that("stepsize = 'auto' works", {
+  expect_output(suppressWarnings(test <- datsteps(testdf, stepsize = "auto")),
+                  "auto")
+})
