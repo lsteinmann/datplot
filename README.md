@@ -29,7 +29,7 @@ The package has been published along with a case study on inscriptions from Bith
 
 Recommendation
 -------
-People interested in employing this method should also consider taking a look at [ISAAKiel's package aoristAAR](https://github.com/ISAAKiel/aoristAAR/), or at [archSeries](https://github.com/davidcorton/archSeries), [tabula](https://github.com/tesselle/tabula) and [rtefact](https://github.com/ahb108/rtfact). 
+People interested in employing this method should also consider taking a look at [ISAAKiel's package aoristAAR](https://github.com/ISAAKiel/aoristAAR/), or at [archSeries](https://github.com/davidcorton/archSeries), [tabula](https://github.com/tesselle/tabula), [rtefact](https://github.com/ahb108/rtfact) and [aoristic-analysis (LimesLimits)](https://github.com/LimesLimits/aoristic-analysis). 
 
 
 Installation 
