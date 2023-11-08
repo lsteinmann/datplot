@@ -12,11 +12,9 @@
 #' @export generate.stepsize
 
 generate.stepsize <- function(DAT_mat) {
-  timespans <- abs(DAT_mat[, "datmin"] - DAT_mat[, "datmax"])
+  timespans <- (abs(DAT_mat[, "datmin"] - DAT_mat[, "datmax"]) + 1)
   stepsize <- min(timespans)
-  if (stepsize < 1) {
-    stepsize <- 1
-  }
+
   print(paste("Using stepsize = ", stepsize, " (auto).", sep = ""))
   return(stepsize)
 }
@@ -61,28 +59,20 @@ switch.dating <- function(DAT_df, DAT_err) {
 
 
 get.weights <- function(DAT_min, DAT_max) {
-  weights <- as.data.frame(matrix(ncol = 2, nrow = length(DAT_min)))
-  weights[, 1] <- abs(DAT_min - DAT_max)
-  weights[, 2] <- TRUE
+  weights <- abs(DAT_min - DAT_max)
   # FIX: add 1 to all weights so that same values always state 1 year, and
   # two years are actually recognized as such etc. etc. (many thanks to
-  # Christian Gugl for pointing this out to me)
-  weights[, 1] <- weights[, 1] + 1
-  if (any(weights[, 1] == 1)) {
-    # store FALSE if any weights are zero to display the warning below
-    weights[which(weights[, 1] == 1), 2] <- FALSE
-    # then store a weight of 1 as to treat objects with same min and max
-    # dating (dated to one year precisely) as very influential
-    # weights[which(weights[, 1] == 0), 1] <- 1
-  }
-  # weights have to be below 1
-  weights[, 1] <- 1 / weights[, 1]
-  if (any(weights[, 2] == FALSE)) {
+  # Christian Gugl for pointing out the previous flaw)
+  weights <- weights + 1
+  if (any(weights == 1)) {
     warning(paste("Warning: DAT_min and DAT_max at Index: ",
-                  paste(which(weights[, 2] == FALSE), collapse = ", "), ")",
+                  paste(which(weights == 1), collapse = ", "), ")",
                   " have the same value! Is this correct? ",
                   "Please check the table for possible errors.", sep = ""))
   }
+  # weights have to be below 1
+  weights <- 1 / weights
+
   return(weights)
 }
 
@@ -107,15 +97,11 @@ get.weights <- function(DAT_min, DAT_max) {
 # underestimating, but it hasnt happened since the last fix
 
 calculate.outputrows <- function(DAT_mat, stepsize) {
-  mean_year_index <- which(DAT_mat[, "datmax"] - DAT_mat[, "datmin"] < stepsize)
+  total_years <- abs(DAT_mat[, "datmax"] - DAT_mat[, "datmin"]) + 1
+  mean_year_index <- which(total_years < stepsize)
+  outputrows <- ceiling(sum((total_years / stepsize) + 3))
 
-  if (length(mean_year_index) == 0) {
-    absdiff <- abs(DAT_mat[, "datmax"] - DAT_mat[, "datmin"])
-    outputrows <- ceiling(sum((absdiff / stepsize) + 3))
-  } else {
-    absdiff <- abs(DAT_mat[-mean_year_index, "datmax"] -
-                     DAT_mat[-mean_year_index, "datmin"])
-    outputrows <- ceiling(sum((absdiff / stepsize) + 3))
+  if (length(mean_year_index) != 0) {
     outputrows <- outputrows + length(mean_year_index)
   }
   return(outputrows)
@@ -299,12 +285,13 @@ check.structure <- function(DAT_df) {
   dat_df_structure <- c(NA, NA, NA, NA, NA)
   names(dat_df_structure) <- c("is.df", "is.id", "is.var",
                                "is.minDAT", "is.maxDAT")
-
+  # Todo
   dat_df_structure["is.df"] <- is.data.frame(DAT_df)
   dat_df_structure["is.id"] <- is.character(DAT_df[, 1, drop = TRUE])
   dat_df_structure["is.var"] <- is.factor(DAT_df[, 2, drop = TRUE])
-  dat_df_structure[c("is.minDAT", "is.maxDAT")] <- c(check.number(DAT_df[, 3, drop = TRUE]),
-                                                     check.number(DAT_df[, 4, drop = TRUE]))
+  dat_df_structure["is.minDAT"] <- check.number(DAT_df[, 3, drop = TRUE])
+  dat_df_structure["is.maxDAT"] <- check.number(DAT_df[, 4, drop = TRUE])
+
 
   if (dat_df_structure[1] == FALSE) {
     result <- FALSE

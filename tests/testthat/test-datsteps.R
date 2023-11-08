@@ -27,6 +27,7 @@ test_that("error for wrong value of stepsize", {
   expect_warning(datsteps(testdf), regexp = "larger than the range of")
 })
 
+
 testdf <- create.testing.df()[1:2,]
 testdf$variable <- as.factor(testdf$variable)
 str(testdf)
@@ -60,4 +61,11 @@ test_that("warning for cumulative weights with stepsize over 1", {
   expect_warning(datsteps(testdf, stepsize = 2,
                           cumulative = TRUE),
                  regexp = "cumulative")
+})
+
+test_that("warning for cumulative weights with stepsize over 1", {
+testdf$variable <- as.factor(testdf$variable)
+test_that("stepsize = 'auto' works", {
+  expect_output(suppressWarnings(test <- datsteps(testdf, stepsize = "auto")),
+                  "auto")
 })

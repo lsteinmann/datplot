@@ -65,7 +65,7 @@ datsteps <- function(DAT_df, stepsize = 25, cumulative = FALSE) {
 
   # calculate the weights
   weights <- get.weights(DAT_mat[, "datmin"], DAT_mat[, "datmax"])
-  DAT_mat[, "weight"] <- weights[, 1]
+  DAT_mat[, "weight"] <- weights
 
   # warning for stepsizes above 1 and cumulative weight
   if (cumulative & stepsize != 1) {
