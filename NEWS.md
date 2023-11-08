@@ -1,4 +1,3 @@
-
 # datplot 1.1.0
 * add an option to directly calculate the cumulative weight (which only works
 if it is used with a stepsize of 1, because otherwise the cumulative weight

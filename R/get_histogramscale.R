@@ -29,7 +29,7 @@ get.histogramscale <- function(DAT_df_steps, binwidth = "stepsize") {
       stop("'binwidth == 'stepsize'' cannot be used with a number, supply either a dataframe as returned by datsteps or a numerical binwidth")
     }
   } else {
-    if (class(DAT_df_steps) == "data.frame") {
+    if (inherits(DAT_df_steps, "data.frame")) {
       nrow <- nrow(DAT_df_steps)
     }
     if (is.atomic(DAT_df_steps)) {
