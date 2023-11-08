@@ -63,9 +63,7 @@ test_that("warning for cumulative weights with stepsize over 1", {
                  regexp = "cumulative")
 })
 
-test_that("warning for cumulative weights with stepsize over 1", {
-testdf$variable <- as.factor(testdf$variable)
 test_that("stepsize = 'auto' works", {
-  expect_output(suppressWarnings(test <- datsteps(testdf, stepsize = "auto")),
+    expect_output(suppressWarnings(test <- datsteps(testdf, stepsize = "auto")),
                   "auto")
 })
