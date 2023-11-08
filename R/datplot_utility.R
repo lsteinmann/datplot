@@ -276,12 +276,13 @@ check.structure <- function(DAT_df) {
   dat_df_structure <- c(NA, NA, NA, NA, NA)
   names(dat_df_structure) <- c("is.df", "is.id", "is.var",
                                "is.minDAT", "is.maxDAT")
-
+  # Todo
   dat_df_structure["is.df"] <- is.data.frame(DAT_df)
   dat_df_structure["is.id"] <- is.character(DAT_df[, 1, drop = TRUE])
   dat_df_structure["is.var"] <- is.factor(DAT_df[, 2, drop = TRUE])
-  dat_df_structure[c("is.minDAT", "is.maxDAT")] <- c(check.number(DAT_df[, 3, drop = TRUE]),
-                                                     check.number(DAT_df[, 4, drop = TRUE]))
+  dat_df_structure["is.minDAT"] <- check.number(DAT_df[, 3, drop = TRUE])
+  dat_df_structure["is.maxDAT"] <- check.number(DAT_df[, 4, drop = TRUE])
+
 
   if (dat_df_structure[1] == FALSE) {
     result <- FALSE

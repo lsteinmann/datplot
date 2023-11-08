@@ -45,7 +45,7 @@ testdf_wrong <- testdf
 testdf_wrong$min <- "TEST"
 testdf_wrong_two <- testdf
 testdf_wrong_two$max <- factor("börek")
-testdf_wrong_three <- matrix(nrow = 2, ncol = 2)
+testdf_wrong_three <- matrix(nrow = 4, ncol = 4)
 
 
 test_that("check.number returns true for numbers false for other", {
