@@ -43,17 +43,18 @@ datsteps <- function(DAT_df,
                  "probability",
                  calc)
 
+  # redundand
+  if (cumulative & calc != "probability") {
+    warning("Switching to probability calculation to provide cumulative probability.")
+    calc <- "probability"
+  }
+  if (stepsize != 1 && calc == "probability") {
+    warning("Probability calculation is only meaningful for stepsize = 1.")
+  }
+
   calc <- match.arg(calc, c("weight", "probability"))
 
   message(paste0("Using ", calc, " calculation."))
-
-  if (stepsize != 1 && calc == "probability") {
-    stop("Probability calculation should only be used with stepsize = 1.")
-  }
-  # redundand
-  if (cumulative & stepsize != 1) {
-    warning("Using cumulative weight and a stepsize of > 1 is not useful.")
-  }
 
   DAT_df <- as.data.frame(DAT_df)
   # Checking the overall structure

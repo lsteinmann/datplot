@@ -35,13 +35,17 @@ testdf$min <- c(1, 10)
 testdf$max <- c(2, 12)
 
 test_steps <- datsteps(testdf, stepsize = 1)
-test_cumul <- datsteps(testdf, stepsize = 1, cumulative = TRUE)
+test_cumul <- datsteps(testdf, stepsize = 1, calc = "prob", cumulative = TRUE)
 
 test_that("cumulative weight is added", {
-  expect_equal(ncol(datsteps(testdf,
-                             stepsize = 1,
-                             cumulative = TRUE)),
+  test <- suppressWarnings(datsteps(testdf,
+                                    stepsize = 1,
+                                    cumulative = TRUE))
+  expect_equal(ncol(test),
                7)
+  test <- suppressWarnings(datsteps(testdf,
+                                    stepsize = 1,
+                                    cumulative = FALSE))
   expect_equal(ncol(datsteps(testdf,
                              stepsize = 1,
                              cumulative = FALSE)),
@@ -49,18 +53,18 @@ test_that("cumulative weight is added", {
 })
 
 test_that("cumulative weight is 1 for row 2 + 5", {
-  expect_equal(datsteps(testdf, stepsize = 1,
-                        cumulative = TRUE)[2,7],
+  test <- suppressWarnings(datsteps(testdf, stepsize = 1,
+                                    cumulative = TRUE))
+  expect_equal(test[2,7],
                1)
-  expect_equal(datsteps(testdf, stepsize = 1,
-                        cumulative = TRUE)[5,7],
+  expect_equal(test[5,7],
                1)
 })
 
-test_that("warning for cumulative weights with stepsize over 1", {
+test_that("Warning for cumulative weights with stepsize over 1", {
   expect_warning(datsteps(testdf, stepsize = 2,
                           cumulative = TRUE),
-                 regexp = "cumulative")
+                 regexp = "stepsize")
 })
 
 test_that("stepsize = 'auto' works", {
