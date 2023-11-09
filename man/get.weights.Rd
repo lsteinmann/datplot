@@ -4,7 +4,7 @@
 \alias{get.weights}
 \title{Calculate the weights for each dated object}
 \usage{
-get.weights(DAT_min, DAT_max, use.probability = FALSE)
+get.weights(DAT_min, DAT_max)
 }
 \arguments{
 \item{DAT_min}{a vector containing the minimum date (a number) of each object}

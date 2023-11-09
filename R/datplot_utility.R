@@ -58,7 +58,7 @@ switch.dating <- function(DAT_df, DAT_err) {
 #' @export get.weights
 
 
-get.weights <- function(DAT_min, DAT_max, use.probability = FALSE) {
+get.weights <- function(DAT_min, DAT_max) {
   stopifnot(is.numeric(DAT_min))
   stopifnot(is.numeric(DAT_max))
 
