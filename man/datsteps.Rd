@@ -14,10 +14,11 @@ each object _must_ be one row.}
 \item{stepsize}{defaults to 5. Number of years that should be used as an
 interval for creating dating steps.}
 
-\item{calc}{"weight" (default): use the published original
-calculation (https://doi.org/10.1017/aap.2021.8) for weights,
-"probability": calculate year-wise probability instead (only useful for a stepsize
-of 1)}
+\item{calc}{"weight" (default): use the
+[published original calculation](https://doi.org/10.1017/aap.2021.8)
+for weights,
+"probability": calculate year-wise probability instead (only useful
+for a stepsize of 1)}
 
 \item{cumulative}{TRUE: add a column for cumulative probability ("cumul_prob")
 (only useful for a stepsize of 1, as the summed probability in larger
@@ -37,8 +38,10 @@ values while dates CE are positive values. Ignoring this will cause problems
 in any case.
 }
 \examples{
+\dontrun{
 DAT_df_steps <- datsteps(DAT_df[1:100, ], stepsize = 25)
 plot(density(DAT_df_steps$DAT_step))
+}
 
 
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/datplot_utility.R
 \name{get.step.sequence}
 \alias{get.step.sequence}
-\title{Calculate the sequence of dating steps (internal)}
+\title{Calculate the sequence of dating steps}
 \usage{
 get.step.sequence(datmin = 0, datmax = 100, stepsize = 25)
 }

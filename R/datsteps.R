@@ -11,10 +11,11 @@
 #' each object _must_ be one row.
 #' @param stepsize defaults to 5. Number of years that should be used as an
 #' interval for creating dating steps.
-#' @param calc "weight" (default): use the published original
-#' calculation (https://doi.org/10.1017/aap.2021.8) for weights,
-#' "probability": calculate year-wise probability instead (only useful for a stepsize
-#' of 1)
+#' @param calc "weight" (default): use the
+#' [published original calculation](https://doi.org/10.1017/aap.2021.8)
+#' for weights,
+#' "probability": calculate year-wise probability instead (only useful
+#' for a stepsize of 1)
 #' @param cumulative TRUE: add a column for cumulative probability ("cumul_prob")
 #' (only useful for a stepsize of 1, as the summed probability in larger
 #' stepsizes has no meaning)
@@ -25,8 +26,10 @@
 #' i.e. with less confidence)
 #'
 #' @examples
+#' \dontrun{
 #' DAT_df_steps <- datsteps(DAT_df[1:100, ], stepsize = 25)
 #' plot(density(DAT_df_steps$DAT_step))
+#' }
 #'
 #'
 #' @export datsteps
@@ -54,12 +57,16 @@ datsteps <- function(DAT_df,
 
   calc <- match.arg(calc, c("weight", "probability"))
 
-  message(paste0("Using ", calc, " calculation."))
+  switch(calc,
+         weight = message("Using 'weight'-calculation (see https://doi.org/10.1017/aap.2021.8)."),
+         probability = message("Using step-wise probability calculation."))
+
 
   DAT_df <- as.data.frame(DAT_df)
   # Checking the overall structure
   check.structure(DAT_df)
 
+  colnames <- c("index", "datmin", "datmax", calc, "step")
 
 
   # Check for the two Dainng columns to be in the correct order:
@@ -84,7 +91,7 @@ datsteps <- function(DAT_df,
   DAT_mat[, 2] <- DAT_df[, 3]
   DAT_mat[, 3] <- DAT_df[, 4]
 
-  colnames(DAT_mat) <- c("index", "datmin", "datmax", "weight", "step")
+  colnames(DAT_mat) <- colnames
 
   # If not already set, set stepsize
   if (stepsize == "auto") {
@@ -94,7 +101,6 @@ datsteps <- function(DAT_df,
   }
 
   # calculate the weights or probabilities
-  calc
   if (calc == "weight") {
     res <- get.weights(DAT_mat[, "datmin"],
                        DAT_mat[, "datmax"])
@@ -102,7 +108,7 @@ datsteps <- function(DAT_df,
     res <- get.probability(DAT_mat[, "datmin"],
                            DAT_mat[, "datmax"])
   }
-  DAT_mat[, "weight"] <- res
+  DAT_mat[, calc] <- res
 
 
   # Process the dating to create the steps
@@ -116,13 +122,16 @@ datsteps <- function(DAT_df,
 
   # names and attributes
   colnames <- c("ID", "variable", "DAT_min", "DAT_max",
-                "weight", "DAT_step")
+                calc, "DAT_step")
   if(cumulative) {
     colnames <- c(colnames, "cumul_prob")
   }
   colnames(result) <- colnames
+
   attr(result$DAT_step, "descr") <- "step"
-  attr(result$weight, "descr") <- calc
+  switch(calc,
+         weight = attr(result$weight, "descr") <- "Calculated weight of each object according to doi.org/10.1017/aap.2021.8",
+         probability = attr(result$probability, "descr") <- "Dating-Probability of each object")
   attr(result, "stepsize") <- stepsize
 
   return(result)

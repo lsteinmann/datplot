@@ -1,12 +1,19 @@
 # datplot 1.1.0
-* add an option to directly calculate the cumulative weight (which only works
-if it is used with a stepsize of 1, because otherwise the cumulative weight
-does not mean anything.)
+* Using either the original calculation (weights) or calculation of 
+year-wise probability is now an option in `datsteps()` with the 
+argument `calc = "weight"` or `calc = "probability"`
+* There is now an option to calculate the cumulative probability in 
+`datsteps()` with the argument `cumulative = TRUE`. This only works with 
+probability calculation instead of the original (weights) calculation.
+* Change and improve error-handling of `scaleweight()`. 
 
 
 # datplot 1.0.1
 
-* Change calculation in `get.weights()` to `1 / (abs(DAT_min - DAT_max) + 1)` to get real probability values for each year. This only has a real effect when using a stepsize of 1, as it makes the weight-values usable as "dating probability".
+* Change calculation in `get.weights()` to `1 / (abs(DAT_min - DAT_max) + 1)` 
+to get real probability values for each year. This only has a real effect when 
+using a stepsize of 1, as it makes the weight-values 
+usable as "dating probability".
 * Clean up `calculate.outputrows()` and `scaleweight()` somewhat.
 
 # datplot 1.0.0

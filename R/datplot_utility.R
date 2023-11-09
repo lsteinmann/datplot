@@ -1,4 +1,4 @@
-#' @title Determine stepsize (internal)
+#' @title Determine stepsize
 #'
 #' @description Determines stepsize by selecting the absolute minimum value
 #' between the upper and lower end of all dating ranges.
@@ -33,7 +33,7 @@ generate.stepsize <- function(DAT_mat) {
 #'
 #' @return corrected DAT_mat
 #'
-#' @export switch.dating
+#' @keywords internal
 
 switch.dating <- function(DAT_df, DAT_err) {
   DAT_df[DAT_err, 3:4] <- DAT_df[DAT_err, 4:3]
@@ -46,7 +46,8 @@ switch.dating <- function(DAT_df, DAT_err) {
 #' @description Calculates the weights from two vectors of minimum and maximum
 #' dating for each object. Returns a dataframe with the weight in the first
 #' column and FALSE in the second if two rows have the same value in both
-#' min and max dating.
+#' min and max dating. See [publication](https://doi.org/10.1017/aap.2021.8)
+#' for information about how this is calculated.
 #'
 #' @param DAT_min a vector containing the minimum date (a number) of each object
 #' @param DAT_max a vector containing the maximum date (a number) of each object
@@ -86,18 +87,16 @@ get.weights <- function(DAT_min, DAT_max) {
 #'
 #' @description Calculates the probability of each object being dated into
 #' each year / timeslot from two vectors of minimum and maximum
-#' dating. Returns a dataframe with the weight in the first
-#' column and FALSE in the second if two rows have the same value in both
-#' min and max dating.
+#' dating. Returns a vector of probabilities.
 #'
 #' @param DAT_min a vector containing the minimum date (a number) of each object
 #' @param DAT_max a vector containing the maximum date (a number) of each object
 #'
-#' @return the 'weight' value for the datsteps-dataframe, that is a
-#' quantification of how well the object is dated (lesser value means object
-#' is dated to larger timespans, i.e. with less confidence)
+#' @return the probability for each object being dated to any single year
+#' within the timespan (lesser value means object is dated to larger timespans,
+#' i.e. with less confidence).
 #'
-#' @export get.weights
+#' @export get.probability
 
 
 get.probability <- function(DAT_min, DAT_max) {
@@ -125,7 +124,7 @@ get.probability <- function(DAT_min, DAT_max) {
 #' @return the number of rows create.sub.objects should at least produce in
 #' order to fit all steps
 #'
-#' @export calculate.outputrows
+#' @keywords internal
 
 
 # TODO: as stated, this is still an approximation and overestimates the number.
@@ -146,7 +145,7 @@ calculate.outputrows <- function(DAT_mat, stepsize) {
 
 
 
-#' @title Calculate the sequence of dating steps (internal)
+#' @title Calculate the sequence of dating steps
 #'
 #' @description Produces an appropriate sequence of years between the minimum
 #' and maximum dating. If they cannot be properly divided by the stepsize set
@@ -163,7 +162,7 @@ calculate.outputrows <- function(DAT_mat, stepsize) {
 #'
 #' @return sequence of steps to be created by create.sub.objects()
 #'
-#' @export get.step.sequence
+#' @export
 
 get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
   # Get the difference of the two dating values
@@ -249,7 +248,7 @@ get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
 #' @return a longer matrix of the same structure to be further processed by
 #' datsteps() with a number of steps for each object
 #'
-#' @export create.sub.objects
+#' @keywords internal
 
 create.sub.objects <- function(DAT_mat,
                                stepsize,
@@ -291,7 +290,12 @@ create.sub.objects <- function(DAT_mat,
   }
   result <- result[-c(match(NA, result[, 1]):nrow(result)), ]
 
-  attributes(result)$calc <- calc
+
+  switch(calc,
+         weight = attr <- "Calculated weight of each object according to doi.org/10.1017/aap.2021.8",
+         probability = attr <- "Dating-Probability of each object")
+
+  attributes(result)$calc <- c(calc, attr)
 
   return(result)
 }
@@ -305,7 +309,7 @@ create.sub.objects <- function(DAT_mat,
 #'
 #' @return TRUE if value is any kind of number, FALSE if value is not
 #'
-#' @export check.number
+#' @keywords internal
 
 
 check.number <- function(value) {
@@ -322,7 +326,7 @@ check.number <- function(value) {
 #'
 #' @return TRUE if object can be processed by datsteps(), error / FALSE if not
 #'
-#' @export check.structure
+#' @keywords internal
 
 check.structure <- function(DAT_df) {
   dat_df_structure <- c(NA, NA, NA, NA, NA)

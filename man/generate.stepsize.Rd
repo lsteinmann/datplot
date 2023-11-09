@@ -2,7 +2,7 @@
 % Please edit documentation in R/datplot_utility.R
 \name{generate.stepsize}
 \alias{generate.stepsize}
-\title{Determine stepsize (internal)}
+\title{Determine stepsize}
 \usage{
 generate.stepsize(DAT_mat)
 }

@@ -6,15 +6,20 @@ test_that("error for wrong value of stepsize", {
                "stepsize")
 })
 
-test_that("error for wrong value of stepsize", {
-  expect_warning(datsteps(testdf, stepsize = 25), "recommended")
+test_that("warning for wrong column types", {
+  expect_warning(datsteps(testdf, stepsize = 25), "character vector")
 })
 
 
 data("DAT_df")
 
-test_that("error for wrong value of stepsize", {
-  expect_warning(datsteps(DAT_df), regexp = "wrong order")
+test_that("warning for wrong value of stepsize", {
+  expect_warning(datsteps(DAT_df), regexp = "stepsize is larger")
+})
+
+
+test_that("warning for dating order", {
+  expect_warning(datsteps(DAT_df), regexp = "in wrong order")
 })
 
 testdf <- create.testing.df()

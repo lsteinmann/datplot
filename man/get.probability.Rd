@@ -12,14 +12,12 @@ get.probability(DAT_min, DAT_max)
 \item{DAT_max}{a vector containing the maximum date (a number) of each object}
 }
 \value{
-the 'weight' value for the datsteps-dataframe, that is a
-quantification of how well the object is dated (lesser value means object
-is dated to larger timespans, i.e. with less confidence)
+the probability for each object being dated to any single year
+within the timespan (lesser value means object is dated to larger timespans,
+i.e. with less confidence).
 }
 \description{
 Calculates the probability of each object being dated into
 each year / timeslot from two vectors of minimum and maximum
-dating. Returns a dataframe with the weight in the first
-column and FALSE in the second if two rows have the same value in both
-min and max dating.
+dating. Returns a vector of probabilities.
 }

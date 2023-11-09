@@ -15,3 +15,4 @@ TRUE if object can be processed by datsteps(), error / FALSE if not
 \description{
 Checks if the object passed to datsteps() will work
 }
+\keyword{internal}

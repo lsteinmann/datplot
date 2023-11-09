@@ -22,3 +22,4 @@ group (ideally factor), minimum date (int/numeric) and
 maximum date (int/numeric) and DAT_err as a vector of indices where
 dating is in wrong order.
 }
+\keyword{internal}

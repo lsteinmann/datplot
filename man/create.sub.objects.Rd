@@ -33,3 +33,4 @@ It's expected that dates BCE are displayed as negative values while dates
 CE are positive values. Ignoring this will cause problems in any case, that
 would be fixed automatically by switch.dating().
 }
+\keyword{internal}

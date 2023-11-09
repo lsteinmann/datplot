@@ -20,5 +20,6 @@ is dated to larger timespans, i.e. with less confidence)
 Calculates the weights from two vectors of minimum and maximum
 dating for each object. Returns a dataframe with the weight in the first
 column and FALSE in the second if two rows have the same value in both
-min and max dating.
+min and max dating. See [publication](https://doi.org/10.1017/aap.2021.8)
+for information about how this is calculated.
 }
