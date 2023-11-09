@@ -33,7 +33,6 @@
 #'
 #'
 #' @export datsteps
-
 datsteps <- function(DAT_df,
                      stepsize = 25,
                      calc = "weight",
@@ -110,15 +109,18 @@ datsteps <- function(DAT_df,
   }
   DAT_mat[, calc] <- res
 
+  DAT_list <- as.data.frame(DAT_mat)
+  rownames(DAT_list) <- DAT_list[,1]
+
+  DAT_list <- unlist(apply(DAT_list, 1, list), recursive = FALSE)
+
 
   # Process the dating to create the steps
-  DAT_res <- create.sub.objects(DAT_mat, stepsize, calc, cumulative)
+  DAT_res <- create.sub.objects(DAT_list, stepsize, calc, cumulative)
 
   # convert to data.frame again and store the variable and ID in the correct
   # order, using the matrix index as reference
   result <- as.data.frame(DAT_res)
-  result[, 2] <- DAT_df[result[, 1], 2]
-  result[, 1] <- DAT_df[result[, 1], 1]
 
   # names and attributes
   colnames <- c("ID", "variable", "DAT_min", "DAT_max",
@@ -126,7 +128,18 @@ datsteps <- function(DAT_df,
   if(cumulative) {
     colnames <- c(colnames, "cumul_prob")
   }
+  result <- as.data.frame(matrix(nrow = nrow(DAT_res), ncol = length(colnames)))
   colnames(result) <- colnames
+
+  result$ID <- DAT_df[DAT_res[, 1], 1]
+  result$variable <- DAT_df[DAT_res[, 1], 2]
+  result$DAT_min <- DAT_res[, "datmin"]
+  result$DAT_max <- DAT_res[, "datmax"]
+  result[, calc] <- DAT_res[, calc]
+  result$DAT_step <- DAT_res[, "step"]
+  if(cumulative) {
+    result$cumul_prob <- DAT_res[, "cumul_prob"]
+  }
 
   attr(result$DAT_step, "descr") <- "step"
   switch(calc,

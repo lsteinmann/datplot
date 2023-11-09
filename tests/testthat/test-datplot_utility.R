@@ -85,19 +85,27 @@ DAT_mat[, 1] <- 1:nrow(testdf)
 DAT_mat[, 2] <- testdf[, 3]
 DAT_mat[, 3] <- testdf[, 4]
 colnames(DAT_mat) <- c("index", "datmin", "datmax", "weight", "step")
+DAT_list <- as.data.frame(DAT_mat)
+DAT_list <- unlist(apply(DAT_list, 1, list), recursive = FALSE)
 
-test_that("create.sub.objects issues no warning", {
-  expect_failure(expect_warning(create.sub.objects(DAT_mat, stepsize = 1),
+
+test_that("warning or not for stepsize larger than steps in data in create.sub.objects", {
+  expect_failure(expect_warning(create.sub.objects(DAT_list, stepsize = 1),
                                 regexp = "stepsize is larger"))
-  expect_warning(create.sub.objects(DAT_mat, stepsize = 5),
+  expect_warning(create.sub.objects(DAT_list, stepsize = 5),
                  regexp = "stepsize is larger")
 })
 
-test_that("create.sub.objects adds cumulative weight", {
-  expect_equal(ncol(create.sub.objects(DAT_mat, stepsize = 1,
-                                       cumulative = TRUE)),
-               7)
-  expect_equal(ncol(create.sub.objects(DAT_mat, stepsize = 1,
-                                       cumulative = FALSE)),
+
+
+test_that("create.sub.objects adds cumulative probability", {
+  mat <- create.sub.objects(DAT_list, stepsize = 1,
+                            cumulative = TRUE)
+  expect_equal(ncol(mat),
                6)
+  mat <- create.sub.objects(DAT_list, stepsize = 1,
+                            cumulative = FALSE)
+  expect_equal(ncol(mat),
+               5)
 })
+

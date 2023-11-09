@@ -113,38 +113,6 @@ get.probability <- function(DAT_min, DAT_max) {
 }
 
 
-#' @title Calculate output rows (internal)
-#'
-#' @description an approximation(!) of the rows that will be needed to fit
-#' all the steps of the dating
-#'
-#' @param DAT_mat a matrix as transformed by datsteps()
-#' @param stepsize the stepsize given to or by datsteps()
-#'
-#' @return the number of rows create.sub.objects should at least produce in
-#' order to fit all steps
-#'
-#' @keywords internal
-
-
-# TODO: as stated, this is still an approximation and overestimates the number.
-# in testing, there were cases of
-# underestimating, but it hasnt happened since the last fix
-
-calculate.outputrows <- function(DAT_mat, stepsize) {
-  total_years <- abs(DAT_mat[, "datmax"] - DAT_mat[, "datmin"]) + 1
-  mean_year_index <- which(total_years < stepsize)
-  outputrows <- ceiling(sum((total_years / stepsize) + 3))
-
-  if (length(mean_year_index) != 0) {
-    outputrows <- outputrows + length(mean_year_index)
-  }
-  return(outputrows)
-}
-
-
-
-
 #' @title Calculate the sequence of dating steps
 #'
 #' @description Produces an appropriate sequence of years between the minimum
@@ -239,7 +207,7 @@ get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
 #' CE are positive values. Ignoring this will cause problems in any case, that
 #' would be fixed automatically by switch.dating().
 #'
-#' @param DAT_mat a matrix with 3 variables as prepared by datsteps()
+#' @param DAT_list a list as prepared by datsteps()
 #' @param stepsize Number of years that should be used as an interval for
 #' creating dating steps.
 #' @param calc calculation used for weights (weight / probability)
@@ -250,46 +218,46 @@ get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
 #'
 #' @keywords internal
 
-create.sub.objects <- function(DAT_mat,
+create.sub.objects <- function(DAT_list,
                                stepsize,
                                calc = "weight",
                                cumulative = FALSE) {
 
-  outputrows <- calculate.outputrows(DAT_mat, stepsize)
-  if (cumulative) {
-    result <- as.data.frame(matrix(ncol = 7, nrow = outputrows + 100))
-  } else {
-    result <- as.data.frame(matrix(ncol = 6, nrow = outputrows + 100))
-  }
-  diffs <- DAT_mat[, "datmax"] - DAT_mat[, "datmin"]
-  diffs[diffs == 0] <- 1
+  diffs <- unlist(lapply(DAT_list, function(x) x["datmax"] - x["datmin"]))
+
+  switch (calc,
+          weight = diffs[diffs == 0] <- 1,
+          probability = diffs <- diffs + 1
+  )
+
 
   if (any(diffs < stepsize)) {
     warning(paste("stepsize is larger than the range of the closest dated object at Index = ",
-                paste(which(diffs < stepsize), collapse = ", "), "). ",
-                "For information see documentation of get.step.sequence().",
-                sep = ""))
+                  paste(which(diffs < stepsize), collapse = ", "), "). ",
+                  "For information see documentation of get.step.sequence().",
+                  sep = ""))
   }
 
-  for (i in 1:nrow(DAT_mat)) {
-    sequence <- NULL
-    sequence <- get.step.sequence(DAT_mat[i, "datmin"], DAT_mat[i, "datmax"],
+  DAT_list <- lapply(DAT_list, function(object) {
+    sequence <- get.step.sequence(object["datmin"], object["datmax"],
                                   stepsize)
-
-    first_na <- match(NA, result[, 1])
-    last_row <- first_na + (length(sequence) - 1)
-    result[first_na:last_row, 1] <- DAT_mat[i, 1]
-    result[first_na:last_row, 3] <- DAT_mat[i, 2]
-    result[first_na:last_row, 4] <- DAT_mat[i, 3]
-    result[first_na:last_row, 5] <- DAT_mat[i, 4]
-    result[first_na:last_row, 6] <- sequence
+    new_object <- lapply(sequence, function(step) {
+      new_object <- object
+      new_object["step"] <- step
+      return(new_object)
+    })
+    names(new_object) <- NULL
+    new_object <- do.call(rbind, new_object)
     if (cumulative) {
-      result[first_na:last_row, 7] <- cumsum(rep(DAT_mat[i, 4],
-                                                 length(sequence)))
+      cumul_prob <- cumsum(new_object[,calc])
+      new_object <- cbind(new_object, cumul_prob)
     }
-  }
-  result <- result[-c(match(NA, result[, 1]):nrow(result)), ]
+    return(new_object)
+  })
 
+
+
+  result <- do.call(rbind, DAT_list)
 
   switch(calc,
          weight = attr <- "Calculated weight of each object according to doi.org/10.1017/aap.2021.8",
@@ -299,6 +267,10 @@ create.sub.objects <- function(DAT_mat,
 
   return(result)
 }
+
+
+
+
 
 #' @title Check for numbers (internal)
 #'

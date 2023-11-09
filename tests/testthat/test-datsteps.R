@@ -35,7 +35,7 @@ test_that("error for wrong value of stepsize", {
 
 testdf <- create.testing.df()[1:2,]
 testdf$variable <- as.factor(testdf$variable)
-str(testdf)
+#str(testdf)
 testdf$min <- c(1, 10)
 testdf$max <- c(2, 12)
 
