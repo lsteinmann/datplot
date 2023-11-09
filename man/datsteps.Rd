@@ -4,7 +4,7 @@
 \alias{datsteps}
 \title{Create 'steps' of dates for each object in a dataframe}
 \usage{
-datsteps(DAT_df, stepsize = 25, cumulative = FALSE)
+datsteps(DAT_df, stepsize = 25, calc = "weight", cumulative = FALSE)
 }
 \arguments{
 \item{DAT_df}{a dataframe with 4 variables: ID, group, minimum date (int/num)
@@ -14,12 +14,17 @@ each object _must_ be one row.}
 \item{stepsize}{defaults to 5. Number of years that should be used as an
 interval for creating dating steps.}
 
-\item{cumulative}{TRUE if a column for cumulative weights ("cumul_weights")
-should be calculated (this only seems reasonable for a stepsize of 1, as
-the summed probability in larger stepsizes does not mean anything)}
+\item{calc}{"weight" (default): use the published original
+calculation (https://doi.org/10.1017/aap.2021.8) for weights,
+"probability": calculate year-wise probability instead (only useful for a stepsize
+of 1)}
+
+\item{cumulative}{TRUE: add a column for cumulative probability ("cumul_prob")
+(only useful for a stepsize of 1, as the summed probability in larger
+stepsizes has no meaning)}
 }
 \value{
-a larger dataframe with a number of steps for each object as well
+a data.frame with a number of steps for each object as well
 as a 'weight' value, that is a quantification of how well the object is
 dated (lesser value means object is dated to larger timespans,
 i.e. with less confidence)

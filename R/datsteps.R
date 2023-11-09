@@ -11,11 +11,15 @@
 #' each object _must_ be one row.
 #' @param stepsize defaults to 5. Number of years that should be used as an
 #' interval for creating dating steps.
-#' @param cumulative TRUE if a column for cumulative weights ("cumul_weights")
-#' should be calculated (this only seems reasonable for a stepsize of 1, as
-#' the summed probability in larger stepsizes does not mean anything)
+#' @param calc "weight" (default): use the published original
+#' calculation (https://doi.org/10.1017/aap.2021.8) for weights,
+#' "probability": calculate year-wise probability instead (only useful for a stepsize
+#' of 1)
+#' @param cumulative TRUE: add a column for cumulative probability ("cumul_prob")
+#' (only useful for a stepsize of 1, as the summed probability in larger
+#' stepsizes has no meaning)
 #'
-#' @return a larger dataframe with a number of steps for each object as well
+#' @return a data.frame with a number of steps for each object as well
 #' as a 'weight' value, that is a quantification of how well the object is
 #' dated (lesser value means object is dated to larger timespans,
 #' i.e. with less confidence)
@@ -27,10 +31,35 @@
 #'
 #' @export datsteps
 
-datsteps <- function(DAT_df, stepsize = 25, cumulative = FALSE) {
+datsteps <- function(DAT_df,
+                     stepsize = 25,
+                     calc = "weight",
+                     cumulative = FALSE) {
+
+  calc <- ifelse(grepl("weight", calc),
+                 "weight",
+                 calc)
+  calc <- ifelse(grepl("prob", calc),
+                 "probability",
+                 calc)
+
+  calc <- match.arg(calc, c("weight", "probability"))
+
+  message(paste0("Using ", calc, " calculation."))
+
+  if (stepsize != 1 && calc == "probability") {
+    stop("Probability calculation should only be used with stepsize = 1.")
+  }
+  # redundand
+  if (cumulative & stepsize != 1) {
+    warning("Using cumulative weight and a stepsize of > 1 is not useful.")
+  }
+
   DAT_df <- as.data.frame(DAT_df)
   # Checking the overall structure
   check.structure(DAT_df)
+
+
 
   # Check for the two Dainng columns to be in the correct order:
   if (any(DAT_df[, 3] > DAT_df[, 4])) {
@@ -63,17 +92,20 @@ datsteps <- function(DAT_df, stepsize = 25, cumulative = FALSE) {
     stop(print("stepsize has to be either 'auto' or numeric."))
   }
 
-  # calculate the weights
-  weights <- get.weights(DAT_mat[, "datmin"], DAT_mat[, "datmax"])
-  DAT_mat[, "weight"] <- weights
-
-  # warning for stepsizes above 1 and cumulative weight
-  if (cumulative & stepsize != 1) {
-    warning("Using cumulative weight and a stepsize of > 1 is not useful.")
+  # calculate the weights or probabilities
+  calc
+  if (calc == "weight") {
+    res <- get.weights(DAT_mat[, "datmin"],
+                       DAT_mat[, "datmax"])
+  } else if (calc == "probability") {
+    res <- get.probability(DAT_mat[, "datmin"],
+                           DAT_mat[, "datmax"])
   }
+  DAT_mat[, "weight"] <- res
+
 
   # Process the dating to create the steps
-  DAT_res <- create.sub.objects(DAT_mat, stepsize, cumulative)
+  DAT_res <- create.sub.objects(DAT_mat, stepsize, calc, cumulative)
 
   # convert to data.frame again and store the variable and ID in the correct
   # order, using the matrix index as reference
@@ -85,11 +117,11 @@ datsteps <- function(DAT_df, stepsize = 25, cumulative = FALSE) {
   colnames <- c("ID", "variable", "DAT_min", "DAT_max",
                 "weight", "DAT_step")
   if(cumulative) {
-    colnames <- c(colnames, "cumul_weight")
+    colnames <- c(colnames, "cumul_prob")
   }
   colnames(result) <- colnames
   attr(result$DAT_step, "descr") <- "step"
-  attr(result$weight, "descr") <- "weight"
+  attr(result$weight, "descr") <- calc
   attr(result, "stepsize") <- stepsize
 
   return(result)

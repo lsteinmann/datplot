@@ -41,7 +41,7 @@ switch.dating <- function(DAT_df, DAT_err) {
 }
 
 
-#' @title Calculate the weights for each dated object (internal)
+#' @title Calculate the weights for each dated object
 #'
 #' @description Calculates the weights from two vectors of minimum and maximum
 #' dating for each object. Returns a dataframe with the weight in the first
@@ -58,17 +58,22 @@ switch.dating <- function(DAT_df, DAT_err) {
 #' @export get.weights
 
 
-get.weights <- function(DAT_min, DAT_max) {
+get.weights <- function(DAT_min, DAT_max, use.probability = FALSE) {
+  stopifnot(is.numeric(DAT_min))
+  stopifnot(is.numeric(DAT_max))
+
   weights <- abs(DAT_min - DAT_max)
-  # FIX: add 1 to all weights so that same values always state 1 year, and
-  # two years are actually recognized as such etc. etc. (many thanks to
-  # Christian Gugl for pointing out the previous flaw)
-  weights <- weights + 1
-  if (any(weights == 1)) {
-    warning(paste("Warning: DAT_min and DAT_max at Index: ",
-                  paste(which(weights == 1), collapse = ", "), ")",
-                  " have the same value! Is this correct? ",
-                  "Please check the table for possible errors.", sep = ""))
+
+  if (any(weights == 0)) {
+    warning(paste0("Warning: DAT_min and DAT_max at Index: ",
+                   paste(which(weights == 1), collapse = ", "), ")",
+                   " have the same value! Is this correct? ",
+                   "Please check the table for possible errors."))
+    # set weight to 1 to treat objects with same min and max
+    # dating (dated to one year precisely) as very influential
+    # will have the same weight as objects dated to two years,
+    # (which may also equal a span of 1 year)
+    weights[which(weights == 0)] <- 1
   }
   # weights have to be below 1
   weights <- 1 / weights
@@ -76,6 +81,37 @@ get.weights <- function(DAT_min, DAT_max) {
   return(weights)
 }
 
+
+#' @title Calculate the probability for each year and each dated object
+#'
+#' @description Calculates the probability of each object being dated into
+#' each year / timeslot from two vectors of minimum and maximum
+#' dating. Returns a dataframe with the weight in the first
+#' column and FALSE in the second if two rows have the same value in both
+#' min and max dating.
+#'
+#' @param DAT_min a vector containing the minimum date (a number) of each object
+#' @param DAT_max a vector containing the maximum date (a number) of each object
+#'
+#' @return the 'weight' value for the datsteps-dataframe, that is a
+#' quantification of how well the object is dated (lesser value means object
+#' is dated to larger timespans, i.e. with less confidence)
+#'
+#' @export get.weights
+
+
+get.probability <- function(DAT_min, DAT_max) {
+  stopifnot(is.numeric(DAT_min))
+  stopifnot(is.numeric(DAT_max))
+
+  # calculate the dating probability
+  # (thanks to Christian Gugl for requesting this)
+  prob <- abs(DAT_min - DAT_max)
+  prob <- prob + 1
+  prob <- 1 / prob
+
+  return(prob)
+}
 
 
 #' @title Calculate output rows (internal)
@@ -207,6 +243,7 @@ get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
 #' @param DAT_mat a matrix with 3 variables as prepared by datsteps()
 #' @param stepsize Number of years that should be used as an interval for
 #' creating dating steps.
+#' @param calc calculation used for weights (weight / probability)
 #' @param cumulative TRUE if a column for cumulative weights should be added
 #'
 #' @return a longer matrix of the same structure to be further processed by
@@ -214,7 +251,10 @@ get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
 #'
 #' @export create.sub.objects
 
-create.sub.objects <- function(DAT_mat, stepsize, cumulative = FALSE) {
+create.sub.objects <- function(DAT_mat,
+                               stepsize,
+                               calc = "weight",
+                               cumulative = FALSE) {
 
   outputrows <- calculate.outputrows(DAT_mat, stepsize)
   if (cumulative) {
@@ -250,6 +290,9 @@ create.sub.objects <- function(DAT_mat, stepsize, cumulative = FALSE) {
     }
   }
   result <- result[-c(match(NA, result[, 1]):nrow(result)), ]
+
+  attributes(result)$calc <- calc
+
   return(result)
 }
 
