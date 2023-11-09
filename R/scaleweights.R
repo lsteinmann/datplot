@@ -1,34 +1,60 @@
-#' @title Scales the content of a column according to group membership
+#' @title Scales the content of a column
 #'
-#' @description Requires a dataframe with one variable and one value column.
+#' @description Requires a data.frame with one variable and one value column.
 #'
-#' @param DAT_df a dataframe
-#' @param var the index of the column that should be used
-#' as the group variable, OR "all" (note: all non-numeric values will
-#' result in the weight being scaled across all objects)
-#' @param val the column that should be scaled (value / sum(values))
+#' @param DAT_df a data.frame
+#' @param var index or name of the column that should be used
+#' as the group variable, OR "all"
+#' @param val index or name of the column that should be
+#' scaled (has to be numeric)
 #'
-#' @return the same dataframe, with scaled values in the specifies column
+#' @return the same data.frame, with the scaled values in the specified column
 #'
 #' @export scaleweight
 
 scaleweight <- function(DAT_df, var = c("all", 2), val = 5) {
-  if (check.number(val)) {
-    if (var == "all") {
-      DAT_df[, val] <- DAT_df[, val] / sum(DAT_df[, val])
-      attr(DAT_df[, val], "descr") <- "weight (scaled to sum of all objects)"
-    } else if (check.number(var)) {
-      uvar <- unique(DAT_df[, var])
-      for (row in 1:length(uvar)) {
-        index <- which(DAT_df[, var] == uvar[row])
-        DAT_df[index, val] <-  DAT_df[index, val] / sum(DAT_df[index, val])
-      }
-      attr(DAT_df[, val], "descr") <- "weight (scaled to sum of objects grouped by variable)"
-    } else {
-      stop("var needs to be either 'all' or the column number of the variable that is to be used for scaling")
+
+  if (!check.number(val)) {
+    val <- which(colnames(DAT_df) == val)
+    if (length(val) == 0) {
+      stop(paste("'val' needs to be a number",
+                 "(the index of the column that should be scaled)"))
     }
-  } else {
-    stop("val needs to be of a number (the index of the column that should be scaled)")
   }
-return(DAT_df)
+  if (val > ncol(DAT_df)) {
+    stop(paste("No column at index", val))
+  }
+  if (!is.numeric(DAT_df[,val])) {
+    stop(paste("Column", val, "is not numeric."))
+  }
+
+  if (is.character(var) && var != "all") {
+    var <- which(colnames(DAT_df) == var)
+    if (length(var) == 0) {
+      stop(paste("var needs to be either 'all' or the index of the",
+                 "column containing the variable",
+                 "that is to be used for scaling"))
+    }
+  } else if (check.number(var) && var > ncol(DAT_df)) {
+    stop(paste("No column at index", var))
+  }
+
+
+  if (var == "all") {
+    DAT_df[, val] <- DAT_df[, val] / sum(DAT_df[, val])
+    new_desc <- paste(attr(DAT_df[, val], "descr"),
+                      "(scaled to sum of all objects)")
+  } else {
+    uvar <- unique(DAT_df[, var])
+    for (row in 1:length(uvar)) {
+      index <- which(DAT_df[, var] == uvar[row])
+      DAT_df[index, val] <-  DAT_df[index, val] / sum(DAT_df[index, val])
+    }
+    new_desc <- paste0(attr(DAT_df[, val], "descr"),
+                       " (scaled to sum of objects grouped by column '",
+                       colnames(DAT_df)[var], "')")
+  }
+  attr(DAT_df[, val], "descr") <- new_desc
+
+  return(DAT_df)
 }
