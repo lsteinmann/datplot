@@ -8,7 +8,7 @@
 
 <!-- badges: end -->
 
-datplot v1.0.1
+datplot
 =======
 
 Converting date ranges into dating 'steps' eases the visualization of changes in e.g. pottery consumption, style and other variables over time. This package provides tools to process and prepare data for visualization.
@@ -36,18 +36,13 @@ People interested in employing this method should also consider taking a look at
 
 Installation 
 -------
-'datplot' is on CRAN with version 1.0.0. 
-
-    install.packages("datplot")
-
-
-Later versions can be installed from GitHub with devtools:
+'datplot' can be installed from GitHub with devtools:
 
     devtools::install_github("lsteinmann/datplot")
 
 Or via downloading the latest release and installing from the file: 
 
-    devtools::install_local(path = "../datplot_1.0.0.tar.gz")
+    devtools::install_local(path = "../datplot_1.x.x.tar.gz")
     
 In case you are unable to find the vignettes after installing from github directly, try: 
 
@@ -58,5 +53,5 @@ But you may have to install vignette dependencies manually (see suggests in the 
 Contact
 -------
 
-Please feel free to use and change the code to your liking. I would be happy if you contacted me if you do, because I'm interested to know whether this helps anybody. Also, if you have any ideas, critique or improvements, I would be very glad to hear from you! 
+Please feel free to use and change the code to your liking. We would be happy for any feedback on the packages, or if you you notify us of your publications using this package!
 
