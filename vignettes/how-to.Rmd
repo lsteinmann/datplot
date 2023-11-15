@@ -194,5 +194,26 @@ The combination of density curve and histogram also shows the common problem of 
 The smooth curves of kernel density estimates are a more realistic approach to dating. The production of objects was as continuous as their use, so it seems only reasonable to display it in a more continuous fashion on a flexible timescale.
 
 
+## Weights and Cumulative Weights
+
+With the update to v1.1.0 there are new option for calculation. When using a stepsize of 1 and `calc = "probability"`, the weights now reflect the true probability for each objects dating into the specific year. With this, the probability may be used as an indicative value itself and not only as a helper for visualization. Many thanks to Christian Gugl for this suggestion and correction. 
+
+This now opens the possibility to calculate the cumulative probability for each successive year -- also suggested by Christian Gugl --, which is useful in the case of numismatic research, where it reflects the rising probability of minting. The cumulative probability has been introduced as an option in v1.1.0 and is calculated in a separate column when setting `cumulative = TRUE` in the `datsteps()`-function. Please note that the cumulative probability does not work (and does not mean anything) for stepsizes larger than 1!
+
+```{r cumulative demo, fig.height = 10}
+data("Inscr_Bithynia")
+Inscr_Bithynia <- na.omit(Inscr_Bithynia[, c(1, 3, 8, 9)])
+Inscr_Bithynia <- Inscr_Bithynia[sample(1:nrow(Inscr_Bithynia), 5), ]
+Inscr_Bithynia_steps <- datsteps(Inscr_Bithynia, 
+                                 stepsize = 1, 
+                                 calc = "probability", 
+                                 cumulative = TRUE)
+
+ggplot(Inscr_Bithynia_steps, aes(x = DAT_step, y = cumul_prob, fill = variable)) + 
+  geom_col() + facet_wrap(. ~ ID, ncol = 1) +
+  labs(y = "Cumulative Probability", x = "Dating", fill = "Origin") + 
+  theme(legend.position = "bottom")
+```
+
 ## References
 

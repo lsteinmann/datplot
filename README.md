@@ -1,7 +1,7 @@
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/datplot)](https://CRAN.R-project.org/package=datplot)
 [![R-CMD-check](https://github.com/lsteinmann/datplot/workflows/R-CMD-check/badge.svg)](https://github.com/lsteinmann/datplot/actions)
-[![codecov](https://codecov.io/gh/lsteinmann/datplot/branch/main/graph/badge.svg?token=CVNCAL9U4W)](https://codecov.io/gh/lsteinmann/datplot)
+[![codecov](https://app.codecov.io/gh/lsteinmann/datplot/branch/main/graph/badge.svg?token=CVNCAL9U4W)](https://app.codecov.io/gh/lsteinmann/datplot)
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4285912.svg)](https://doi.org/10.5281/zenodo.4285912)
 [![DOI](https://img.shields.io/badge/Publication-10.1017/aap.2021.8-green.svg)](https://doi.org/10.1017/aap.2021.8)
