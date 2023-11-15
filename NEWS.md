@@ -5,8 +5,9 @@ argument `calc = "weight"` or `calc = "probability"`
 * There is now an option to calculate the cumulative probability in 
 `datsteps()` with the argument `cumulative = TRUE`. This only works with 
 probability calculation instead of the original (weights) calculation.
+* Significantly improved the efficiency of `datsteps()`.
 * Change and improve error-handling of `scaleweight()`. 
-* Remove UTF-8 characters to comply with CRAN. 
+* Remove UTF-8 characters from data and other files to comply with CRAN. 
 * Update documentation and add a [pkgdown-site](https://lsteinmann.github.io/datplot/).
 
 

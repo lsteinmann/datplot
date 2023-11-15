@@ -6,12 +6,12 @@
 
 <!-- badges: end -->
 
-datplot
+[datplot](https://lsteinmann.github.io/datplot/)
 =======
 
 Converting date ranges into dating 'steps' eases the visualization of changes in e.g. pottery consumption, style and other variables over time. This package provides tools to process and prepare data for visualization.
 
-A rather common problem in archaeology is the fuzzyness of dates assigned to objects. If one wants to visualize overall changes in - let's say - pottery consumption, bar charts often fall short in that regard. If, e.g., the Phases a -- f are employed, then some of the objects can usually be dated to a, c, and f, as an example, but others will by classified as "a to c" or "b to c". But how can these data still be used for examining changes in a large set of objects without completely disregarding the information added by providing multiple phases for one object?
+A rather common problem in archaeology is the fuzziness of dates assigned to objects. If one wants to visualize overall changes in - let's say - pottery consumption, bar charts often fall short in that regard. If, e.g., the Phases a -- f are employed, then some of the objects can usually be dated to a, c, and f, as an example, but others will by classified as "a to c" or "b to c". But how can these data still be used for examining changes in a large set of objects without completely disregarding the information added by providing multiple phases for one object?
 
 This package proposes implements the concepts of aoristic analysis to prepare archaeological data for the visualization using density plots. An example is shown in the vignettes, which can be found at
 
@@ -49,5 +49,5 @@ But you may have to install vignette dependencies manually (see suggests in the 
 Contact
 -------
 
-Please feel free to use and change the code to your liking. We would be happy for any feedback on the packages, or if you you notify us of your publications using this package!
+Please feel free to use and change the code to your liking. We would be happy for any feedback on the package, or if you you notify us of your publications using this package!
 
