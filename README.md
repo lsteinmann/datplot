@@ -21,11 +21,13 @@ This package proposes implements the concepts of aoristic analysis to prepare ar
 
 after installing the package, or on GitHub in the /vignettes/ directory. Density plots are easy to understand and are usually aesthetically pleasing. They do omit a some information, such as individual counts, that bar histograms can communicate better. On the other hand, ranges can be incorporated into the visualization as well to regard the variety of timespans archaeological objects may be dated to.
 
-![Attic Pottery from BAPD by Date](inst/extdata/demo_readme.png "Attic Pottery from BAPD by Date")
+**Note:** Please note that the weight calculation has changed with version 1.0.1 to reflect true probabilities for each object when a stepsize of 1 is used. The change does not affect the visualization, but makes the weight-values usable as dating probability for steps of 1 year exactly. 
+
+![Attic Pottery from BAPD by Date](man/figures/demo_readme.png "Attic Pottery from BAPD by Date")
 
 Publication
 -------
-The package has been published along with a case study on inscriptions from Bithynia: [Steinmann, L., & Weissova, B. (2021). Datplot: A New R Package for the Visualization of Date Ranges in Archaeology. Advances in Archaeological Practice, 1-11. doi:10.1017/aap.2021.8](https://doi.org/10.1017/aap.2021.8). Data used in the case study is included in the package.
+The package at version 1.0.0 has been published along with a case study on inscriptions from Bithynia: [Steinmann, L., & Weissova, B. (2021). Datplot: A New R Package for the Visualization of Date Ranges in Archaeology. Advances in Archaeological Practice, 1-11. doi:10.1017/aap.2021.8](https://doi.org/10.1017/aap.2021.8). Data used in the case study is included in the package.
 
 Recommendation
 -------
@@ -34,18 +36,13 @@ People interested in employing this method should also consider taking a look at
 
 Installation 
 -------
-'datplot' is on CRAN with version 1.0.0. 
-
-    install.packages("datplot")
-
-
-Later versions can be installed from GitHub with devtools:
+'datplot' can be installed from GitHub with devtools:
 
     devtools::install_github("lsteinmann/datplot")
 
 Or via downloading the latest release and installing from the file: 
 
-    devtools::install_local(path = "../datplot_1.0.0.tar.gz")
+    devtools::install_local(path = "../datplot_1.x.x.tar.gz")
     
 In case you are unable to find the vignettes after installing from github directly, try: 
 
@@ -56,5 +53,5 @@ But you may have to install vignette dependencies manually (see suggests in the 
 Contact
 -------
 
-Please feel free to use and change the code to your liking. I would be happy if you contacted me if you do, because I'm interested to know whether this helps anybody. Also, if you have any ideas, critique or improvements, I would be very glad to hear from you! 
+Please feel free to use and change the code to your liking. We would be happy for any feedback on the packages, or if you you notify us of your publications using this package!
 

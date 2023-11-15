@@ -10,15 +10,23 @@ test_that("generate.stepsize returns one", {
   expect_equal(generate.stepsize(testmat), 1)
 })
 
-corrmat <- as.data.frame(matrix(c(1, 2, 3, 4, 6, 6, 8, 8, 0, -200, 50,
-                                  -200, 5, 0, 50, 5),
-                                byrow = FALSE, ncol = 4))
-testmat <- as.data.frame(matrix(c(1, 2, 3, 4, 6, 6, 8, 8, 0, 0, 50, -200,
-                                  5, -200, 50, 5),
-                                byrow = FALSE, ncol = 4))
+correct_df <- as.data.frame(matrix(c(1, 2, 3, 4, 6, 6, 8, 8, 0, -200, 50,
+                                     -200, 5, 0, 50, 5),
+                                   byrow = FALSE, ncol = 4))
+wrong_df <- as.data.frame(matrix(c(1, 2, 3, 4, 6, 6, 8, 8, 0, 0, 50, -200,
+                                   5, -200, 50, 5),
+                                 byrow = FALSE, ncol = 4))
+
+
 test_that("switch.dating returns values correctly", {
-  expect_equal(switch.dating(as.data.frame(testmat), DAT_err), corrmat)
+  expect_equal(suppressWarnings(switch.dating(wrong_df)), correct_df)
 })
+
+test_that("switch.dating issues warning", {
+  expect_warning(switch.dating(wrong_df), "wrong order at ID 2")
+})
+
+
 
 testdf <- create.testing.df()
 
@@ -45,6 +53,7 @@ testdf_wrong <- testdf
 testdf_wrong$min <- "TEST"
 testdf_wrong_two <- testdf
 testdf_wrong_two$max <- factor("börek")
+testdf_wrong_three <- matrix(nrow = 4, ncol = 4)
 
 
 test_that("check.number returns true for numbers false for other", {
@@ -66,10 +75,11 @@ test_that("check.structure works", {
   expect_true(suppressWarnings(check.structure(testdf)))
   expect_error(check.structure(testdf_wrong))
   expect_error(check.structure(testdf_wrong_two))
+  expect_error(check.structure(testdf_wrong_three))
 })
 
-test_that("check.structure issues warning", {
-  expect_warning(check.structure(testdf), regexp = "recommended")
+test_that("check.structure issues message", {
+  expect_message(check.structure(testdf), regexp = "recommended")
 })
 
 
@@ -83,10 +93,27 @@ DAT_mat[, 1] <- 1:nrow(testdf)
 DAT_mat[, 2] <- testdf[, 3]
 DAT_mat[, 3] <- testdf[, 4]
 colnames(DAT_mat) <- c("index", "datmin", "datmax", "weight", "step")
+DAT_list <- as.data.frame(DAT_mat)
+DAT_list <- unlist(apply(DAT_list, 1, list), recursive = FALSE)
 
-test_that("create.sub.objects issues no warning", {
-  expect_failure(expect_warning(create.sub.objects(DAT_mat, stepsize = 1),
+
+test_that("warning or not for stepsize larger than steps in data in create.sub.objects", {
+  expect_failure(expect_warning(create.sub.objects(DAT_list, stepsize = 1),
                                 regexp = "stepsize is larger"))
-  expect_warning(create.sub.objects(DAT_mat, stepsize = 5),
+  expect_warning(create.sub.objects(DAT_list, stepsize = 5),
                  regexp = "stepsize is larger")
 })
+
+
+
+test_that("create.sub.objects adds cumulative probability", {
+  mat <- create.sub.objects(DAT_list, stepsize = 1,
+                            cumulative = TRUE)
+  expect_equal(ncol(mat),
+               6)
+  mat <- create.sub.objects(DAT_list, stepsize = 1,
+                            cumulative = FALSE)
+  expect_equal(ncol(mat),
+               5)
+})
+

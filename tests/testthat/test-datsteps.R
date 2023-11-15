@@ -6,15 +6,20 @@ test_that("error for wrong value of stepsize", {
                "stepsize")
 })
 
-test_that("error for wrong value of stepsize", {
-  expect_warning(datsteps(testdf, stepsize = 25), "recommended")
+test_that("warning for wrong column types", {
+  expect_message(datsteps(testdf, stepsize = 1), "character vector")
 })
 
 
 data("DAT_df")
 
-test_that("error for wrong value of stepsize", {
-  expect_warning(datsteps(DAT_df), regexp = "wrong order")
+test_that("warning for problematic value of stepsize", {
+  expect_warning(datsteps(DAT_df, stepsize = 25), regexp = "stepsize is larger")
+})
+
+
+test_that("warning for dating order", {
+  expect_warning(datsteps(DAT_df), regexp = "in wrong order")
 })
 
 testdf <- create.testing.df()
@@ -24,6 +29,47 @@ testdf[1, 3:4] <- c(4, 4)
 
 test_that("error for wrong value of stepsize", {
   expect_warning(datsteps(testdf), regexp = "the same value")
-  expect_failure(expect_warning(datsteps(testdf, stepsize = 1),
-                                regexp = "larger than the range of"))
+  expect_warning(datsteps(testdf, stepsize = 25), regexp = "larger than the range of")
+})
+
+
+testdf <- create.testing.df()[1:2,]
+testdf$variable <- as.factor(testdf$variable)
+#str(testdf)
+testdf$min <- c(1, 10)
+testdf$max <- c(2, 12)
+
+test_that("cumulative weight is added", {
+  test <- suppressWarnings(datsteps(testdf,
+                                    stepsize = 1,
+                                    cumulative = TRUE))
+  expect_equal(ncol(test),
+               7)
+  test <- suppressWarnings(datsteps(testdf,
+                                    stepsize = 1,
+                                    cumulative = FALSE))
+  expect_equal(ncol(datsteps(testdf,
+                             stepsize = 1,
+                             cumulative = FALSE)),
+               6)
+})
+
+test_that("cumulative weight is 1 for row 2 + 5", {
+  test <- suppressWarnings(datsteps(testdf, stepsize = 1,
+                                    cumulative = TRUE))
+  expect_equal(test[2,7],
+               1)
+  expect_equal(test[5,7],
+               1)
+})
+
+test_that("Warning for cumulative weights with stepsize over 1", {
+  expect_warning(datsteps(testdf, stepsize = 2,
+                          cumulative = TRUE),
+                 regexp = "stepsize")
+})
+
+test_that("stepsize = 'auto' works", {
+    expect_output(suppressWarnings(test <- datsteps(testdf, stepsize = "auto")),
+                  "auto")
 })

@@ -8,3 +8,6 @@
 ^todo\.R$
 ^CRAN-RELEASE$
 ^LICENSE\.md$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

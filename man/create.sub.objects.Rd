@@ -4,28 +4,32 @@
 \alias{create.sub.objects}
 \title{Create sub-objects for each object in a dataframe (internal)}
 \usage{
-create.sub.objects(DAT_mat, stepsize)
+create.sub.objects(DAT_list, stepsize, calc = "weight", cumulative = FALSE)
 }
 \arguments{
-\item{DAT_mat}{a matrix with 3 variables as prepared by datsteps()}
+\item{DAT_list}{a list as prepared by [datsteps()]}
 
-\item{stepsize}{Number of years that should be used as an interval for
-creating dating steps.}
+\item{stepsize}{numeric, default is 1. Number of years that should be used
+as an interval for creating dating steps.}
+
+\item{calc}{method of calculation to use;
+can be either one of "weight" (default) or "probability":
+ * "weight": use the
+    [published original calculation](https://doi.org/10.1017/aap.2021.8)
+    for weights,
+ * "probability": calculate year-wise probability instead (only reasonable
+    when `stepsize = 1`)}
+
+\item{cumulative}{FALSE (default), TRUE: add a column containing the
+cumulative probability for each object (only reasonable when `stepsize = 1`,
+and will automatically use probability calculation)}
 }
 \value{
-a longer matrix of the same structure to be further processed by
-datsteps() with a number of steps for each object
+an expanded list of the same structure to be further processed by
+[datsteps()] each object duplicated according to the number of steps required
 }
 \description{
-Requires a matrix with 4 named columns as datsteps will
-hand to the function:
-* "index" (identifier so the values can later be reassigned to their ID and
-variable),
-* "datmin" (minimum dating as any kind of number),
-* "datmax" (maximum dating as any kind of number),
-* "weight" (as created by get.weights),
-* "step" (empty).
-It's expected that dates BCE are displayed as negative values while dates
-CE are positive values. Ignoring this will cause problems in any case, that
-would be fixed automatically by switch.dating().
+Requires a list with named vectors as [datsteps()] will
+hand to the function.
 }
+\keyword{internal}

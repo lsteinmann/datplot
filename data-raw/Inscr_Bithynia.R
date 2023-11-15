@@ -1,17 +1,21 @@
 ## code to prepare `Inscr_Bithynia` dataset goes here
 
-library(readxl)
+#' Since the conversion of the original Excel file to CRAN-compatible
+#' ASCII-data this script does not convert all datings anymore.
+#' I apologize for not updating this script, but it seems too irrelevant
+#' to spent more time on it than I already have, since the package
+#' contains the clean Data already. Keep this as a reminder that
+#' data is complicated, and that things change.
+
 library(dplyr)
 library(stringr)
 library(forcats)
 
-inscriptions <- readxl::read_excel(system.file('extdata',
-                                               'Bithynia_Inscriptions.xlsx',
-                                               package = 'datplot',
-                                               mustWork = TRUE))
+inscriptions <- read.csv("inst/extdata/Bithynia_Inscriptions_ascii.csv")
 
 inscriptions <- inscriptions %>%
   mutate(ikey = na_if(ikey, "N / A"),
+         ikey = na_if(ikey, ""),
          ikey = gsub("2PH", "PH", ikey),
          ikey = gsub("v", "PH", ikey),
          URL = NA)
@@ -28,7 +32,7 @@ inscriptions$URL[repl] <- paste("https://epigraphy.packhum.org/text/",
 
 inscriptions$ID <- paste("I_", 1:nrow(inscriptions), sep = "")
 inscriptions <- inscriptions %>%
-  rename(Dating = `Chronological Frame`) %>%
+  rename(Dating = Chronological.Frame) %>%
   mutate(Language = replace(Language, Language == "Gr/Lat", "Greek/Latin"),
          Language = replace(Language, Language == "Gr / Lat", "Greek/Latin"),
          Language = factor(Language, levels = c("Greek", "Latin",
@@ -80,16 +84,23 @@ num_dating$Dating <- as.character(num_dating$Dating)
 
 
 # Values like: 92-120 AD
-sel <- grep("^[0-9]{1,3}–[0-9]{1,3} AD", num_dating$Dating)
+sel <- grep("^[0-9]{1,3}-[0-9]{1,3} AD", num_dating$Dating)
 for (r in sel) {
-  split <- strsplit(x = num_dating$Dating[r], split = "–| ")
+  split <- strsplit(x = num_dating$Dating[r], split = "-| ")
   num_dating$DAT_min[r] <- split[[1]][1]
   num_dating$DAT_max[r] <- split[[1]][2]
 }
 # Values like: AD 92-120
-sel <- grep("^AD [0-9]{1,3}–[0-9]{1,3}$", num_dating$Dating)
+sel <- grep("^AD [0-9]{1,3}-[0-9]{1,3}$", num_dating$Dating)
 for (r in sel) {
-  split <- strsplit(x = num_dating$Dating[r], split = "–| ")
+  split <- strsplit(x = num_dating$Dating[r], split = "-| ")
+  num_dating$DAT_min[r] <- split[[1]][2]
+  num_dating$DAT_max[r] <- split[[1]][3]
+}
+# Values like: AD 92-120
+sel <- grep("^AD [0-9]{1,3}-[0-9]{1,3}$", num_dating$Dating)
+for (r in sel) {
+  split <- strsplit(x = num_dating$Dating[r], split = "-| ")
   num_dating$DAT_min[r] <- split[[1]][2]
   num_dating$DAT_max[r] <- split[[1]][3]
 }
@@ -108,9 +119,9 @@ for (r in sel) {
   num_dating$DAT_max[r] <- split[[1]][2]
 }
 # Values like: 525-75 BC
-sel <- grep("^[0-9]{1,3}–[0-9]{1,3} BC", num_dating$Dating)
+sel <- grep("^[0-9]{1,3}-[0-9]{1,3} BC", num_dating$Dating)
 for (r in sel) {
-  split <- strsplit(x = num_dating$Dating[r], split = "–| ")
+  split <- strsplit(x = num_dating$Dating[r], split = "-| ")
   num_dating$DAT_min[r] <- 0 - as.numeric(split[[1]][1])
   num_dating$DAT_max[r] <- 0 - as.numeric(split[[1]][2])
 }
@@ -159,6 +170,7 @@ num_dating <- num_dating[which(is.na(num_dating$DAT_min)), ]
 
 join_dating$DAT_min[which(join_dating$DAT_min == 0)] <- 1
 join_dating$DAT_max[which(join_dating$DAT_max == 0)] <- -1
+
 
 
 #write.csv(num_dating, file = "num_dating.csv", fileEncoding = "UTF-8")
