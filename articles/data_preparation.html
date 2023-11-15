@@ -132,20 +132,14 @@ that data is complicated, and that things change.</p>
 <span>                                     <span class="st">"Bithynia_Inscriptions_ascii.csv"</span>,</span>
 <span>                                     package <span class="op">=</span> <span class="st">"datplot"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">inscriptions</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        X              ikey             Location            Source         </span></span>
-<span><span class="co">#&gt;  Min.   :   1.0   Length:2878        Length:2878        Length:2878       </span></span>
-<span><span class="co">#&gt;  1st Qu.: 720.2   Class :character   Class :character   Class :character  </span></span>
-<span><span class="co">#&gt;  Median :1439.5   Mode  :character   Mode  :character   Mode  :character  </span></span>
-<span><span class="co">#&gt;  Mean   :1439.5                                                           </span></span>
-<span><span class="co">#&gt;  3rd Qu.:2158.8                                                           </span></span>
-<span><span class="co">#&gt;  Max.   :2878.0                                                           </span></span>
-<span><span class="co">#&gt;  Chronological.Frame   Language        </span></span>
-<span><span class="co">#&gt;  Length:2878         Length:2878       </span></span>
-<span><span class="co">#&gt;  Class :character    Class :character  </span></span>
-<span><span class="co">#&gt;  Mode  :character    Mode  :character  </span></span>
-<span><span class="co">#&gt;                                        </span></span>
-<span><span class="co">#&gt;                                        </span></span>
-<span><span class="co">#&gt; </span></span></code></pre></div>
+<span><span class="co">#&gt;      ikey             Location            Source          Chronological.Frame</span></span>
+<span><span class="co">#&gt;  Length:2878        Length:2878        Length:2878        Length:2878        </span></span>
+<span><span class="co">#&gt;  Class :character   Class :character   Class :character   Class :character   </span></span>
+<span><span class="co">#&gt;  Mode  :character   Mode  :character   Mode  :character   Mode  :character   </span></span>
+<span><span class="co">#&gt;    Language        </span></span>
+<span><span class="co">#&gt;  Length:2878       </span></span>
+<span><span class="co">#&gt;  Class :character  </span></span>
+<span><span class="co">#&gt;  Mode  :character</span></span></code></pre></div>
 <p>A large amount of the initial data was provided by the <a href="https://inscriptions.packhum.org/" class="external-link">Searchable Greek Inscriptions
 Tool of the Packard Humanities Institute</a> and the <a href="https://edh-www.adw.uni-heidelberg.de/home" class="external-link">Epigraphische
 Datenbank Heidelberg</a>. Those inscriptions (n = 0) can be referenced
@@ -225,21 +219,21 @@ and <code>Language</code>:</p>
 sets contents:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">inscriptions</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        X              ikey                         Location  </span></span>
-<span><span class="co">#&gt;  Min.   :   1.0   Length:2878        Nicaea            :760  </span></span>
-<span><span class="co">#&gt;  1st Qu.: 720.2   Class :character   Nicomedia         :501  </span></span>
-<span><span class="co">#&gt;  Median :1439.5   Mode  :character   Prusias ad Olympum:344  </span></span>
-<span><span class="co">#&gt;  Mean   :1439.5                      Claudiopolis      :252  </span></span>
-<span><span class="co">#&gt;  3rd Qu.:2158.8                      Chalcedon         :200  </span></span>
-<span><span class="co">#&gt;  Max.   :2878.0                      Prusias ad Hypium :179  </span></span>
-<span><span class="co">#&gt;                                      (Other)           :642  </span></span>
-<span><span class="co">#&gt;     Source             Dating                 Language         ID           </span></span>
-<span><span class="co">#&gt;  Length:2878        Length:2878        Greek      :2724   Length:2878       </span></span>
-<span><span class="co">#&gt;  Class :character   Class :character   Latin      : 125   Class :character  </span></span>
-<span><span class="co">#&gt;  Mode  :character   Mode  :character   Greek/Latin:  29   Mode  :character  </span></span>
-<span><span class="co">#&gt;                                                                             </span></span>
-<span><span class="co">#&gt;                                                                             </span></span>
-<span><span class="co">#&gt;                                                                             </span></span>
+<span><span class="co">#&gt;      ikey                         Location      Source         </span></span>
+<span><span class="co">#&gt;  Length:2878        Nicaea            :760   Length:2878       </span></span>
+<span><span class="co">#&gt;  Class :character   Nicomedia         :501   Class :character  </span></span>
+<span><span class="co">#&gt;  Mode  :character   Prusias ad Olympum:344   Mode  :character  </span></span>
+<span><span class="co">#&gt;                     Claudiopolis      :252                     </span></span>
+<span><span class="co">#&gt;                     Chalcedon         :200                     </span></span>
+<span><span class="co">#&gt;                     Prusias ad Hypium :179                     </span></span>
+<span><span class="co">#&gt;                     (Other)           :642                     </span></span>
+<span><span class="co">#&gt;     Dating                 Language         ID           </span></span>
+<span><span class="co">#&gt;  Length:2878        Greek      :2724   Length:2878       </span></span>
+<span><span class="co">#&gt;  Class :character   Latin      : 125   Class :character  </span></span>
+<span><span class="co">#&gt;  Mode  :character   Greek/Latin:  29   Mode  :character  </span></span>
+<span><span class="co">#&gt;                                                          </span></span>
+<span><span class="co">#&gt;                                                          </span></span>
+<span><span class="co">#&gt;                                                          </span></span>
 <span><span class="co">#&gt; </span></span></code></pre></div>
 <div class="section level3">
 <h3 id="cleaning-up-the-dating-variable">Cleaning up the Dating-variable<a class="anchor" aria-label="anchor" href="#cleaning-up-the-dating-variable"></a>
@@ -331,52 +325,40 @@ since BC needs to be stored as a negative number.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">144</td>
-<td align="left">119 AD</td>
-<td align="left">119</td>
-<td align="left">119</td>
+<td align="left">79</td>
+<td align="left">198 AD</td>
+<td align="left">198</td>
+<td align="left">198</td>
 </tr>
 <tr class="even">
-<td align="left">192</td>
-<td align="left">128 AD</td>
-<td align="left">128</td>
-<td align="left">128</td>
+<td align="left">194</td>
+<td align="left">123 AD</td>
+<td align="left">123</td>
+<td align="left">123</td>
 </tr>
 <tr class="odd">
-<td align="left">159</td>
-<td align="left">58 AD</td>
-<td align="left">58</td>
-<td align="left">58</td>
+<td align="left">258</td>
+<td align="left">142 AD</td>
+<td align="left">142</td>
+<td align="left">142</td>
 </tr>
 <tr class="even">
-<td align="left">229</td>
-<td align="left">147 AD</td>
-<td align="left">147</td>
-<td align="left">147</td>
+<td align="left">215</td>
+<td align="left">260 AD</td>
+<td align="left">260</td>
+<td align="left">260</td>
 </tr>
 <tr class="odd">
-<td align="left">216</td>
-<td align="left">253 AD</td>
-<td align="left">253</td>
-<td align="left">253</td>
+<td align="left">220</td>
+<td align="left">241 AD</td>
+<td align="left">241</td>
+<td align="left">241</td>
 </tr>
 <tr class="even">
-<td align="left">12</td>
-<td align="left">585 AD</td>
-<td align="left">585</td>
-<td align="left">585</td>
-</tr>
-<tr class="odd">
-<td align="left">134</td>
-<td align="left">205 AD</td>
-<td align="left">205</td>
-<td align="left">205</td>
-</tr>
-<tr class="even">
-<td align="left">177</td>
-<td align="left">244 AD</td>
-<td align="left">244</td>
-<td align="left">244</td>
+<td align="left">130</td>
+<td align="left">238 AD</td>
+<td align="left">238</td>
+<td align="left">238</td>
 </tr>
 <tr class="odd">
 <td align="left">139</td>
@@ -385,10 +367,22 @@ since BC needs to be stored as a negative number.</p>
 <td align="left">175</td>
 </tr>
 <tr class="even">
-<td align="left">215</td>
-<td align="left">260 AD</td>
-<td align="left">260</td>
-<td align="left">260</td>
+<td align="left">145</td>
+<td align="left">100 AD</td>
+<td align="left">100</td>
+<td align="left">100</td>
+</tr>
+<tr class="odd">
+<td align="left">77</td>
+<td align="left">218 AD</td>
+<td align="left">218</td>
+<td align="left">218</td>
+</tr>
+<tr class="even">
+<td align="left">259</td>
+<td align="left">114 AD</td>
+<td align="left">114</td>
+<td align="left">114</td>
 </tr>
 </tbody>
 </table>
@@ -460,64 +454,64 @@ errors.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">157</td>
-<td align="left">62/3 AD</td>
-<td align="left">62</td>
-<td align="left">3</td>
-</tr>
-<tr class="even">
-<td align="left">165</td>
-<td align="left">363/364 AD</td>
-<td align="left">363</td>
-<td align="left">364</td>
-</tr>
-<tr class="odd">
-<td align="left">167</td>
-<td align="left">337-340 AD</td>
-<td align="left">337</td>
-<td align="left">340</td>
-</tr>
-<tr class="even">
-<td align="left">227</td>
-<td align="left">155/156 AD</td>
-<td align="left">155</td>
-<td align="left">156</td>
-</tr>
-<tr class="odd">
-<td align="left">99</td>
-<td align="left">383-392 AD</td>
-<td align="left">383</td>
-<td align="left">392</td>
-</tr>
-<tr class="even">
+<td align="left">292</td>
+<td align="left">224/225 AD</td>
+<td align="left">224</td>
 <td align="left">225</td>
-<td align="left">196-211 AD</td>
-<td align="left">196</td>
-<td align="left">211</td>
-</tr>
-<tr class="odd">
-<td align="left">124</td>
-<td align="left">286-305 AD</td>
-<td align="left">286</td>
-<td align="left">305</td>
 </tr>
 <tr class="even">
-<td align="left">161</td>
-<td align="left">414-416 AD</td>
-<td align="left">414</td>
-<td align="left">416</td>
+<td align="left">151</td>
+<td align="left">AD 251 - 300</td>
+<td align="left">251</td>
+<td align="left">300</td>
 </tr>
 <tr class="odd">
-<td align="left">40</td>
-<td align="left">81-96 AD</td>
-<td align="left">81</td>
-<td align="left">96</td>
+<td align="left">37</td>
+<td align="left">AD 180-212</td>
+<td align="left">180</td>
+<td align="left">212</td>
 </tr>
 <tr class="even">
-<td align="left">53</td>
-<td align="left">293-305 AD</td>
-<td align="left">293</td>
-<td align="left">305</td>
+<td align="left">155</td>
+<td align="left">78/79 AD</td>
+<td align="left">78</td>
+<td align="left">79</td>
+</tr>
+<tr class="odd">
+<td align="left">188</td>
+<td align="left">150/151 AD</td>
+<td align="left">150</td>
+<td align="left">151</td>
+</tr>
+<tr class="even">
+<td align="left">66</td>
+<td align="left">AD 130 - 138</td>
+<td align="left">130</td>
+<td align="left">138</td>
+</tr>
+<tr class="odd">
+<td align="left">156</td>
+<td align="left">70-79 AD</td>
+<td align="left">70</td>
+<td align="left">79</td>
+</tr>
+<tr class="even">
+<td align="left">191</td>
+<td align="left">131/132 AD</td>
+<td align="left">131</td>
+<td align="left">132</td>
+</tr>
+<tr class="odd">
+<td align="left">22</td>
+<td align="left">250-300 AD</td>
+<td align="left">250</td>
+<td align="left">300</td>
+</tr>
+<tr class="even">
+<td align="left">251</td>
+<td align="left">214-219 AD</td>
+<td align="left">214</td>
+<td align="left">219</td>
 </tr>
 </tbody>
 </table>
@@ -563,46 +557,22 @@ taking care to treat AD and BC differently.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">15</td>
-<td align="left">3rd c. BC</td>
-<td align="left">-299</td>
-<td align="left">-200</td>
+<td align="left">11</td>
+<td align="left">5th c. AD</td>
+<td align="left">400</td>
+<td align="left">499</td>
 </tr>
 <tr class="even">
-<td align="left">17</td>
-<td align="left">2nd c. BC</td>
-<td align="left">-199</td>
-<td align="left">-100</td>
-</tr>
-<tr class="odd">
-<td align="left">25</td>
-<td align="left">1st c. BC</td>
-<td align="left">-99</td>
-<td align="left">0</td>
-</tr>
-<tr class="even">
-<td align="left">41</td>
-<td align="left">6th c. BC</td>
-<td align="left">-599</td>
-<td align="left">-500</td>
-</tr>
-<tr class="odd">
 <td align="left">18</td>
 <td align="left">2nd c. AD</td>
 <td align="left">100</td>
 <td align="left">199</td>
 </tr>
-<tr class="even">
-<td align="left">16</td>
-<td align="left">3rd c. AD</td>
-<td align="left">200</td>
-<td align="left">299</td>
-</tr>
 <tr class="odd">
-<td align="left">26</td>
-<td align="left">1st c. AD</td>
-<td align="left">0</td>
-<td align="left">99</td>
+<td align="left">15</td>
+<td align="left">3rd c. BC</td>
+<td align="left">-299</td>
+<td align="left">-200</td>
 </tr>
 <tr class="even">
 <td align="left">116</td>
@@ -611,10 +581,34 @@ taking care to treat AD and BC differently.</p>
 <td align="left">399</td>
 </tr>
 <tr class="odd">
-<td align="left">11</td>
-<td align="left">5th c. AD</td>
-<td align="left">400</td>
-<td align="left">499</td>
+<td align="left">41</td>
+<td align="left">6th c. BC</td>
+<td align="left">-599</td>
+<td align="left">-500</td>
+</tr>
+<tr class="even">
+<td align="left">25</td>
+<td align="left">1st c. BC</td>
+<td align="left">-99</td>
+<td align="left">0</td>
+</tr>
+<tr class="odd">
+<td align="left">16</td>
+<td align="left">3rd c. AD</td>
+<td align="left">200</td>
+<td align="left">299</td>
+</tr>
+<tr class="even">
+<td align="left">26</td>
+<td align="left">1st c. AD</td>
+<td align="left">0</td>
+<td align="left">99</td>
+</tr>
+<tr class="odd">
+<td align="left">42</td>
+<td align="left">6th c. AD</td>
+<td align="left">500</td>
+<td align="left">599</td>
 </tr>
 <tr class="even">
 <td align="left">47</td>
@@ -786,140 +780,140 @@ desired information:</p>
 <table class="table">
 <colgroup>
 <col width="6%">
-<col width="15%">
-<col width="11%">
-<col width="32%">
-<col width="22%">
+<col width="9%">
+<col width="31%">
+<col width="30%">
+<col width="10%">
 <col width="10%">
 </colgroup>
 <thead><tr class="header">
 <th align="left"></th>
-<th align="left">Language</th>
-<th align="left">ikey</th>
-<th align="left">Source</th>
-<th align="left">uncertain_dating</th>
+<th align="left">ID</th>
+<th align="left">Location</th>
+<th align="left">Dating</th>
 <th align="right">DAT_min</th>
+<th align="right">DAT_max</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">2537</td>
-<td align="left">Greek</td>
-<td align="left">PH278628</td>
-<td align="left">IK Prusa ad Olympum 138</td>
-<td align="left">FALSE</td>
+<td align="left">2362</td>
+<td align="left">I_2362</td>
+<td align="left">Prusias ad Mare</td>
+<td align="left">251-253 AD</td>
+<td align="right">251</td>
+<td align="right">253</td>
+</tr>
+<tr class="even">
+<td align="left">1256</td>
+<td align="left">I_1256</td>
+<td align="left">Nicaea</td>
+<td align="left">361-363 AD</td>
+<td align="right">361</td>
+<td align="right">363</td>
+</tr>
+<tr class="odd">
+<td align="left">2718</td>
+<td align="left">I_2718</td>
+<td align="left">Prusias ad Olympum</td>
+<td align="left">1st - 2nd c. AD</td>
+<td align="right">1</td>
+<td align="right">199</td>
+</tr>
+<tr class="even">
+<td align="left">1657</td>
+<td align="left">I_1657</td>
+<td align="left">Nicomedia</td>
+<td align="left">end of the 1st c. AD</td>
+<td align="right">80</td>
+<td align="right">99</td>
+</tr>
+<tr class="odd">
+<td align="left">762</td>
+<td align="left">I_762</td>
+<td align="left">Kaisarea Hadrianopolis</td>
+<td align="left">3rd century AD</td>
 <td align="right">200</td>
+<td align="right">299</td>
 </tr>
 <tr class="even">
-<td align="left">2574</td>
-<td align="left">Greek</td>
-<td align="left">PH278610</td>
-<td align="left">IK Prusa ad Olympum 120</td>
-<td align="left">FALSE</td>
-<td align="right">100</td>
+<td align="left">755</td>
+<td align="left">I_755</td>
+<td align="left">Kaisarea Hadrianopolis</td>
+<td align="left">4th c. AD</td>
+<td align="right">300</td>
+<td align="right">399</td>
 </tr>
 <tr class="odd">
-<td align="left">1709</td>
-<td align="left">Greek</td>
-<td align="left">PH279919</td>
-<td align="left">SEG 39: 1342</td>
-<td align="left">FALSE</td>
-<td align="right">245</td>
-</tr>
-<tr class="even">
-<td align="left">1302</td>
-<td align="left">Greek</td>
-<td align="left">PH278381</td>
-<td align="left">IK Iznik 1412</td>
-<td align="left">TRUE</td>
-<td align="right">100</td>
-</tr>
-<tr class="odd">
-<td align="left">1341</td>
-<td align="left">Latin</td>
-<td align="left">HD053091</td>
-<td align="left">AE 1993, 1435</td>
-<td align="left">FALSE</td>
-<td align="right">100</td>
-</tr>
-<tr class="even">
-<td align="left">2470</td>
-<td align="left">Greek</td>
-<td align="left">PH278540</td>
-<td align="left">IK Prusa ad Olympum 49</td>
-<td align="left">FALSE</td>
+<td align="left">615</td>
+<td align="left">I_615</td>
+<td align="left">Heraclea Pontica</td>
+<td align="left">Roman Imperial period</td>
 <td align="right">-31</td>
-</tr>
-<tr class="odd">
-<td align="left">2516</td>
-<td align="left">Greek</td>
-<td align="left">PH278720</td>
-<td align="left">IK Prusa ad Olympum 1001</td>
-<td align="left">FALSE</td>
-<td align="right">-188</td>
+<td align="right">395</td>
 </tr>
 <tr class="even">
-<td align="left">1209</td>
-<td align="left">Greek</td>
-<td align="left">PH278160</td>
-<td align="left">IK Iznik 1085</td>
-<td align="left">FALSE</td>
-<td align="right">200</td>
-</tr>
-<tr class="odd">
-<td align="left">1398</td>
-<td align="left">Greek</td>
-<td align="left">PH278102</td>
-<td align="left">IK Iznik 1003</td>
-<td align="left">FALSE</td>
-<td align="right">293</td>
-</tr>
-<tr class="even">
-<td align="left">634</td>
-<td align="left">Latin</td>
-<td align="left"></td>
-<td align="left">AE 1994, 1627</td>
-<td align="left">FALSE</td>
-<td align="right">383</td>
-</tr>
-<tr class="odd">
 <td align="left">2551</td>
-<td align="left">Greek</td>
-<td align="left">PH278633</td>
-<td align="left">IK Prusa ad Olympum 144</td>
-<td align="left">FALSE</td>
+<td align="left">I_2551</td>
+<td align="left">Prusias ad Olympum</td>
+<td align="left">2nd c. BC</td>
 <td align="right">-199</td>
-</tr>
-<tr class="even">
-<td align="left">2178</td>
-<td align="left">Greek</td>
-<td align="left">PH279995</td>
-<td align="left">IK Prusias ad Hypium 56</td>
-<td align="left">FALSE</td>
-<td align="right">81</td>
+<td align="right">-100</td>
 </tr>
 <tr class="odd">
-<td align="left">343</td>
-<td align="left">Greek</td>
-<td align="left">PH279408</td>
-<td align="left">IK Klaudiu Polis 44</td>
-<td align="left">FALSE</td>
-<td align="right">280</td>
+<td align="left">1719</td>
+<td align="left">I_1719</td>
+<td align="left">Nicomedia</td>
+<td align="left">2 BC or later</td>
+<td align="right">-2</td>
+<td align="right">20</td>
 </tr>
 <tr class="even">
-<td align="left">1410</td>
-<td align="left">Greek/Latin</td>
-<td align="left">PH277806</td>
-<td align="left">IK Iznik 14</td>
-<td align="left">FALSE</td>
-<td align="right">249</td>
+<td align="left">924</td>
+<td align="left">I_924</td>
+<td align="left">Nicaea</td>
+<td align="left">Roman Imp. period</td>
+<td align="right">-31</td>
+<td align="right">395</td>
 </tr>
 <tr class="odd">
-<td align="left">42</td>
-<td align="left">Greek</td>
-<td align="left"></td>
-<td align="left">SEG 46: 1593</td>
-<td align="left">FALSE</td>
-<td align="right">400</td>
+<td align="left">2634</td>
+<td align="left">I_2634</td>
+<td align="left">Prusias ad Olympum</td>
+<td align="left">2nd - 3rd c. AD</td>
+<td align="right">100</td>
+<td align="right">299</td>
+</tr>
+<tr class="even">
+<td align="left">1192</td>
+<td align="left">I_1192</td>
+<td align="left">Nicaea</td>
+<td align="left">3rd c. AD</td>
+<td align="right">200</td>
+<td align="right">299</td>
+</tr>
+<tr class="odd">
+<td align="left">640</td>
+<td align="left">I_640</td>
+<td align="left">Heraclea Pontica</td>
+<td align="left">2nd c. AD</td>
+<td align="right">100</td>
+<td align="right">199</td>
+</tr>
+<tr class="even">
+<td align="left">1004</td>
+<td align="left">I_1004</td>
+<td align="left">Nicaea</td>
+<td align="left">Roman Imp. period</td>
+<td align="right">-31</td>
+<td align="right">395</td>
+</tr>
+<tr class="odd">
+<td align="left">1284</td>
+<td align="left">I_1284</td>
+<td align="left">Nicaea</td>
+<td align="left">2nd c. AD</td>
+<td align="right">100</td>
+<td align="right">199</td>
 </tr>
 </tbody>
 </table>
@@ -950,27 +944,28 @@ before handing it to <code>datstepts()</code>, as
 <span>  <span class="fu">datplot</span><span class="fu">::</span><span class="fu"><a href="../reference/datsteps.html">datsteps</a></span><span class="op">(</span>stepsize <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Using 'weight'-calculation (see https://doi.org/10.1017/aap.2021.8).</span></span>
 <span><span class="co">#&gt; Warning in switch.dating(DAT_df): Warning: Dating seems to be in wrong order at</span></span>
-<span><span class="co">#&gt; ID I_1162, I_2725 (Index: 599, 1269). Dates have been switched, but be sure to</span></span>
+<span><span class="co">#&gt; ID I_1162, I_2725 (Index: 634, 1451). Dates have been switched, but be sure to</span></span>
 <span><span class="co">#&gt; check your original data for possible mistakes.</span></span>
 <span><span class="co">#&gt; Warning in get.weights(DAT_mat[, "datmin"], DAT_mat[, "datmax"]): Warning:</span></span>
-<span><span class="co">#&gt; DAT_min and DAT_max at Index: 57, 68, 120, 173, 187, 238, 299, 300, 311, 312,</span></span>
-<span><span class="co">#&gt; 588, 590, 679, 794, 798, 799, 828, 831, 833, 834, 837, 841, 878, 879, 908, 909,</span></span>
-<span><span class="co">#&gt; 914, 915, 931, 932, 933, 937, 938, 941, 942, 997, 1051, 1064, 1067, 1130, 1307,</span></span>
-<span><span class="co">#&gt; 1308, 1310, 1322, 1323, 1324 have the same value! Is this correct? Please check</span></span>
-<span><span class="co">#&gt; the table for possible errors.</span></span>
+<span><span class="co">#&gt; DAT_min and DAT_max at Index: 60, 75, 138, 196, 211, 266, 331, 332, 344, 345,</span></span>
+<span><span class="co">#&gt; 622, 625, 727, 873, 877, 878, 930, 933, 935, 936, 939, 943, 981, 982, 1016,</span></span>
+<span><span class="co">#&gt; 1017, 1022, 1023, 1040, 1041, 1042, 1046, 1047, 1051, 1053, 1108, 1166, 1179,</span></span>
+<span><span class="co">#&gt; 1182, 1249, 1492, 1493, 1495, 1507, 1508, 1509 have the same value! Is this</span></span>
+<span><span class="co">#&gt; correct? Please check the table for possible errors.</span></span>
 <span><span class="co">#&gt; Warning in create.sub.objects(DAT_list, stepsize, calc, cumulative): stepsize</span></span>
-<span><span class="co">#&gt; is larger than the range of the closest dated object at Index = 39, 43, 44, 57,</span></span>
-<span><span class="co">#&gt; 68, 69, 70, 101, 107, 112, 113, 114, 120, 123, 129, 146, 170, 172, 173, 175,</span></span>
-<span><span class="co">#&gt; 177, 178, 179, 187, 190, 212, 214, 215, 238, 261, 262, 292, 298, 299, 300, 301,</span></span>
-<span><span class="co">#&gt; 302, 303, 304, 305, 306, 308, 310, 311, 312, 313, 314, 315, 318, 319, 320, 588,</span></span>
-<span><span class="co">#&gt; 590, 602, 606, 674, 675, 676, 677, 678, 679, 680, 681, 682, 683, 684, 685, 794,</span></span>
-<span><span class="co">#&gt; 796, 797, 798, 799, 800, 801, 803, 804, 805, 807, 808, 827, 828, 831, 832, 833,</span></span>
-<span><span class="co">#&gt; 834, 835, 836, 837, 838, 839, 840, 841, 847, 848, 849, 878, 879, 902, 908, 909,</span></span>
-<span><span class="co">#&gt; 910, 911, 912, 913, 914, 915, 917, 920, 921, 922, 923, 929, 931, 932, 933, 934,</span></span>
-<span><span class="co">#&gt; 935, 936, 937, 938, 941, 942, 943, 948, 949, 989, 995, 997, 998, 999, 1000,</span></span>
-<span><span class="co">#&gt; 1003, 1004, 1009, 1011, 1016, 1036, 1051, 1053, 1054, 1062, 1064, 1067, 1129,</span></span>
-<span><span class="co">#&gt; 1130, 1133, 1267, 1290, 1297, 1302, 1306, 1307, 1308, 1310, 1322, 1323, 1324).</span></span>
-<span><span class="co">#&gt; For information see documentation of get.step.sequence().</span></span></code></pre></div>
+<span><span class="co">#&gt; is larger than the range of the closest dated object at Index = 40, 44, 45, 60,</span></span>
+<span><span class="co">#&gt; 75, 76, 77, 110, 123, 128, 129, 130, 138, 144, 151, 168, 193, 195, 196, 198,</span></span>
+<span><span class="co">#&gt; 200, 201, 202, 211, 215, 237, 239, 240, 266, 289, 290, 320, 330, 331, 332, 333,</span></span>
+<span><span class="co">#&gt; 334, 335, 336, 337, 338, 340, 343, 344, 345, 346, 347, 348, 351, 352, 353, 622,</span></span>
+<span><span class="co">#&gt; 624, 625, 637, 643, 722, 723, 724, 725, 726, 727, 728, 729, 730, 731, 732, 733,</span></span>
+<span><span class="co">#&gt; 873, 875, 876, 877, 878, 879, 880, 882, 883, 884, 886, 887, 929, 930, 933, 934,</span></span>
+<span><span class="co">#&gt; 935, 936, 937, 938, 939, 940, 941, 942, 943, 949, 950, 951, 981, 982, 1010,</span></span>
+<span><span class="co">#&gt; 1016, 1017, 1018, 1019, 1020, 1021, 1022, 1023, 1025, 1028, 1029, 1030, 1031,</span></span>
+<span><span class="co">#&gt; 1038, 1040, 1041, 1042, 1043, 1044, 1045, 1046, 1047, 1051, 1053, 1054, 1059,</span></span>
+<span><span class="co">#&gt; 1060, 1100, 1106, 1108, 1109, 1110, 1111, 1114, 1115, 1120, 1122, 1127, 1148,</span></span>
+<span><span class="co">#&gt; 1166, 1168, 1169, 1177, 1179, 1182, 1248, 1249, 1253, 1449, 1473, 1480, 1487,</span></span>
+<span><span class="co">#&gt; 1491, 1492, 1493, 1495, 1507, 1508, 1509). For information see documentation of</span></span>
+<span><span class="co">#&gt; get.step.sequence().</span></span></code></pre></div>
 <p>There are indeed problems in the data. The first of the three
 warnings issued by <code><a href="../reference/datsteps.html">datsteps()</a></code> informs us that we may have
 assigned some values wrong: “Warning: Dating seems to be in wrong order
@@ -988,6 +983,14 @@ or IDs provided by datplots warning:</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="fl">637</span>, <span class="fl">1458</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
+<colgroup>
+<col width="10%">
+<col width="27%">
+<col width="15%">
+<col width="24%">
+<col width="11%">
+<col width="11%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">ID</th>
 <th align="left">Location</th>
@@ -996,14 +999,24 @@ or IDs provided by datplots warning:</p>
 <th align="right">DAT_min</th>
 <th align="right">DAT_max</th>
 </tr></thead>
-<tbody><tr class="odd">
-<td align="left">I_1202</td>
+<tbody>
+<tr class="odd">
+<td align="left">I_1165</td>
 <td align="left">Nicaea</td>
-<td align="left">3rd c. AD</td>
+<td align="left">58 AD</td>
 <td align="left">FALSE</td>
-<td align="right">200</td>
-<td align="right">299</td>
-</tr></tbody>
+<td align="right">58</td>
+<td align="right">58</td>
+</tr>
+<tr class="even">
+<td align="left">I_2732</td>
+<td align="left">Prusias ad Olympum</td>
+<td align="left">117-138 AD</td>
+<td align="left">FALSE</td>
+<td align="right">117</td>
+<td align="right">138</td>
+</tr>
+</tbody>
 </table>
 <p>The problem here is twofold. In the first entry, our automated
 translation of the dating could not handle the format “62/3” and thus
@@ -1066,13 +1079,13 @@ can be summarized as follows:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">inscr_clean</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       ID                ikey                             Location  </span></span>
-<span><span class="co">#&gt;  Length:1498        Length:1498        Nicaea                :604  </span></span>
+<span><span class="co">#&gt;  Length:1498        Length:1498        Nicaea                :603  </span></span>
 <span><span class="co">#&gt;  Class :character   Class :character   Prusias ad Olympum    :279  </span></span>
 <span><span class="co">#&gt;  Mode  :character   Mode  :character   Nicomedia             :108  </span></span>
 <span><span class="co">#&gt;                                        Kaisarea Hadrianopolis: 87  </span></span>
 <span><span class="co">#&gt;                                        Apamea                : 77  </span></span>
 <span><span class="co">#&gt;                                        Chalcedon             : 69  </span></span>
-<span><span class="co">#&gt;                                        (Other)               :274  </span></span>
+<span><span class="co">#&gt;                                        (Other)               :275  </span></span>
 <span><span class="co">#&gt;     Source             Dating                 Language    uncertain_dating</span></span>
 <span><span class="co">#&gt;  Length:1498        Length:1498        Greek      :1392   Mode :logical   </span></span>
 <span><span class="co">#&gt;  Class :character   Class :character   Latin      :  82   FALSE:1327      </span></span>
@@ -1081,14 +1094,14 @@ can be summarized as follows:</p>
 <span><span class="co">#&gt;                                                                           </span></span>
 <span><span class="co">#&gt;                                                                           </span></span>
 <span><span class="co">#&gt;                                                                           </span></span>
-<span><span class="co">#&gt;     DAT_min          DAT_max           URL           </span></span>
-<span><span class="co">#&gt;  Min.   :-599.0   Min.   :-525.0   Length:1498       </span></span>
-<span><span class="co">#&gt;  1st Qu.: -31.0   1st Qu.: 199.0   Class :character  </span></span>
-<span><span class="co">#&gt;  Median : 100.0   Median : 266.5   Mode  :character  </span></span>
-<span><span class="co">#&gt;  Mean   : 100.3   Mean   : 286.4                     </span></span>
-<span><span class="co">#&gt;  3rd Qu.: 200.0   3rd Qu.: 395.0                     </span></span>
-<span><span class="co">#&gt;  Max.   : 680.0   Max.   : 799.0                     </span></span>
-<span><span class="co">#&gt; </span></span></code></pre></div>
+<span><span class="co">#&gt;     DAT_min          DAT_max         URL           </span></span>
+<span><span class="co">#&gt;  Min.   :-599.0   Min.   :-525   Length:1498       </span></span>
+<span><span class="co">#&gt;  1st Qu.: -31.0   1st Qu.: 199   Class :character  </span></span>
+<span><span class="co">#&gt;  Median : 100.0   Median : 253   Mode  :character  </span></span>
+<span><span class="co">#&gt;  Mean   : 103.1   Mean   : 289                     </span></span>
+<span><span class="co">#&gt;  3rd Qu.: 200.0   3rd Qu.: 395                     </span></span>
+<span><span class="co">#&gt;  Max.   : 680.0   Max.   : 799                     </span></span>
+<span><span class="co">#&gt;  NA's   :192      NA's   :192</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="datplot">datplot<a class="anchor" aria-label="anchor" href="#datplot"></a>
@@ -1105,38 +1118,38 @@ can be summarized as follows:</p>
 <span>  <span class="fu">datplot</span><span class="fu">::</span><span class="fu"><a href="../reference/datsteps.html">datsteps</a></span><span class="op">(</span>stepsize <span class="op">=</span> <span class="fl">25</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">datplot</span><span class="fu">::</span><span class="fu"><a href="../reference/scaleweight.html">scaleweight</a></span><span class="op">(</span>var <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Using 'weight'-calculation (see https://doi.org/10.1017/aap.2021.8).</span></span>
+<span><span class="co">#&gt; Warning in datplot::datsteps(., stepsize = 25): 192 rows with NA-values in the</span></span>
+<span><span class="co">#&gt; dating columns will be omitted.</span></span>
 <span><span class="co">#&gt; Warning in get.weights(DAT_mat[, "datmin"], DAT_mat[, "datmax"]): Warning:</span></span>
-<span><span class="co">#&gt; DAT_min and DAT_max at Index: 60, 75, 141, 199, 214, 269, 334, 335, 347, 348,</span></span>
-<span><span class="co">#&gt; 625, 628, 637, 730, 879, 883, 884, 936, 939, 941, 942, 945, 949, 987, 988,</span></span>
-<span><span class="co">#&gt; 1022, 1023, 1028, 1029, 1046, 1047, 1048, 1052, 1053, 1057, 1059, 1114, 1172,</span></span>
-<span><span class="co">#&gt; 1185, 1188, 1189, 1256, 1496, 1497, 1498 have the same value! Is this correct?</span></span>
-<span><span class="co">#&gt; Please check the table for possible errors.</span></span>
+<span><span class="co">#&gt; DAT_min and DAT_max at Index: 57, 68, 120, 173, 187, 238, 299, 300, 311, 312,</span></span>
+<span><span class="co">#&gt; 588, 590, 599, 679, 794, 798, 799, 828, 831, 833, 834, 837, 841, 878, 879, 908,</span></span>
+<span><span class="co">#&gt; 909, 914, 915, 931, 932, 933, 937, 938, 941, 942, 997, 1051, 1064, 1067, 1130,</span></span>
+<span><span class="co">#&gt; 1304, 1305, 1306 have the same value! Is this correct? Please check the table</span></span>
+<span><span class="co">#&gt; for possible errors.</span></span>
 <span><span class="co">#&gt; Warning in create.sub.objects(DAT_list, stepsize, calc, cumulative): stepsize</span></span>
-<span><span class="co">#&gt; is larger than the range of the closest dated object at Index = 6, 12, 14, 18,</span></span>
-<span><span class="co">#&gt; 19, 20, 21, 22, 39, 40, 41, 44, 45, 60, 74, 75, 76, 77, 79, 80, 83, 110, 113,</span></span>
-<span><span class="co">#&gt; 114, 125, 126, 131, 132, 133, 141, 145, 147, 154, 161, 162, 163, 167, 168, 171,</span></span>
-<span><span class="co">#&gt; 173, 174, 175, 194, 196, 198, 199, 201, 203, 204, 205, 206, 207, 208, 212, 214,</span></span>
-<span><span class="co">#&gt; 217, 218, 223, 231, 232, 233, 234, 235, 236, 237, 238, 240, 242, 243, 244, 245,</span></span>
-<span><span class="co">#&gt; 246, 265, 269, 271, 272, 273, 276, 292, 293, 323, 324, 331, 332, 333, 334, 335,</span></span>
-<span><span class="co">#&gt; 336, 337, 338, 339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350, 351, 352,</span></span>
-<span><span class="co">#&gt; 353, 354, 355, 356, 579, 582, 583, 584, 585, 617, 618, 619, 620, 621, 622, 623,</span></span>
-<span><span class="co">#&gt; 625, 627, 628, 629, 630, 631, 632, 633, 634, 635, 637, 640, 646, 723, 724, 725,</span></span>
-<span><span class="co">#&gt; 726, 727, 728, 729, 730, 731, 732, 733, 734, 735, 736, 873, 874, 875, 876, 877,</span></span>
-<span><span class="co">#&gt; 878, 879, 880, 881, 882, 883, 884, 885, 886, 887, 888, 889, 890, 891, 892, 893,</span></span>
-<span><span class="co">#&gt; 935, 936, 938, 939, 940, 941, 942, 943, 944, 945, 946, 947, 948, 949, 950, 951,</span></span>
-<span><span class="co">#&gt; 952, 953, 954, 955, 956, 957, 958, 959, 975, 976, 979, 980, 981, 982, 983, 984,</span></span>
-<span><span class="co">#&gt; 987, 988, 989, 1002, 1016, 1017, 1018, 1019, 1020, 1021, 1022, 1023, 1024,</span></span>
-<span><span class="co">#&gt; 1025, 1026, 1027, 1028, 1029, 1030, 1031, 1032, 1033, 1034, 1035, 1036, 1037,</span></span>
-<span><span class="co">#&gt; 1038, 1044, 1045, 1046, 1047, 1048, 1049, 1050, 1051, 1052, 1053, 1054, 1055,</span></span>
-<span><span class="co">#&gt; 1057, 1058, 1059, 1060, 1061, 1062, 1063, 1064, 1065, 1066, 1074, 1075, 1078,</span></span>
-<span><span class="co">#&gt; 1079, 1080, 1081, 1082, 1083, 1084, 1085, 1086, 1087, 1106, 1107, 1112, 1113,</span></span>
-<span><span class="co">#&gt; 1114, 1115, 1116, 1117, 1118, 1119, 1120, 1121, 1122, 1123, 1124, 1125, 1126,</span></span>
-<span><span class="co">#&gt; 1127, 1128, 1129, 1130, 1131, 1132, 1133, 1147, 1148, 1149, 1153, 1154, 1172,</span></span>
-<span><span class="co">#&gt; 1174, 1175, 1176, 1183, 1185, 1186, 1187, 1188, 1189, 1218, 1219, 1220, 1221,</span></span>
-<span><span class="co">#&gt; 1222, 1223, 1224, 1248, 1250, 1251, 1252, 1253, 1255, 1256, 1260, 1382, 1456,</span></span>
-<span><span class="co">#&gt; 1457, 1458, 1459, 1460, 1461, 1462, 1463, 1464, 1465, 1466, 1467, 1468, 1480,</span></span>
-<span><span class="co">#&gt; 1487, 1494, 1496, 1497, 1498). For information see documentation of</span></span>
-<span><span class="co">#&gt; get.step.sequence().</span></span></code></pre></div>
+<span><span class="co">#&gt; is larger than the range of the closest dated object at Index = 6, 12, 13, 17,</span></span>
+<span><span class="co">#&gt; 18, 19, 20, 21, 38, 39, 40, 43, 44, 57, 67, 68, 69, 70, 72, 75, 98, 101, 102,</span></span>
+<span><span class="co">#&gt; 106, 107, 112, 113, 114, 120, 122, 123, 129, 136, 137, 138, 142, 143, 146, 148,</span></span>
+<span><span class="co">#&gt; 149, 150, 168, 170, 172, 173, 175, 177, 178, 179, 180, 181, 182, 186, 187, 189,</span></span>
+<span><span class="co">#&gt; 190, 195, 203, 204, 205, 206, 207, 208, 209, 210, 212, 214, 215, 216, 217, 218,</span></span>
+<span><span class="co">#&gt; 234, 238, 240, 241, 242, 245, 261, 262, 292, 293, 296, 297, 298, 299, 300, 301,</span></span>
+<span><span class="co">#&gt; 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317,</span></span>
+<span><span class="co">#&gt; 318, 319, 320, 543, 546, 547, 548, 549, 581, 582, 583, 584, 585, 586, 588, 590,</span></span>
+<span><span class="co">#&gt; 591, 592, 593, 594, 595, 596, 597, 599, 602, 606, 672, 673, 674, 675, 676, 677,</span></span>
+<span><span class="co">#&gt; 678, 679, 680, 681, 682, 683, 684, 685, 788, 789, 790, 791, 792, 793, 794, 795,</span></span>
+<span><span class="co">#&gt; 796, 797, 798, 799, 800, 801, 802, 803, 804, 805, 806, 807, 808, 827, 828, 830,</span></span>
+<span><span class="co">#&gt; 831, 832, 833, 834, 835, 836, 837, 838, 839, 840, 841, 842, 843, 844, 845, 846,</span></span>
+<span><span class="co">#&gt; 847, 848, 849, 850, 866, 867, 870, 871, 872, 873, 874, 875, 878, 879, 880, 890,</span></span>
+<span><span class="co">#&gt; 902, 903, 904, 905, 906, 907, 908, 909, 910, 911, 912, 913, 914, 915, 916, 917,</span></span>
+<span><span class="co">#&gt; 918, 919, 920, 921, 922, 923, 924, 929, 930, 931, 932, 933, 934, 935, 936, 937,</span></span>
+<span><span class="co">#&gt; 938, 939, 940, 941, 942, 943, 944, 945, 946, 947, 948, 949, 957, 958, 961, 962,</span></span>
+<span><span class="co">#&gt; 963, 964, 965, 966, 967, 968, 969, 970, 989, 990, 995, 996, 997, 998, 999,</span></span>
+<span><span class="co">#&gt; 1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012,</span></span>
+<span><span class="co">#&gt; 1013, 1014, 1015, 1016, 1029, 1030, 1031, 1035, 1036, 1051, 1053, 1054, 1055,</span></span>
+<span><span class="co">#&gt; 1062, 1064, 1065, 1066, 1067, 1093, 1094, 1095, 1096, 1097, 1098, 1099, 1122,</span></span>
+<span><span class="co">#&gt; 1124, 1125, 1126, 1127, 1129, 1130, 1133, 1225, 1267, 1268, 1269, 1270, 1271,</span></span>
+<span><span class="co">#&gt; 1272, 1273, 1274, 1275, 1276, 1277, 1278, 1290, 1297, 1302, 1304, 1305, 1306).</span></span>
+<span><span class="co">#&gt; For information see documentation of get.step.sequence().</span></span></code></pre></div>
 <p><code><a href="../reference/datsteps.html">datsteps()</a></code> tells us that a number or objects are dated
 to one year, asking us if this is correct. We included this output to
 avoid errors occurring through faulty values, as objects dated to one
@@ -1572,7 +1585,8 @@ We select only three locations to keep the visualization short:</p>
 <span>       x <span class="op">=</span> <span class="st">"Dating"</span>, y <span class="op">=</span> <span class="st">"Number of Inscriptions"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: attributes are not identical across measure variables; they will be</span></span>
-<span><span class="co">#&gt; dropped</span></span></code></pre></div>
+<span><span class="co">#&gt; dropped</span></span>
+<span><span class="co">#&gt; Warning: Removed 30 rows containing non-finite values (`stat_bin()`).</span></span></code></pre></div>
 <p><img src="data_preparation_files/figure-html/unnamed-chunk-45-1.png" width="672"></p>
 <p>Alternatively, we could display the mean of the Dating range:</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
@@ -1584,7 +1598,8 @@ We select only three locations to keep the visualization short:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_histogram</a></span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">25</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="va">.</span> <span class="op">~</span> <span class="va">Location</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Distribution of Dated Inscriptions in Bithynia (selection)"</span>,</span>
-<span>       x <span class="op">=</span> <span class="st">"Dating"</span>, y <span class="op">=</span> <span class="st">"Number of Inscriptions"</span><span class="op">)</span></span></code></pre></div>
+<span>       x <span class="op">=</span> <span class="st">"Dating"</span>, y <span class="op">=</span> <span class="st">"Number of Inscriptions"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Removed 15 rows containing non-finite values (`stat_bin()`).</span></span></code></pre></div>
 <p><img src="data_preparation_files/figure-html/unnamed-chunk-46-1.png" width="672"></p>
 <p>While this also gives us an impression of the distribution, it seems
 some information got lost on the way. Many inscriptions were dated to
