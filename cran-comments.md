@@ -1,13 +1,14 @@
 ## Resubmission
-This is a resubmission. In this version I have:
-
-* fixed the invalid URLs to fully specified URLs starting with the protocol in 
-files: README.md and vignettes/how-to.Rmd. Nothing else has changed.
-
+This is a resubmission of the archived package https://CRAN.R-project.org/package=datplot. 
+In this version I have:
+  
+* Removed the UTF-8 and Latin-1 characters as noted in the archived version
+* I am submitting a new version of the package
 
 ## Test environments
-* local R installation, R 4.0.3
-* ubuntu 16.04 (on travis-ci), R 4.0.3
+* local R installation, R 4.2.2 on Windows
+* GitHub actions (release) on macos, win and ubuntu
+* GitHub actions (devel and oldrel-1) on ubuntu
 * win-builder (devel)
 
 ## R CMD check results
@@ -16,9 +17,6 @@ files: README.md and vignettes/how-to.Rmd. Nothing else has changed.
 
 * This is a new release.
 
-
 ## Notes
-
-Sometimes a Note states that there are UTF-8 and Latin1 marked characters. 
-I think it is because of the raw data, and doesn't seem to influence 
-the package build on any system (using travis).
+win-builder says "Aoristic / aoristic" in the DESCRIPTION may be misspelled, 
+but they are not. 
