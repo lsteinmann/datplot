@@ -198,7 +198,12 @@ inscriptions[which(inscriptions$ID == "I_2725"), c("DAT_min", "DAT_max")] <-
 
 
 
-inscriptions <- inscriptions[, c(7, 1:5, 8:10, 6)]
+inscriptions <- inscriptions[, c("ID", "ikey", "Location", "Source", "Dating",
+                                 "Language", "uncertain_dating",
+                                 "DAT_min", "DAT_max", "URL")]
+
+
+
 
 
 attr(inscriptions, "contact") <-
