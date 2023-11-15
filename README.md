@@ -1,10 +1,8 @@
 <!-- badges: start -->
-[![CRAN status](https://www.r-pkg.org/badges/version/datplot)](https://CRAN.R-project.org/package=datplot)
-[![R-CMD-check](https://github.com/lsteinmann/datplot/workflows/R-CMD-check/badge.svg)](https://github.com/lsteinmann/datplot/actions)
-[![codecov](https://app.codecov.io/gh/lsteinmann/datplot/branch/main/graph/badge.svg?token=CVNCAL9U4W)](https://app.codecov.io/gh/lsteinmann/datplot)
-
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4285912.svg)](https://doi.org/10.5281/zenodo.4285912)
+[![R-CMD-check](https://github.com/lsteinmann/datplot/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/lsteinmann/datplot/actions/workflows/R-CMD-check.yaml)
+[![codecov](https://codecov.io/gh/lsteinmann/datplot/branch/main/graph/badge.svg)](https://app.codecov.io/gh/lsteinmann/datplot)
 [![DOI](https://img.shields.io/badge/Publication-10.1017/aap.2021.8-green.svg)](https://doi.org/10.1017/aap.2021.8)
+[![CRAN status](https://www.r-pkg.org/badges/version/datplot)](https://CRAN.R-project.org/package=datplot)
 
 <!-- badges: end -->
 
@@ -19,9 +17,7 @@ This package proposes implements the concepts of aoristic analysis to prepare ar
 
     browseVignettes("datplot")
 
-after installing the package, or on GitHub in the /vignettes/ directory. Density plots are easy to understand and are usually aesthetically pleasing. They do omit a some information, such as individual counts, that bar histograms can communicate better. On the other hand, ranges can be incorporated into the visualization as well to regard the variety of timespans archaeological objects may be dated to.
-
-**Note:** Please note that the weight calculation has changed with version 1.0.1 to reflect true probabilities for each object when a stepsize of 1 is used. The change does not affect the visualization, but makes the weight-values usable as dating probability for steps of 1 year exactly. 
+or [on the pkgdown-site](https://lsteinmann.github.io/datplot/articles/how-to.html) after installing the package, or on GitHub in the /vignettes/ directory. Density plots are easy to understand and are usually aesthetically pleasing. They do omit a some information, such as individual counts, that bar histograms can communicate better. On the other hand, ranges can be incorporated into the visualization as well to regard the variety of timespans archaeological objects may be dated to.
 
 ![Attic Pottery from BAPD by Date](man/figures/demo_readme.png "Attic Pottery from BAPD by Date")
 
@@ -31,7 +27,7 @@ The package at version 1.0.0 has been published along with a case study on inscr
 
 Recommendation
 -------
-People interested in employing this method should also consider taking a look at [ISAAKiel's package aoristAAR](https://github.com/ISAAKiel/aoristAAR/), or at [archSeries](https://github.com/davidcorton/archSeries), [tabula](https://github.com/tesselle/tabula), [rtefact](https://github.com/ahb108/rtfact) and [aoristic-analysis (LimesLimits)](https://github.com/LimesLimits/aoristic-analysis). 
+People interested in employing this method should also consider taking a look at [ISAAKiel's package aoristAAR](https://github.com/ISAAKiel/aoristAAR/), or at [archSeries](https://github.com/davidcorton/archSeries), [tabula](https://github.com/tesselle/tabula), [rtefact](https://github.com/ahb108/rtfact), [aoristic-analysis (LimesLimits)](https://github.com/LimesLimits/aoristic-analysis) and (in the future) [baorista](https://github.com/ercrema/baorista). 
 
 
 Installation 

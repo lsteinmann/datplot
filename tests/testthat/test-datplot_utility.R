@@ -31,7 +31,7 @@ test_that("switch.dating issues warning", {
 testdf <- create.testing.df()
 
 fristlast <- matrix(nrow = nrow(testdf), ncol = 2)
-for (r in 1:nrow(testdf)) {
+for (r in seq_len(nrow(testdf))) {
   seq <- get.step.sequence(datmin = testdf[r, 3],
                     datmax = testdf[r, 4],
                     stepsize = 25)
@@ -89,7 +89,7 @@ testdf[, 4] <- sample(1:200, nrow(testdf))
 testdf[1, 3:4] <- c(4, 4)
 
 DAT_mat <- matrix(ncol = 5, nrow = nrow(testdf))
-DAT_mat[, 1] <- 1:nrow(testdf)
+DAT_mat[, 1] <- seq_len(nrow(testdf))
 DAT_mat[, 2] <- testdf[, 3]
 DAT_mat[, 3] <- testdf[, 4]
 colnames(DAT_mat) <- c("index", "datmin", "datmax", "weight", "step")

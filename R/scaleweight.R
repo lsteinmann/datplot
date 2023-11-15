@@ -11,6 +11,12 @@
 #' @return the same data.frame, with the scaled values in the specified column
 #'
 #' @export scaleweight
+#'
+#' @examples
+#' data("Inscr_Bithynia")
+#' DAT_df <- Inscr_Bithynia[, c("ID", "Location", "DAT_min", "DAT_max")]
+#' DAT_df_steps <- datsteps(DAT_df, stepsize = 25)
+#' DAT_df_scaled <- scaleweight(DAT_df_steps, var = 2, val = 5)
 
 scaleweight <- function(DAT_df, var = c("all", 2), val = 5) {
 
@@ -46,7 +52,7 @@ scaleweight <- function(DAT_df, var = c("all", 2), val = 5) {
                       "(scaled to sum of all objects)")
   } else {
     uvar <- unique(DAT_df[, var])
-    for (row in 1:length(uvar)) {
+    for (row in seq_len(length(uvar))) {
       index <- which(DAT_df[, var] == uvar[row])
       DAT_df[index, val] <-  DAT_df[index, val] / sum(DAT_df[index, val])
     }

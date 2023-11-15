@@ -25,12 +25,11 @@ DAT_df_steps. Calculates the value with which the y-axis of a density graph
 should be multiplied by in order to be visible in the corresponding histogram.
 }
 \examples{
-\dontrun{
+data("Inscr_Bithynia")
+DAT_df <- Inscr_Bithynia[, c("ID", "Location", "DAT_min", "DAT_max")]
 DAT_df_steps <- datsteps(DAT_df, stepsize = 25)
 get.histogramscale(DAT_df_steps)
 
 get.histogramscale(DAT_df_steps$DAT_step, binwidth = 20)
 get.histogramscale(500, binwidth = 20)
-}
-
 }

@@ -51,11 +51,8 @@ The function along with a guide on how to use it and a case study is published
 in [Steinmann -- Weissova 2021](https://doi.org/10.1017/aap.2021.8).
 }
 \examples{
-\dontrun{
-data(DAT_df)
+data("Inscr_Bithynia")
+DAT_df <- Inscr_Bithynia[, c("ID", "Location", "DAT_min", "DAT_max")]
 DAT_df_steps <- datsteps(DAT_df, stepsize = 25)
 plot(density(DAT_df_steps$DAT_step))
-}
-
-
 }

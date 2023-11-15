@@ -21,3 +21,9 @@ the same data.frame, with the scaled values in the specified column
 \description{
 Requires a data.frame with one variable and one value column.
 }
+\examples{
+data("Inscr_Bithynia")
+DAT_df <- Inscr_Bithynia[, c("ID", "Location", "DAT_min", "DAT_max")]
+DAT_df_steps <- datsteps(DAT_df, stepsize = 25)
+DAT_df_scaled <- scaleweight(DAT_df_steps, var = 2, val = 5)
+}

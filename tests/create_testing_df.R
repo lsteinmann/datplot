@@ -34,6 +34,6 @@ create.testing.df <- function(k = 100, distmean = 150, distsd = 25) {
   rm(test_df_two)
   test_df <- test_df[sample(nrow(test_df)), ]
 
-  test_df$id <- paste("ID_", 1:nrow(test_df), sep = "")
+  test_df$id <- paste("ID_", seq_len(nrow(test_df)), sep = "")
   return(test_df)
 }

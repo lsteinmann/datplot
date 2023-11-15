@@ -40,15 +40,13 @@
 #' Added columns contain the value of each step, the 'weight' or 'probability'-
 #' value for each step, and (if chosen) the cumulative probability.
 #'
+#' @export datsteps
+#'
 #' @examples
-#' \dontrun{
-#' data(DAT_df)
+#' data("Inscr_Bithynia")
+#' DAT_df <- Inscr_Bithynia[, c("ID", "Location", "DAT_min", "DAT_max")]
 #' DAT_df_steps <- datsteps(DAT_df, stepsize = 25)
 #' plot(density(DAT_df_steps$DAT_step))
-#' }
-#'
-#'
-#' @export datsteps
 datsteps <- function(DAT_df,
                      stepsize = 1,
                      calc = "weight",
@@ -76,6 +74,14 @@ datsteps <- function(DAT_df,
          weight = message("Using 'weight'-calculation (see https://doi.org/10.1017/aap.2021.8)."),
          probability = message("Using step-wise probability calculation."))
 
+  if (any(is.na(DAT_df))) {
+    NA_rows <- c(which(is.na(DAT_df[, 3])),
+                 which(is.na(DAT_df[, 4])))
+    NA_rows <- unique(NA_rows)
+    DAT_df <- DAT_df[-NA_rows, ]
+    warning(paste0(length(NA_rows), " rows with NA-values in the ",
+                   "dating columns will be omitted."))
+  }
 
   DAT_df <- as.data.frame(DAT_df)
   # Checking the overall structure
@@ -88,7 +94,7 @@ datsteps <- function(DAT_df,
 
   # Prepare the Matrix to be used instead of the df for faster processing
   DAT_mat <- matrix(ncol = 5, nrow = nrow(DAT_df))
-  DAT_mat[, 1] <- 1:nrow(DAT_df)
+  DAT_mat[, 1] <- seq_len(nrow(DAT_df))
   DAT_mat[, 2] <- DAT_df[, 3]
   DAT_mat[, 3] <- DAT_df[, 4]
 

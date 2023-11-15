@@ -29,8 +29,7 @@ inscriptions$URL[repl] <- paste("https://epigraphy.packhum.org/text/",
                                 gsub("PH", "", inscriptions$ikey[repl]),
                                 sep = "")
 
-
-inscriptions$ID <- paste("I_", 1:nrow(inscriptions), sep = "")
+inscriptions$ID <- paste("I_", seq_len(nrow(inscriptions)), sep = "")
 inscriptions <- inscriptions %>%
   rename(Dating = Chronological.Frame) %>%
   mutate(Language = replace(Language, Language == "Gr/Lat", "Greek/Latin"),

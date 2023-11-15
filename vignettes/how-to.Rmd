@@ -46,7 +46,7 @@ library(datplot)
 data(Beazley)
 ```
 ```{r preptable, echo = FALSE}
-knitr::kable(Beazley[sample(1:nrow(Beazley), 10, replace = FALSE), ])
+knitr::kable(Beazley[sample(seq_len(nrow(Beazley)), 10, replace = FALSE), ])
 ```
 
 ## How to Display a Range?
@@ -206,7 +206,7 @@ This now opens the possibility to calculate the cumulative probability for each 
 ```{r cumulative demo, fig.height = 10}
 data("Inscr_Bithynia")
 Inscr_Bithynia <- na.omit(Inscr_Bithynia[, c(1, 3, 8, 9)])
-Inscr_Bithynia <- Inscr_Bithynia[sample(1:nrow(Inscr_Bithynia), 5), ]
+Inscr_Bithynia <- Inscr_Bithynia[sample(seq_len(nrow(Inscr_Bithynia)), 5), ]
 Inscr_Bithynia_steps <- datsteps(Inscr_Bithynia, 
                                  stepsize = 1, 
                                  calc = "probability", 

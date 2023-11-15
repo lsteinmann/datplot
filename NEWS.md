@@ -7,7 +7,7 @@ argument `calc = "weight"` or `calc = "probability"`
 probability calculation instead of the original (weights) calculation.
 * Change and improve error-handling of `scaleweight()`. 
 * Remove UTF-8 characters to comply with CRAN. 
-* Update documentation and add a pkgdown-site.
+* Update documentation and add a [pkgdown-site](https://lsteinmann.github.io/datplot/).
 
 
 # datplot 1.0.1

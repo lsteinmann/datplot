@@ -11,6 +11,15 @@ test_that("warning for wrong column types", {
 })
 
 
+data("Inscr_Bithynia")
+
+test_that("removes NA with warning", {
+  expect_warning(datsteps(Inscr_Bithynia[, c("ID", "Location", "DAT_min", "DAT_max")],
+                          stepsize = 100), regexp = "NA")
+})
+
+
+
 data("DAT_df")
 
 test_that("warning for problematic value of stepsize", {

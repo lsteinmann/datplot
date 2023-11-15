@@ -79,4 +79,7 @@ NULL
 #' Quantitative Analysis.” Dissertation, Berlin: Freie Universität Berlin.
 #' \url{https://refubium.fu-berlin.de/handle/fub188/23730},
 #' partially after \url{https://inscriptions.packhum.org/}
+
 "Inscr_Bithynia"
+NULL
+

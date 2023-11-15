@@ -55,7 +55,7 @@ The original file consists of five columns which each row representing a single 
 The data set is not yet suited for analysis, as some variables, especially the chronological frame, have many inconsistencies. For further processing, we should also be sure to include an identifier-column. As `r nrow(inscriptions) - length(unique(inscriptions$ikey))` inscriptions do not have an ikey-Value, which might have otherwise been a good candidate for identification, we chose to create a new automatically generated ID, so that every inscription can be individually identifiable.
 
 ```{r }
-inscriptions$ID <- paste("I_", 1:nrow(inscriptions), sep = "")
+inscriptions$ID <- paste("I_", seq_len(nrow(inscriptions)), sep = "")
 ```
 
 Two of the variables of this data set are almost ready for further use, i.e. Location and Language. A look at their unique values reveals only small inconsistencies that can be easily fixed:
@@ -154,7 +154,7 @@ As a demonstration, this is the resulting table (`num_dating`) of up to this poi
 
 ```{r echo = FALSE}
 require(knitr)
-knitr::kable(na.omit(na.omit(num_dating)[sample(1:nrow(na.omit(num_dating)), 
+knitr::kable(na.omit(na.omit(num_dating)[sample(seq_len(nrow(na.omit(num_dating))), 
                                                 10), ]))
 ```
 
@@ -214,7 +214,7 @@ for (r in sel) {
 Another look at the data set can help us to check for possible errors.
 
 ```{r echo = FALSE}
-knitr::kable(na.omit(na.omit(num_dating)[sample(1:nrow(na.omit(num_dating)),
+knitr::kable(na.omit(na.omit(num_dating)[sample(seq_len(nrow(na.omit(num_dating))),
                                                 10), ]))
 ```
 
@@ -248,7 +248,7 @@ for (r in sel) {
 
 ```
 ```{r echo = FALSE}
-knitr::kable(na.omit(na.omit(num_dating)[sample(1:nrow(na.omit(num_dating)), 
+knitr::kable(na.omit(na.omit(num_dating)[sample(seq_len(nrow(na.omit(num_dating))), 
                                                 10), ]))
 ```
 

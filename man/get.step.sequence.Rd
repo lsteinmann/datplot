@@ -29,7 +29,6 @@ If there is a residual, the stepsize is modified depending on how large the
 residual is.
 }
 \examples{
-\dontrun{
 min_year <- -494
 max_year <- -334
 sequence <- get.step.sequence(datmin = min_year, datmax = max_year, stepsize = 25)
@@ -39,7 +38,6 @@ min_year <- 1
 max_year <- 100
 sequence <- get.step.sequence(datmin = min_year, datmax = max_year, stepsize = 25)
 print(sequence)
-}
 }
 \seealso{
 [datsteps()], [create.sub.objects()]

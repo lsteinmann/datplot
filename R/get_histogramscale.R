@@ -14,16 +14,16 @@
 #' @return the value with which to scale the density curve to a histogram
 #' plot so that both will be visible
 #'
+#' @export get.histogramscale
+#'
 #' @examples
-#' \dontrun{
+#' data("Inscr_Bithynia")
+#' DAT_df <- Inscr_Bithynia[, c("ID", "Location", "DAT_min", "DAT_max")]
 #' DAT_df_steps <- datsteps(DAT_df, stepsize = 25)
 #' get.histogramscale(DAT_df_steps)
 #'
 #' get.histogramscale(DAT_df_steps$DAT_step, binwidth = 20)
 #' get.histogramscale(500, binwidth = 20)
-#' }
-#'
-#' @export get.histogramscale
 get.histogramscale <- function(DAT_df_steps, binwidth = "stepsize") {
   if (check.number(DAT_df_steps) & length(DAT_df_steps) == 1) {
     nrow <- DAT_df_steps

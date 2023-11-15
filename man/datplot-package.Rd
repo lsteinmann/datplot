@@ -18,7 +18,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Lisa Steinmann \email{lisa.steinmann@rub.de} (\href{https://orcid.org/0000-0002-2215-1243}{ORCID})
+\strong{Maintainer}: Lisa Steinmann \email{lisa.steinmann@rub.de} (\href{https://orcid.org/0000-0002-2215-1243}{ORCID}) [copyright holder]
 
 Other contributors:
 \itemize{

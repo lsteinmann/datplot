@@ -148,7 +148,6 @@ get.probability <- function(DAT_min, DAT_max) {
 #' @export get.step.sequence
 #'
 #' @examples
-#' \dontrun{
 #' min_year <- -494
 #' max_year <- -334
 #' sequence <- get.step.sequence(datmin = min_year, datmax = max_year, stepsize = 25)
@@ -158,7 +157,6 @@ get.probability <- function(DAT_min, DAT_max) {
 #' max_year <- 100
 #' sequence <- get.step.sequence(datmin = min_year, datmax = max_year, stepsize = 25)
 #' print(sequence)
-#' }
 get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
 
   stopifnot(is.numeric(datmin))
@@ -245,10 +243,10 @@ create.sub.objects <- function(DAT_list,
 
 
   if (any(diffs < stepsize)) {
-    warning(paste("stepsize is larger than the range of the closest dated object at Index = ",
-                  paste(which(diffs < stepsize), collapse = ", "), "). ",
-                  "For information see documentation of get.step.sequence().",
-                  sep = ""))
+    warning(paste0("stepsize is larger than the range of the ",
+                   "closest dated object at Index = ",
+                   paste(which(diffs < stepsize), collapse = ", "), "). ",
+                   "For information see documentation of get.step.sequence()."))
   }
 
   DAT_list <- lapply(DAT_list, function(object) {
@@ -332,7 +330,7 @@ check.structure <- function(DAT_df) {
     }
   if (any(dat_df_structure[c("is.minDAT", "is.maxDAT")] == FALSE)) {
     result <- FALSE
-    stop("The 3rd or 4th columns of your data.frame are not numbers.")
+    stop("The 3rd and 4th columns of your data.frame have to be numeric.")
   } else {
     result <- TRUE
     }
