@@ -23,7 +23,7 @@ after installing the package, or on GitHub in the /vignettes/ directory. Density
 
 **Note:** Please note that the weight calculation has changed with version 1.0.1 to reflect true probabilities for each object when a stepsize of 1 is used. The change does not affect the visualization, but makes the weight-values usable as dating probability for steps of 1 year exactly. 
 
-![Attic Pottery from BAPD by Date](inst/extdata/demo_readme.png "Attic Pottery from BAPD by Date")
+![Attic Pottery from BAPD by Date](man/figures/demo_readme.png "Attic Pottery from BAPD by Date")
 
 Publication
 -------

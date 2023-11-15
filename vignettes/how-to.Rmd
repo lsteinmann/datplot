@@ -186,7 +186,7 @@ histogramscale <- get.histogramscale(result)
 ```{r ggplot-combination}
 ggplot(result, aes(x = DAT_step, fill = variable)) + Plot_Theme + Plot_Fill +
   stat_density(alpha = 0.5, position = "dodge",
-               aes(y = (..density.. * histogramscale), weight = weight)) +
+               aes(y = (after_stat(density) * histogramscale), weight = weight)) +
   geom_histogram(alpha = 0.5, binwidth = attributes(result)$stepsize,
                  position = "dodge") +
   labs(y = "maximum number of objects per year", x = "Dating")

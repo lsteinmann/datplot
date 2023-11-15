@@ -2,19 +2,23 @@
 % Please edit documentation in R/datplot_utility.R
 \name{generate.stepsize}
 \alias{generate.stepsize}
-\title{Determine stepsize}
+\title{Determine stepsize (internal)}
 \usage{
 generate.stepsize(DAT_mat)
 }
 \arguments{
-\item{DAT_mat}{a matrix as prepared by datsteps(), resp. a matrix witch
-columns "datmin" and "datmax" containing numeric/integer value of the
+\item{DAT_mat}{a matrix as prepared by [datsteps()], resp. a matrix witch
+columns names `datmin` and `datmax` containing numeric/integer value of the
 dating ranges.}
 }
 \value{
-stepsize
+A single numeric value that can be used as minimal stepsize.
 }
 \description{
 Determines stepsize by selecting the absolute minimum value
 between the upper and lower end of all dating ranges.
 }
+\seealso{
+[datsteps()]
+}
+\keyword{internal}

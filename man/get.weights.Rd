@@ -7,12 +7,12 @@
 get.weights(DAT_min, DAT_max)
 }
 \arguments{
-\item{DAT_min}{a vector containing the minimum date (a number) of each object}
+\item{DAT_min}{a numeric vector containing the minimum date of each object}
 
-\item{DAT_max}{a vector containing the maximum date (a number) of each object}
+\item{DAT_max}{a numeric vector containing the maximum date of each object}
 }
 \value{
-the 'weight' value for the datsteps-dataframe, that is a
+a vector of 'weight'-values for the datsteps-data.frame, that is a
 quantification of how well the object is dated (lesser value means object
 is dated to larger timespans, i.e. with less confidence)
 }
@@ -22,4 +22,7 @@ dating for each object. Returns a dataframe with the weight in the first
 column and FALSE in the second if two rows have the same value in both
 min and max dating. See [publication](https://doi.org/10.1017/aap.2021.8)
 for information about how this is calculated.
+}
+\seealso{
+[datsteps()], [get.probability()]
 }

@@ -2,33 +2,35 @@
 % Please edit documentation in R/get_histogramscale.R
 \name{get.histogramscale}
 \alias{get.histogramscale}
-\title{Scaling Factor for Combined Histogramm Plots}
+\title{Scaling Factor for Combined Histogram Plots}
 \usage{
 get.histogramscale(DAT_df_steps, binwidth = "stepsize")
 }
 \arguments{
-\item{DAT_df_steps}{a dataframe as returned by datsteps (works also with a
-single number and a vector)}
+\item{DAT_df_steps}{a data.frame as returned by [datsteps()]. (Will also
+work with a single number and a vector.)}
 
 \item{binwidth}{the bandwidth to use for the density function and histogram.
-Should be stepsize used to create the dataframe. If a df as returned by
-datsteps() is given, stepsize can be automatically assigned
-using the corresponding attribute (binwidth = "stepsize")}
+Should equal the stepsize used to create the data.frame. If a data.frame as
+returned by [datsteps()] is given, stepsize can be automatically assigned
+using the corresponding attribute (`binwidth = "stepsize"`)}
 }
 \value{
 the value with which to scale the density curve to a histogram
 plot so that both will be visible
 }
 \description{
-Requires a dataframe as produced by datsteps() or a number as
+Requires a data.frame as produced by [datsteps()] or a number as
 DAT_df_steps. Calculates the value with which the y-axis of a density graph
-should be multiplied in order to be visible in the corresponding histogram.
+should be multiplied by in order to be visible in the corresponding histogram.
 }
 \examples{
-DAT_df_steps <- datsteps(DAT_df[1:100, ], stepsize = 25)
+\dontrun{
+DAT_df_steps <- datsteps(DAT_df, stepsize = 25)
 get.histogramscale(DAT_df_steps)
 
 get.histogramscale(DAT_df_steps$DAT_step, binwidth = 20)
 get.histogramscale(500, binwidth = 20)
+}
 
 }

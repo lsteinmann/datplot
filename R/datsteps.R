@@ -1,40 +1,56 @@
-#' @title Create 'steps' of dates for each object in a dataframe
+#' @title Create 'steps' of dates for each object in a data.frame
 #'
-#' @description Requires a dataframe with 4 variables: ID (ideally factor),
-#' group (ideally factor), minimum date (int/numeric) and maximum date
-#' (int/numeric). It's expected that dates BCE are displayed as negative
-#' values while dates CE are positive values. Ignoring this will cause problems
-#' in any case.
+#' @description
+#' This function transforms a data.frame of dated objects with associated data
+#' to a new data.frame which contains a row for each dating 'step' for each
+#' objects. Dating 'steps' can be single years (with `stepsize = 1`) or an
+#' arbitrary number that will be used as a guideline for the interval.
+#' It's expected that dates BCE are displayed as negative
+#' values while dates CE are positive values. Ignoring this will cause
+#' problems. If dates are provided in the wrong order in any number of
+#' rows they will automatically be switched.
 #'
-#' @param DAT_df a dataframe with 4 variables: ID, group, minimum date (int/num)
-#' maximum date (int/num), _must_ be in this order, colnames are irrelevant;
-#' each object _must_ be one row.
-#' @param stepsize defaults to 5. Number of years that should be used as an
-#' interval for creating dating steps.
-#' @param calc "weight" (default): use the
-#' [published original calculation](https://doi.org/10.1017/aap.2021.8)
-#' for weights,
-#' "probability": calculate year-wise probability instead (only useful
-#' for a stepsize of 1)
-#' @param cumulative TRUE: add a column for cumulative probability ("cumul_prob")
-#' (only useful for a stepsize of 1, as the summed probability in larger
-#' stepsizes has no meaning)
+#' The function along with a guide on how to use it and a case study is published
+#' in [Steinmann -- Weissova 2021](https://doi.org/10.1017/aap.2021.8).
 #'
-#' @return a data.frame with a number of steps for each object as well
-#' as a 'weight' value, that is a quantification of how well the object is
-#' dated (lesser value means object is dated to larger timespans,
-#' i.e. with less confidence)
+#'
+#' @param DAT_df a data.frame with 4 variables:
+#'   * `ID` : An identifier for each row, e.g. an Inventory number (ideally character).
+#'   * `group` : A grouping variable, such as type or context (ideally factor).
+#'   * `DAT_min` : minimum dating (int/num), the minimum dating boundary for a
+#'   single object, i.e. the earliest year the object may be dated to.
+#'   * `DAT_min` : maximum dating (int/num), the maximum dating boundary for a
+#'   single object, i.e. the latest year the object may be dated to.
+#' The columns _must_ be in this order, column names are irrelevant; each row
+#' _must_ correspond to one datable entity / object.
+#' @param stepsize numeric, default is 1. Number of years that should be used
+#' as an interval for creating dating steps.
+#' @param calc method of calculation to use;
+#' can be either one of "weight" (default) or "probability":
+#'  * "weight": use the
+#'     [published original calculation](https://doi.org/10.1017/aap.2021.8)
+#'     for weights,
+#'  * "probability": calculate year-wise probability instead (only reasonable
+#'     when `stepsize = 1`)
+#' @param cumulative FALSE (default), TRUE: add a column containing the
+#' cumulative probability for each object (only reasonable when `stepsize = 1`,
+#' and will automatically use probability calculation)
+#'
+#' @return an expanded data.frame in with each row represents a dating 'step'.
+#' Added columns contain the value of each step, the 'weight' or 'probability'-
+#' value for each step, and (if chosen) the cumulative probability.
 #'
 #' @examples
 #' \dontrun{
-#' DAT_df_steps <- datsteps(DAT_df[1:100, ], stepsize = 25)
+#' data(DAT_df)
+#' DAT_df_steps <- datsteps(DAT_df, stepsize = 25)
 #' plot(density(DAT_df_steps$DAT_step))
 #' }
 #'
 #'
 #' @export datsteps
 datsteps <- function(DAT_df,
-                     stepsize = 25,
+                     stepsize = 1,
                      calc = "weight",
                      cumulative = FALSE) {
 
@@ -67,22 +83,8 @@ datsteps <- function(DAT_df,
 
   colnames <- c("index", "datmin", "datmax", calc, "step")
 
-
-  # Check for the two Dainng columns to be in the correct order:
-  if (any(DAT_df[, 3] > DAT_df[, 4])) {
-    # Strore Index of Rows to switch later and issue warning, so people
-    # can check the Data!
-    dat_wrong_order <- which(DAT_df[, 3] > DAT_df[, 4])
-    warning(paste("Warning: Dating seems to be in wrong order at ID ",
-                  paste(DAT_df[dat_wrong_order, 1], collapse = ", "),
-                  " (Index: ",
-                  paste(dat_wrong_order, collapse = ", "),
-                  ")",
-                  ". Dates have been switched, but be sure to check your original data for possible mistakes.",
-                  sep = ""))
-    # Switch the Dating of Rows assumed to be in wrong order:
-    DAT_df <- switch.dating(DAT_df, dat_wrong_order)
-  }
+  # check for Dating in wrong order and switch accordingly
+  DAT_df <- switch.dating(DAT_df)
 
   # Prepare the Matrix to be used instead of the df for faster processing
   DAT_mat <- matrix(ncol = 5, nrow = nrow(DAT_df))

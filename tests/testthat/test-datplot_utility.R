@@ -10,15 +10,23 @@ test_that("generate.stepsize returns one", {
   expect_equal(generate.stepsize(testmat), 1)
 })
 
-corrmat <- as.data.frame(matrix(c(1, 2, 3, 4, 6, 6, 8, 8, 0, -200, 50,
-                                  -200, 5, 0, 50, 5),
-                                byrow = FALSE, ncol = 4))
-testmat <- as.data.frame(matrix(c(1, 2, 3, 4, 6, 6, 8, 8, 0, 0, 50, -200,
-                                  5, -200, 50, 5),
-                                byrow = FALSE, ncol = 4))
+correct_df <- as.data.frame(matrix(c(1, 2, 3, 4, 6, 6, 8, 8, 0, -200, 50,
+                                     -200, 5, 0, 50, 5),
+                                   byrow = FALSE, ncol = 4))
+wrong_df <- as.data.frame(matrix(c(1, 2, 3, 4, 6, 6, 8, 8, 0, 0, 50, -200,
+                                   5, -200, 50, 5),
+                                 byrow = FALSE, ncol = 4))
+
+
 test_that("switch.dating returns values correctly", {
-  expect_equal(switch.dating(as.data.frame(testmat), DAT_err), corrmat)
+  expect_equal(suppressWarnings(switch.dating(wrong_df)), correct_df)
 })
+
+test_that("switch.dating issues warning", {
+  expect_warning(switch.dating(wrong_df), "wrong order at ID 2")
+})
+
+
 
 testdf <- create.testing.df()
 
@@ -70,8 +78,8 @@ test_that("check.structure works", {
   expect_error(check.structure(testdf_wrong_three))
 })
 
-test_that("check.structure issues warning", {
-  expect_warning(check.structure(testdf), regexp = "recommended")
+test_that("check.structure issues message", {
+  expect_message(check.structure(testdf), regexp = "recommended")
 })
 
 

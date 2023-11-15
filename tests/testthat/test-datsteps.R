@@ -7,14 +7,14 @@ test_that("error for wrong value of stepsize", {
 })
 
 test_that("warning for wrong column types", {
-  expect_warning(datsteps(testdf, stepsize = 25), "character vector")
+  expect_message(datsteps(testdf, stepsize = 1), "character vector")
 })
 
 
 data("DAT_df")
 
-test_that("warning for wrong value of stepsize", {
-  expect_warning(datsteps(DAT_df), regexp = "stepsize is larger")
+test_that("warning for problematic value of stepsize", {
+  expect_warning(datsteps(DAT_df, stepsize = 25), regexp = "stepsize is larger")
 })
 
 
@@ -29,7 +29,7 @@ testdf[1, 3:4] <- c(4, 4)
 
 test_that("error for wrong value of stepsize", {
   expect_warning(datsteps(testdf), regexp = "the same value")
-  expect_warning(datsteps(testdf), regexp = "larger than the range of")
+  expect_warning(datsteps(testdf, stepsize = 25), regexp = "larger than the range of")
 })
 
 
@@ -38,9 +38,6 @@ testdf$variable <- as.factor(testdf$variable)
 #str(testdf)
 testdf$min <- c(1, 10)
 testdf$max <- c(2, 12)
-
-test_steps <- datsteps(testdf, stepsize = 1)
-test_cumul <- datsteps(testdf, stepsize = 1, calc = "prob", cumulative = TRUE)
 
 test_that("cumulative weight is added", {
   test <- suppressWarnings(datsteps(testdf,

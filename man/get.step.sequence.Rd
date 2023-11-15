@@ -7,22 +7,40 @@
 get.step.sequence(datmin = 0, datmax = 100, stepsize = 25)
 }
 \arguments{
-\item{datmin}{value of the minimum dating of one object}
+\item{datmin}{numeric value of the minimum dating of one object}
 
-\item{datmax}{value of the maximum dating of one object}
+\item{datmax}{numeric value of the maximum dating of one object}
 
 \item{stepsize}{the stepsize to be used}
 }
 \value{
-sequence of steps to be created by create.sub.objects()
+sequence of steps to be created by [create.sub.objects()]
 }
 \description{
 Produces an appropriate sequence of years between the minimum
-and maximum dating. If they cannot be properly divided by the stepsize set
+and maximum dating.
+
+If they cannot be properly divided by the stepsize set
 beforehand, either three values are generated for objects that are dated to
 a range of more then 60% of the stepsize (min, mean, max), or two values for
 objects dated to a timespan of less or equal to 60% of the stepsize.
 If they can be divided without residual, the normal sequence is returned.
 If there is a residual, the stepsize is modified depending on how large the
-residual is. (TODO: There is still a problem here that needs fixing.)
+residual is.
+}
+\examples{
+\dontrun{
+min_year <- -494
+max_year <- -334
+sequence <- get.step.sequence(datmin = min_year, datmax = max_year, stepsize = 25)
+print(sequence)
+
+min_year <- 1
+max_year <- 100
+sequence <- get.step.sequence(datmin = min_year, datmax = max_year, stepsize = 25)
+print(sequence)
+}
+}
+\seealso{
+[datsteps()], [create.sub.objects()]
 }

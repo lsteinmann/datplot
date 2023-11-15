@@ -7,17 +7,20 @@
 get.probability(DAT_min, DAT_max)
 }
 \arguments{
-\item{DAT_min}{a vector containing the minimum date (a number) of each object}
+\item{DAT_min}{a numeric vector containing the minimum date of each object}
 
-\item{DAT_max}{a vector containing the maximum date (a number) of each object}
+\item{DAT_max}{a numeric vector containing the maximum date of each object}
 }
 \value{
-the probability for each object being dated to any single year
-within the timespan (lesser value means object is dated to larger timespans,
-i.e. with less confidence).
+a vector of probabilities for each object being dated to any
+single year within the timespan (lesser value means object is dated to
+larger timespans, i.e. with less confidence).
 }
 \description{
 Calculates the probability of each object being dated into
 each year / timeslot from two vectors of minimum and maximum
 dating. Returns a vector of probabilities.
+}
+\seealso{
+[datsteps()], [get.weights()]
 }
