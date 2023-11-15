@@ -104,7 +104,7 @@ usually with a less object-based focus and with differing algorithms
 <a href="https://github.com/davidcorton/archSeries" class="external-link">archSeries</a>, <a href="https://github.com/tesselle/tabula" class="external-link">tabula</a> and <a href="https://github.com/ahb108/rtfact" class="external-link">rtefact</a>). We wholeheartedly
 recommend trying out those packages as well to find the best fit for
 your data. This implementation (datplot) is kept rather simple. The case
-study with which the package is published <span class="citation">(Weissova and Steinmann, n.d.)</span> addresses
+study with which the package is published <span class="citation">(Weissova and Steinmann 2021)</span> addresses
 classical archaeology, but the package itself is in no way restricted to
 any discipline.</p>
 </div>
@@ -156,74 +156,74 @@ same vignettes also suggests some visualizations of said data set.)</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">7893</td>
-<td align="left">8597</td>
-<td align="left">RED-FIGURE</td>
-<td align="right">-475</td>
-<td align="right">-425</td>
-</tr>
-<tr class="even">
-<td align="left">29236</td>
-<td align="left">42063</td>
-<td align="left">RED-FIGURE</td>
-<td align="right">-400</td>
-<td align="right">-300</td>
-</tr>
-<tr class="odd">
-<td align="left">47359</td>
-<td align="left">215242</td>
-<td align="left">RED-FIGURE</td>
-<td align="right">-450</td>
-<td align="right">-400</td>
-</tr>
-<tr class="even">
-<td align="left">11664</td>
-<td align="left">12697</td>
-<td align="left">BLACK-FIGURE</td>
-<td align="right">-525</td>
-<td align="right">-475</td>
-</tr>
-<tr class="odd">
-<td align="left">51866</td>
-<td align="left">230825</td>
-<td align="left">RED-FIGURE</td>
-<td align="right">-400</td>
-<td align="right">-300</td>
-</tr>
-<tr class="even">
-<td align="left">91483</td>
-<td align="left">9012206</td>
-<td align="left">RED-FIGURE</td>
-<td align="right">-475</td>
-<td align="right">-425</td>
-</tr>
-<tr class="odd">
-<td align="left">31653</td>
-<td align="left">45373</td>
-<td align="left">BLACK-FIGURE</td>
-<td align="right">-475</td>
-<td align="right">-425</td>
-</tr>
-<tr class="even">
-<td align="left">52328</td>
-<td align="left">240062</td>
-<td align="left">RED-FIGURE</td>
-<td align="right">-425</td>
-<td align="right">-375</td>
-</tr>
-<tr class="odd">
-<td align="left">57421</td>
-<td align="left">303483</td>
+<td align="left">64140</td>
+<td align="left">350781</td>
 <td align="left">BLACK-FIGURE</td>
 <td align="right">-550</td>
 <td align="right">-500</td>
 </tr>
 <tr class="even">
-<td align="left">25410</td>
-<td align="left">29612</td>
+<td align="left">45391</td>
+<td align="left">213270</td>
 <td align="left">RED-FIGURE</td>
+<td align="right">-475</td>
 <td align="right">-425</td>
-<td align="right">-375</td>
+</tr>
+<tr class="odd">
+<td align="left">48344</td>
+<td align="left">216229</td>
+<td align="left">RED-FIGURE</td>
+<td align="right">-450</td>
+<td align="right">-400</td>
+</tr>
+<tr class="even">
+<td align="left">47463</td>
+<td align="left">215346</td>
+<td align="left">RED-FIGURE</td>
+<td align="right">-450</td>
+<td align="right">-400</td>
+</tr>
+<tr class="odd">
+<td align="left">58527</td>
+<td align="left">305921</td>
+<td align="left">BLACK-FIGURE</td>
+<td align="right">-525</td>
+<td align="right">-475</td>
+</tr>
+<tr class="even">
+<td align="left">97130</td>
+<td align="left">9018014</td>
+<td align="left">BLACK-FIGURE</td>
+<td align="right">-550</td>
+<td align="right">-500</td>
+</tr>
+<tr class="odd">
+<td align="left">36019</td>
+<td align="left">203156</td>
+<td align="left">RED-FIGURE</td>
+<td align="right">-500</td>
+<td align="right">-450</td>
+</tr>
+<tr class="even">
+<td align="left">38239</td>
+<td align="left">205402</td>
+<td align="left">RED-FIGURE</td>
+<td align="right">-500</td>
+<td align="right">-450</td>
+</tr>
+<tr class="odd">
+<td align="left">12504</td>
+<td align="left">13584</td>
+<td align="left">BLACK-FIGURE</td>
+<td align="right">-600</td>
+<td align="right">-550</td>
+</tr>
+<tr class="even">
+<td align="left">13260</td>
+<td align="left">14377</td>
+<td align="left">BLACK-FIGURE</td>
+<td align="right">-600</td>
+<td align="right">-550</td>
 </tr>
 </tbody>
 </table>
@@ -249,20 +249,19 @@ package (<code><a href="../reference/datsteps.html">datsteps()</a></code>) produ
 ‘weight’ or ‘probability’ which contains a value that reflects the
 quality of dating (‘weight’) or the probability of an object being dated
 to a certain year (‘probability’). For the calculation of ‘weight’, see
-<span class="citation">(Weissova and Steinmann, n.d.)</span>. The
-formula for probability calculation is simply ‘1 / ((max - min) +
-1)’.</p>
+<span class="citation">(Weissova and Steinmann 2021)</span>. The formula
+for probability calculation is simply ‘1 / ((max - min) + 1)’.</p>
 <p>In any case, the greater the time span, the lower the weight value or
 probability. This is a generally accepted method of aoristic analysis
 <span class="citation">(Ratcliffe 2000, 671–72 with Fig. 1)</span> and
 explained in greater detail in <span class="citation">(Weissova and
-Steinmann, n.d.)</span>. In the case of a stepsize of 1, the weight
-value can be seen as an actual dating probability to the specific year.
-As an example, a coin dated between 36 and 37 CE will thus have a
-probability of 0.5 for the year 36, and 0.5 for the year 37. The
-calculation of probability does, however not work with greater
-stepsizes. It is possible to switch between both variants of calculation
-by using <code>datsteps(x, calc = "weight")</code> or
+Steinmann 2021)</span>. In the case of a stepsize of 1, the weight value
+can be seen as an actual dating probability to the specific year. As an
+example, a coin dated between 36 and 37 CE will thus have a probability
+of 0.5 for the year 36, and 0.5 for the year 37. The calculation of
+probability does, however not work with greater stepsizes. It is
+possible to switch between both variants of calculation by using
+<code>datsteps(x, calc = "weight")</code> or
 <code>datsteps(x, calc = "probability")</code>. When the probability is
 calculated, there is an option to add a cumulative probability column
 (<code>datsteps(x, calc = "probability", cumulative = TRUE)</code>).</p>
@@ -326,11 +325,11 @@ objects dated to a number of years exceeding 60% of the stepsize).</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datsteps.html">datsteps</a></span><span class="op">(</span><span class="va">Beazley</span>, stepsize <span class="op">=</span> <span class="fl">25</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span></span>
 <span><span class="co">#&gt; Using 'weight'-calculation (see https://doi.org/10.1017/aap.2021.8).</span></span>
 <span><span class="co">#&gt; elapsed </span></span>
-<span><span class="co">#&gt;   0.089</span></span>
+<span><span class="co">#&gt;   0.046</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datsteps.html">datsteps</a></span><span class="op">(</span><span class="va">Beazley</span>, stepsize <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span></span>
 <span><span class="co">#&gt; Using 'weight'-calculation (see https://doi.org/10.1017/aap.2021.8).</span></span>
 <span><span class="co">#&gt; elapsed </span></span>
-<span><span class="co">#&gt;    0.28</span></span></code></pre></div>
+<span><span class="co">#&gt;   0.143</span></span></code></pre></div>
 <p>Using larger step sizes is only recommended if the stepsize of 1 year
 leads to significant delays in processing while yielding no additional
 information. If one where to look at a total time span of 10000 years,
@@ -664,28 +663,29 @@ fashion on a flexible timescale.</p>
 <div class="section level2">
 <h2 id="weights-and-cumulative-weights">Weights and Cumulative Weights<a class="anchor" aria-label="anchor" href="#weights-and-cumulative-weights"></a>
 </h2>
-<p>With the update to v.1.0.1 the calculation of weights has slightly
-changed. When using a stepsize of 1 (and only then), the weights now
-reflect the true probability for each objects dating into the specific
-year. With this, the weight may be used as an indicative value itself
-and not only as a helper for visualization. Many thanks to Christian
-Gugl for this suggestion and correction.</p>
+<p>With the update to v1.1.0 there are new option for calculation. When
+using a stepsize of 1 and <code>calc = "probability"</code>, the weights
+now reflect the true probability for each objects dating into the
+specific year. With this, the probability may be used as an indicative
+value itself and not only as a helper for visualization. Many thanks to
+Christian Gugl for this suggestion.</p>
 <p>This now opens the possibility to calculate the cumulative
 probability for each successive year – also suggested by Christian Gugl
 –, which is useful in the case of numismatic research, where it reflects
 the rising probability of minting. The cumulative probability has been
-introduced as an option in v.1.1 and is calculated in a separate column
+introduced as an option in v1.1.0 and is calculated in a separate column
 when setting <code>cumulative = TRUE</code> in the
 <code><a href="../reference/datsteps.html">datsteps()</a></code>-function. Please note that the cumulative
-probability/weight does not work (and does not mean anything) for
-stepsizes larger than 1!</p>
+probability does not work (and does not mean anything) for stepsizes
+larger than 1!</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"Inscr_Bithynia"</span><span class="op">)</span></span>
 <span><span class="va">Inscr_Bithynia</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="va">Inscr_Bithynia</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">8</span>, <span class="fl">9</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="va">Inscr_Bithynia</span> <span class="op">&lt;-</span> <span class="va">Inscr_Bithynia</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">Inscr_Bithynia</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span>, <span class="op">]</span></span>
-<span><span class="va">Inscr_Bithynia_steps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datsteps.html">datsteps</a></span><span class="op">(</span><span class="va">Inscr_Bithynia</span>, stepsize <span class="op">=</span> <span class="fl">1</span>, cumulative <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in datsteps(Inscr_Bithynia, stepsize = 1, cumulative = TRUE): Switching</span></span>
-<span><span class="co">#&gt; to probability calculation to provide cumulative probability.</span></span>
+<span><span class="va">Inscr_Bithynia</span> <span class="op">&lt;-</span> <span class="va">Inscr_Bithynia</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">Inscr_Bithynia</span><span class="op">)</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="va">Inscr_Bithynia_steps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/datsteps.html">datsteps</a></span><span class="op">(</span><span class="va">Inscr_Bithynia</span>, </span>
+<span>                                 stepsize <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>                                 calc <span class="op">=</span> <span class="st">"probability"</span>, </span>
+<span>                                 cumulative <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Using step-wise probability calculation.</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">Inscr_Bithynia_steps</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">DAT_step</span>, y <span class="op">=</span> <span class="va">cumul_prob</span>, fill <span class="op">=</span> <span class="va">variable</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -732,7 +732,7 @@ Quaternary</em> 3 (January): 1. <a href="https://doi.org/10.5334/oq.29" class="e
 </div>
 <div id="ref-BAPD" class="csl-entry">
 Oxford, University of. n.d. <span>“Beazley Archive Pottery Database
-(<span>BAPD</span>).”</span> Accessed April 27, 2018. <a href="https://www.beazley.ox.ac.uk/pottery/default.htm" class="external-link">https://www.beazley.ox.ac.uk/pottery/default.htm</a>.
+(<span>BAPD</span>).”</span> Accessed April 27, 2018. <a href="https://www.carc.ox.ac.uk/carc/pottery" class="external-link">https://www.carc.ox.ac.uk/carc/pottery</a>.
 </div>
 <div id="ref-ratcliffe_Aoristicanalysisspatial_2000" class="csl-entry">
 Ratcliffe, Jerry H. 2000. <span>“Aoristic Analysis: The Spatial
@@ -744,10 +744,10 @@ Shennan, Stephen. 1988. <em>Quantifying Archaeology</em>. Edinburgh:
 Edinburgh University Press.
 </div>
 <div id="ref-datplotarticle" class="csl-entry">
-Weissova, Barbora, and Lisa Steinmann. n.d. <span>“Datplot:
+Weissova, Barbora, and Lisa Steinmann. 2021. <span>“Datplot:
 <span>A</span> New r-Package for the Visualization of Date Ranges in
-Archaeology.”</span> <em>Advances in Archaeological Practice</em> tba:
-tba.
+Archaeology.”</span> <em>Advances in Archaeological Practice</em> 9 (7):
+288–98. <a href="https://doi.org/10.1017/aap.2021.8" class="external-link">https://doi.org/10.1017/aap.2021.8</a>.
 </div>
 </div>
 </div>

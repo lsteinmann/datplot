@@ -5,22 +5,22 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="Converting date ranges into dating steps eases
-    the visualization of changes in e.g. pottery consumption, style and
-    other variables over time. This package provides tools to process and
+<meta name="description" content="Converting date ranges into dating steps eases the
+    visualization of changes in e.g. pottery consumption, style and other
+    variables over time. This package provides tools to process and
     prepare data for visualization and employs the concept of aoristic
     analysis.">
-<title>Preparation of Object Dating Ranges for Density Plots
-    (Aoristic Analysis) • datplot</title>
+<title>Preparation of Object Dating Ranges for Density Plots (Aoristic
+    Analysis) • datplot</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Preparation of Object Dating Ranges for Density Plots
-    (Aoristic Analysis)">
-<meta property="og:description" content="Converting date ranges into dating steps eases
-    the visualization of changes in e.g. pottery consumption, style and
-    other variables over time. This package provides tools to process and
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Preparation of Object Dating Ranges for Density Plots (Aoristic
+    Analysis)">
+<meta property="og:description" content="Converting date ranges into dating steps eases the
+    visualization of changes in e.g. pottery consumption, style and other
+    variables over time. This package provides tools to process and
     prepare data for visualization and employs the concept of aoristic
     analysis.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -78,7 +78,6 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9">
-<p><a href="https://doi.org/10.5281/zenodo.4285912" class="external-link"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.4285912.svg" alt="DOI"></a> <a href="https://doi.org/10.1017/aap.2021.8" class="external-link"><img src="https://img.shields.io/badge/Publication-10.1017/aap.2021.8-green.svg" alt="DOI"></a></p>
 <!-- badges: end -->
 <div class="section level1">
 <div class="page-header"><h1 id="datplot">datplot<a class="anchor" aria-label="anchor" href="#datplot"></a>
@@ -87,8 +86,7 @@
 <p>A rather common problem in archaeology is the fuzzyness of dates assigned to objects. If one wants to visualize overall changes in - let’s say - pottery consumption, bar charts often fall short in that regard. If, e.g., the Phases a – f are employed, then some of the objects can usually be dated to a, c, and f, as an example, but others will by classified as “a to c” or “b to c”. But how can these data still be used for examining changes in a large set of objects without completely disregarding the information added by providing multiple phases for one object?</p>
 <p>This package proposes implements the concepts of aoristic analysis to prepare archaeological data for the visualization using density plots. An example is shown in the vignettes, which can be found at</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">browseVignettes</span>(<span class="st">"datplot"</span>)</span></code></pre></div>
-<p>after installing the package, or on GitHub in the /vignettes/ directory. Density plots are easy to understand and are usually aesthetically pleasing. They do omit a some information, such as individual counts, that bar histograms can communicate better. On the other hand, ranges can be incorporated into the visualization as well to regard the variety of timespans archaeological objects may be dated to.</p>
-<p><strong>Note:</strong> Please note that the weight calculation has changed with version 1.0.1 to reflect true probabilities for each object when a stepsize of 1 is used. The change does not affect the visualization, but makes the weight-values usable as dating probability for steps of 1 year exactly.</p>
+<p>or <a href="https://lsteinmann.github.io/datplot/articles/how-to.html">on the pkgdown-site</a> after installing the package, or on GitHub in the /vignettes/ directory. Density plots are easy to understand and are usually aesthetically pleasing. They do omit a some information, such as individual counts, that bar histograms can communicate better. On the other hand, ranges can be incorporated into the visualization as well to regard the variety of timespans archaeological objects may be dated to.</p>
 <div class="figure">
 <img src="reference/figures/demo_readme.png" title="Attic Pottery from BAPD by Date" alt=""><p class="caption">Attic Pottery from BAPD by Date</p>
 </div>
@@ -100,7 +98,7 @@
 <div class="section level2">
 <h2 id="recommendation">Recommendation<a class="anchor" aria-label="anchor" href="#recommendation"></a>
 </h2>
-<p>People interested in employing this method should also consider taking a look at <a href="https://github.com/ISAAKiel/aoristAAR/" class="external-link">ISAAKiel’s package aoristAAR</a>, or at <a href="https://github.com/davidcorton/archSeries" class="external-link">archSeries</a>, <a href="https://github.com/tesselle/tabula" class="external-link">tabula</a>, <a href="https://github.com/ahb108/rtfact" class="external-link">rtefact</a> and <a href="https://github.com/LimesLimits/aoristic-analysis" class="external-link">aoristic-analysis (LimesLimits)</a>.</p>
+<p>People interested in employing this method should also consider taking a look at <a href="https://github.com/ISAAKiel/aoristAAR/" class="external-link">ISAAKiel’s package aoristAAR</a>, or at <a href="https://github.com/davidcorton/archSeries" class="external-link">archSeries</a>, <a href="https://github.com/tesselle/tabula" class="external-link">tabula</a>, <a href="https://github.com/ahb108/rtfact" class="external-link">rtefact</a>, <a href="https://github.com/LimesLimits/aoristic-analysis" class="external-link">aoristic-analysis (LimesLimits)</a> and (in the future) <a href="https://github.com/ercrema/baorista" class="external-link">baorista</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -148,7 +146,7 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Lisa Steinmann <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-2215-1243" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Lisa Steinmann <br><small class="roles"> Author, maintainer, copyright holder </small> <a href="https://orcid.org/0000-0002-2215-1243" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
@@ -156,9 +154,10 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
+<li><a href="https://github.com/lsteinmann/datplot/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/lsteinmann/datplot/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://app.codecov.io/gh/lsteinmann/datplot" class="external-link"><img src="https://codecov.io/gh/lsteinmann/datplot/branch/main/graph/badge.svg" alt="codecov"></a></li>
+<li><a href="https://doi.org/10.1017/aap.2021.8" class="external-link"><img src="https://img.shields.io/badge/Publication-10.1017/aap.2021.8-green.svg" alt="DOI"></a></li>
 <li><a href="https://CRAN.R-project.org/package=datplot" class="external-link"><img src="https://www.r-pkg.org/badges/version/datplot" alt="CRAN status"></a></li>
-<li><a href="https://github.com/lsteinmann/datplot/actions" class="external-link"><img src="https://github.com/lsteinmann/datplot/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://codecov.io/gh/lsteinmann/datplot" class="external-link"><img src="https://codecov.io/gh/lsteinmann/datplot/branch/main/graph/badge.svg?token=CVNCAL9U4W" alt="codecov"></a></li>
 </ul>
 </div>
 

@@ -88,7 +88,7 @@ cleaning on a data set as it can frequently be found in archaeological
 literature, or put together during archaeological research. The data is
 prepared for use with the <code>datplot</code>-package. An analysis
 based on this data can be found as a case study in the paper “datplot: A
-new R-Package for the Visualization of Date Ranges in Archaeology” <span class="citation">(Weissova and Steinmann, n.d.)</span> by the authors of
+new R-Package for the Visualization of Date Ranges in Archaeology” <span class="citation">(Weissova and Steinmann 2021)</span> by the authors of
 this package.</p>
 <p>The inscriptions of Bithynia data set, that is included in this
 package, was compiled for a publication analyzing the settlement
@@ -179,7 +179,7 @@ might have otherwise been a good candidate for identification, we chose
 to create a new automatically generated ID, so that every inscription
 can be individually identifiable.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">inscriptions</span><span class="op">$</span><span class="va">ID</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"I_"</span>, <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">inscriptions</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">inscriptions</span><span class="op">$</span><span class="va">ID</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"I_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">inscriptions</span><span class="op">)</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
 <p>Two of the variables of this data set are almost ready for further
 use, i.e. Location and Language. A look at their unique values reveals
 only small inconsistencies that can be easily fixed:</p>
@@ -331,64 +331,64 @@ since BC needs to be stored as a negative number.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">55</td>
-<td align="left">206 AD</td>
-<td align="left">206</td>
-<td align="left">206</td>
+<td align="left">144</td>
+<td align="left">119 AD</td>
+<td align="left">119</td>
+<td align="left">119</td>
 </tr>
 <tr class="even">
-<td align="left">139</td>
-<td align="left">175 AD</td>
-<td align="left">175</td>
-<td align="left">175</td>
+<td align="left">192</td>
+<td align="left">128 AD</td>
+<td align="left">128</td>
+<td align="left">128</td>
 </tr>
 <tr class="odd">
-<td align="left">13</td>
-<td align="left">573 AD</td>
-<td align="left">573</td>
-<td align="left">573</td>
-</tr>
-<tr class="even">
-<td align="left">125</td>
-<td align="left">263 AD</td>
-<td align="left">263</td>
-<td align="left">263</td>
-</tr>
-<tr class="odd">
-<td align="left">220</td>
-<td align="left">241 AD</td>
-<td align="left">241</td>
-<td align="left">241</td>
-</tr>
-<tr class="even">
-<td align="left">81</td>
-<td align="left">134 AD</td>
-<td align="left">134</td>
-<td align="left">134</td>
-</tr>
-<tr class="odd">
-<td align="left">140</td>
-<td align="left">165 AD</td>
-<td align="left">165</td>
-<td align="left">165</td>
-</tr>
-<tr class="even">
 <td align="left">159</td>
 <td align="left">58 AD</td>
 <td align="left">58</td>
 <td align="left">58</td>
 </tr>
+<tr class="even">
+<td align="left">229</td>
+<td align="left">147 AD</td>
+<td align="left">147</td>
+<td align="left">147</td>
+</tr>
 <tr class="odd">
-<td align="left">258</td>
-<td align="left">142 AD</td>
-<td align="left">142</td>
-<td align="left">142</td>
+<td align="left">216</td>
+<td align="left">253 AD</td>
+<td align="left">253</td>
+<td align="left">253</td>
 </tr>
 <tr class="even">
-<td align="left">144</td>
-<td align="left">119 AD</td>
-<td align="left">119</td>
-<td align="left">119</td>
+<td align="left">12</td>
+<td align="left">585 AD</td>
+<td align="left">585</td>
+<td align="left">585</td>
+</tr>
+<tr class="odd">
+<td align="left">134</td>
+<td align="left">205 AD</td>
+<td align="left">205</td>
+<td align="left">205</td>
+</tr>
+<tr class="even">
+<td align="left">177</td>
+<td align="left">244 AD</td>
+<td align="left">244</td>
+<td align="left">244</td>
+</tr>
+<tr class="odd">
+<td align="left">139</td>
+<td align="left">175 AD</td>
+<td align="left">175</td>
+<td align="left">175</td>
+</tr>
+<tr class="even">
+<td align="left">215</td>
+<td align="left">260 AD</td>
+<td align="left">260</td>
+<td align="left">260</td>
 </tr>
 </tbody>
 </table>
@@ -460,64 +460,64 @@ errors.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">173</td>
-<td align="left">284-305 AD</td>
-<td align="left">284</td>
+<td align="left">157</td>
+<td align="left">62/3 AD</td>
+<td align="left">62</td>
+<td align="left">3</td>
+</tr>
+<tr class="even">
+<td align="left">165</td>
+<td align="left">363/364 AD</td>
+<td align="left">363</td>
+<td align="left">364</td>
+</tr>
+<tr class="odd">
+<td align="left">167</td>
+<td align="left">337-340 AD</td>
+<td align="left">337</td>
+<td align="left">340</td>
+</tr>
+<tr class="even">
+<td align="left">227</td>
+<td align="left">155/156 AD</td>
+<td align="left">155</td>
+<td align="left">156</td>
+</tr>
+<tr class="odd">
+<td align="left">99</td>
+<td align="left">383-392 AD</td>
+<td align="left">383</td>
+<td align="left">392</td>
+</tr>
+<tr class="even">
+<td align="left">225</td>
+<td align="left">196-211 AD</td>
+<td align="left">196</td>
+<td align="left">211</td>
+</tr>
+<tr class="odd">
+<td align="left">124</td>
+<td align="left">286-305 AD</td>
+<td align="left">286</td>
 <td align="left">305</td>
 </tr>
 <tr class="even">
-<td align="left">279</td>
-<td align="left">88-67 BC</td>
-<td align="left">-88</td>
-<td align="left">-67</td>
+<td align="left">161</td>
+<td align="left">414-416 AD</td>
+<td align="left">414</td>
+<td align="left">416</td>
 </tr>
 <tr class="odd">
-<td align="left">164</td>
-<td align="left">364-367 AD</td>
-<td align="left">364</td>
-<td align="left">367</td>
-</tr>
-<tr class="even">
-<td align="left">162</td>
-<td align="left">395-408 AD</td>
-<td align="left">395</td>
-<td align="left">408</td>
-</tr>
-<tr class="odd">
-<td align="left">78</td>
-<td align="left">210-211 AD</td>
-<td align="left">210</td>
-<td align="left">211</td>
-</tr>
-<tr class="even">
-<td align="left">244</td>
-<td align="left">81-117 AD</td>
+<td align="left">40</td>
+<td align="left">81-96 AD</td>
 <td align="left">81</td>
-<td align="left">117</td>
-</tr>
-<tr class="odd">
-<td align="left">214</td>
-<td align="left">275/276 AD</td>
-<td align="left">275</td>
-<td align="left">276</td>
+<td align="left">96</td>
 </tr>
 <tr class="even">
-<td align="left">288</td>
-<td align="left">123-132 AD</td>
-<td align="left">123</td>
-<td align="left">132</td>
-</tr>
-<tr class="odd">
-<td align="left">101</td>
-<td align="left">18-165 AD</td>
-<td align="left">18</td>
-<td align="left">165</td>
-</tr>
-<tr class="even">
-<td align="left">230</td>
-<td align="left">145/146 AD</td>
-<td align="left">145</td>
-<td align="left">146</td>
+<td align="left">53</td>
+<td align="left">293-305 AD</td>
+<td align="left">293</td>
+<td align="left">305</td>
 </tr>
 </tbody>
 </table>
@@ -563,28 +563,28 @@ taking care to treat AD and BC differently.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">42</td>
-<td align="left">6th c. AD</td>
-<td align="left">500</td>
-<td align="left">599</td>
+<td align="left">15</td>
+<td align="left">3rd c. BC</td>
+<td align="left">-299</td>
+<td align="left">-200</td>
 </tr>
 <tr class="even">
-<td align="left">16</td>
-<td align="left">3rd c. AD</td>
-<td align="left">200</td>
-<td align="left">299</td>
+<td align="left">17</td>
+<td align="left">2nd c. BC</td>
+<td align="left">-199</td>
+<td align="left">-100</td>
 </tr>
 <tr class="odd">
-<td align="left">116</td>
-<td align="left">4th c. AD</td>
-<td align="left">300</td>
-<td align="left">399</td>
+<td align="left">25</td>
+<td align="left">1st c. BC</td>
+<td align="left">-99</td>
+<td align="left">0</td>
 </tr>
 <tr class="even">
-<td align="left">26</td>
-<td align="left">1st c. AD</td>
-<td align="left">0</td>
-<td align="left">99</td>
+<td align="left">41</td>
+<td align="left">6th c. BC</td>
+<td align="left">-599</td>
+<td align="left">-500</td>
 </tr>
 <tr class="odd">
 <td align="left">18</td>
@@ -593,22 +593,22 @@ taking care to treat AD and BC differently.</p>
 <td align="left">199</td>
 </tr>
 <tr class="even">
-<td align="left">15</td>
-<td align="left">3rd c. BC</td>
-<td align="left">-299</td>
-<td align="left">-200</td>
+<td align="left">16</td>
+<td align="left">3rd c. AD</td>
+<td align="left">200</td>
+<td align="left">299</td>
 </tr>
 <tr class="odd">
-<td align="left">41</td>
-<td align="left">6th c. BC</td>
-<td align="left">-599</td>
-<td align="left">-500</td>
+<td align="left">26</td>
+<td align="left">1st c. AD</td>
+<td align="left">0</td>
+<td align="left">99</td>
 </tr>
 <tr class="even">
-<td align="left">17</td>
-<td align="left">2nd c. BC</td>
-<td align="left">-199</td>
-<td align="left">-100</td>
+<td align="left">116</td>
+<td align="left">4th c. AD</td>
+<td align="left">300</td>
+<td align="left">399</td>
 </tr>
 <tr class="odd">
 <td align="left">11</td>
@@ -786,10 +786,10 @@ desired information:</p>
 <table class="table">
 <colgroup>
 <col width="6%">
-<col width="12%">
-<col width="12%">
-<col width="34%">
-<col width="23%">
+<col width="15%">
+<col width="11%">
+<col width="32%">
+<col width="22%">
 <col width="10%">
 </colgroup>
 <thead><tr class="header">
@@ -802,124 +802,124 @@ desired information:</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">118</td>
+<td align="left">2537</td>
 <td align="left">Greek</td>
-<td align="left"></td>
-<td align="left">SEG 46: 1596</td>
-<td align="left">FALSE</td>
-<td align="right">100</td>
-</tr>
-<tr class="even">
-<td align="left">748</td>
-<td align="left">Latin</td>
-<td align="left">PH265199</td>
-<td align="left">BCH 25, 39, 188</td>
-<td align="left">FALSE</td>
-<td align="right">78</td>
-</tr>
-<tr class="odd">
-<td align="left">1697</td>
-<td align="left">Latin</td>
-<td align="left">PH278851</td>
-<td align="left">TAM IV,1, 31</td>
-<td align="left">FALSE</td>
-<td align="right">294</td>
-</tr>
-<tr class="even">
-<td align="left">1428</td>
-<td align="left">Greek</td>
-<td align="left">PH278341</td>
-<td align="left">IK Iznik 1370</td>
-<td align="left">TRUE</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="left">1359</td>
-<td align="left">Greek</td>
-<td align="left">PH277935</td>
-<td align="left">IK Iznik 213</td>
-<td align="left">FALSE</td>
-<td align="right">100</td>
-</tr>
-<tr class="even">
-<td align="left">775</td>
-<td align="left">Greek</td>
-<td align="left"></td>
-<td align="left">HIP 34</td>
-<td align="left">FALSE</td>
-<td align="right">200</td>
-</tr>
-<tr class="odd">
-<td align="left">1666</td>
-<td align="left">Greek</td>
-<td align="left"></td>
-<td align="left">SEG 61: 1057</td>
-<td align="left">FALSE</td>
-<td align="right">150</td>
-</tr>
-<tr class="even">
-<td align="left">2680</td>
-<td align="left">Greek</td>
-<td align="left">PH278613</td>
-<td align="left">IK Prusa ad Olympum 123</td>
-<td align="left">FALSE</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="left">1350</td>
-<td align="left">Greek</td>
-<td align="left">PH278200</td>
-<td align="left">IK Iznik 1152</td>
-<td align="left">FALSE</td>
-<td align="right">100</td>
-</tr>
-<tr class="even">
-<td align="left">2154</td>
-<td align="left">Greek</td>
-<td align="left">PH279942</td>
-<td align="left">IK Prusias ad Hypium 3</td>
-<td align="left">FALSE</td>
-<td align="right">201</td>
-</tr>
-<tr class="odd">
-<td align="left">46</td>
-<td align="left">Greek</td>
-<td align="left"></td>
-<td align="left">SEG 46: 1594</td>
+<td align="left">PH278628</td>
+<td align="left">IK Prusa ad Olympum 138</td>
 <td align="left">FALSE</td>
 <td align="right">200</td>
 </tr>
 <tr class="even">
-<td align="left">2554</td>
+<td align="left">2574</td>
 <td align="left">Greek</td>
-<td align="left">PH278790</td>
-<td align="left">IK Prusa ad Olympum 1071</td>
+<td align="left">PH278610</td>
+<td align="left">IK Prusa ad Olympum 120</td>
+<td align="left">FALSE</td>
+<td align="right">100</td>
+</tr>
+<tr class="odd">
+<td align="left">1709</td>
+<td align="left">Greek</td>
+<td align="left">PH279919</td>
+<td align="left">SEG 39: 1342</td>
+<td align="left">FALSE</td>
+<td align="right">245</td>
+</tr>
+<tr class="even">
+<td align="left">1302</td>
+<td align="left">Greek</td>
+<td align="left">PH278381</td>
+<td align="left">IK Iznik 1412</td>
 <td align="left">TRUE</td>
 <td align="right">100</td>
 </tr>
 <tr class="odd">
-<td align="left">128</td>
-<td align="left">Greek</td>
-<td align="left"></td>
-<td align="left">AE 2007, 1331</td>
+<td align="left">1341</td>
+<td align="left">Latin</td>
+<td align="left">HD053091</td>
+<td align="left">AE 1993, 1435</td>
 <td align="left">FALSE</td>
-<td align="right">81</td>
+<td align="right">100</td>
 </tr>
 <tr class="even">
-<td align="left">2472</td>
+<td align="left">2470</td>
 <td align="left">Greek</td>
-<td align="left">PH278558</td>
-<td align="left">IK Prusa ad Olympum 68</td>
+<td align="left">PH278540</td>
+<td align="left">IK Prusa ad Olympum 49</td>
 <td align="left">FALSE</td>
 <td align="right">-31</td>
 </tr>
 <tr class="odd">
-<td align="left">1415</td>
+<td align="left">2516</td>
 <td align="left">Greek</td>
-<td align="left">PH277840</td>
-<td align="left">IK Iznik 60</td>
+<td align="left">PH278720</td>
+<td align="left">IK Prusa ad Olympum 1001</td>
 <td align="left">FALSE</td>
-<td align="right">218</td>
+<td align="right">-188</td>
+</tr>
+<tr class="even">
+<td align="left">1209</td>
+<td align="left">Greek</td>
+<td align="left">PH278160</td>
+<td align="left">IK Iznik 1085</td>
+<td align="left">FALSE</td>
+<td align="right">200</td>
+</tr>
+<tr class="odd">
+<td align="left">1398</td>
+<td align="left">Greek</td>
+<td align="left">PH278102</td>
+<td align="left">IK Iznik 1003</td>
+<td align="left">FALSE</td>
+<td align="right">293</td>
+</tr>
+<tr class="even">
+<td align="left">634</td>
+<td align="left">Latin</td>
+<td align="left"></td>
+<td align="left">AE 1994, 1627</td>
+<td align="left">FALSE</td>
+<td align="right">383</td>
+</tr>
+<tr class="odd">
+<td align="left">2551</td>
+<td align="left">Greek</td>
+<td align="left">PH278633</td>
+<td align="left">IK Prusa ad Olympum 144</td>
+<td align="left">FALSE</td>
+<td align="right">-199</td>
+</tr>
+<tr class="even">
+<td align="left">2178</td>
+<td align="left">Greek</td>
+<td align="left">PH279995</td>
+<td align="left">IK Prusias ad Hypium 56</td>
+<td align="left">FALSE</td>
+<td align="right">81</td>
+</tr>
+<tr class="odd">
+<td align="left">343</td>
+<td align="left">Greek</td>
+<td align="left">PH279408</td>
+<td align="left">IK Klaudiu Polis 44</td>
+<td align="left">FALSE</td>
+<td align="right">280</td>
+</tr>
+<tr class="even">
+<td align="left">1410</td>
+<td align="left">Greek/Latin</td>
+<td align="left">PH277806</td>
+<td align="left">IK Iznik 14</td>
+<td align="left">FALSE</td>
+<td align="right">249</td>
+</tr>
+<tr class="odd">
+<td align="left">42</td>
+<td align="left">Greek</td>
+<td align="left"></td>
+<td align="left">SEG 46: 1593</td>
+<td align="left">FALSE</td>
+<td align="right">400</td>
 </tr>
 </tbody>
 </table>
@@ -1235,8 +1235,8 @@ may look like this:</p>
 the <code><a href="../reference/get.weights.html">get.weights()</a></code>-function) are a way of assigning an
 importance to the objects in question. They relate to the range an
 object is dated to (more detailed information on the process is
-available in <span class="citation">(Weissova and Steinmann,
-n.d.)</span>). Therefore, any objects dated to large time spans as for
+available in <span class="citation">(Weissova and Steinmann
+2021)</span>). Therefore, any objects dated to large time spans as for
 example “Roman Imperial Period” ranging from 31 BC to 395 AD in our data
 set, are contributing to the curve significantly less than any object
 dated to one exact year. At times it can be very useful to look at both
@@ -1610,10 +1610,10 @@ and the Road System in <span>Bithynia</span> (4th Century
 <span>Berlin</span>: <span>Freie Universität Berlin</span>. <a href="https://refubium.fu-berlin.de/handle/fub188/23730" class="external-link">https://refubium.fu-berlin.de/handle/fub188/23730</a>.
 </div>
 <div id="ref-datplotarticle" class="csl-entry">
-Weissova, Barbora, and Lisa Steinmann. n.d. <span>“Datplot:
+Weissova, Barbora, and Lisa Steinmann. 2021. <span>“Datplot:
 <span>A</span> New r-Package for the Visualization of Date Ranges in
-Archaeology.”</span> <em>Advances in Archaeological Practice</em> tba:
-tba.
+Archaeology.”</span> <em>Advances in Archaeological Practice</em> 9 (7):
+288–98. <a href="https://doi.org/10.1017/aap.2021.8" class="external-link">https://doi.org/10.1017/aap.2021.8</a>.
 </div>
 </div>
 </div>
