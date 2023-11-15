@@ -4,21 +4,22 @@
 \alias{switch.dating}
 \title{Switch values where dating is in wrong order (internal)}
 \usage{
-switch.dating(DAT_df, DAT_err)
+switch.dating(DAT_df)
 }
 \arguments{
-\item{DAT_df}{a dataframe with 4 variable: ID, group, minimum date (int/num)
-maximum date (int/num)}
-
-\item{DAT_err}{a vector containing the indices of the dates which are
-in wrong order}
+\item{DAT_df}{a data.frame with 4 variables in this order: ID, group,
+minimum date (int/num), maximum date (int/num)}
 }
 \value{
-corrected DAT_mat
+The same data.frame with the dating values which were in wrong order
+switched.
 }
 \description{
-Requires a dataframe with 4 variables: ID (ideally factor),
-group (ideally factor), minimum date (int/numeric) and
-maximum date (int/numeric) and DAT_err as a vector of indices where
-dating is in wrong order.
+Requires a data.frame with 2 numeric variables in the
+3rd and 4th column: minimum date (int/numeric) and
+maximum date (int/numeric) as used in [datsteps()].
 }
+\seealso{
+[datsteps()]
+}
+\keyword{internal}

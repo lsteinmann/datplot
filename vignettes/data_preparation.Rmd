@@ -34,13 +34,14 @@ library(reshape2)
 
 # The "Inscriptions of Bithynia" data set
 
-The manually curated data that B. Weissova prepared for her dissertation was saved as an Excel-spreadsheet. As this is very often the case, we continue directly from this original file, which is available [in this repositories](https://github.com/lsteinmann/datplot) "inst/extdata/"-sub-directory. It can be loaded into R without further complications using the `read_excel()`-function from the package `readxl`. Alternatively, the file is suited for storage as a *.tsv-file, which is also provided in the same directory for better long-term support. 
+The manually curated data that B. Weissova prepared for her dissertation was saved as an Excel-spreadsheet. In order to comply with CRAN, we slightly reformatted it into a csv-file containing only ASCII-characters. We continue from this file, which is available [in this repositories](https://github.com/lsteinmann/datplot) "inst/extdata/"-sub-directory. It can be loaded into R without further complications using the `read.csv()`-function. 
+
+*Please note:* Since the conversion of the original Excel file to CRAN-compatible ASCII-data this script does not convert all data anymore. I apologize for not updating this script, but it seems too irrelevant to spent more time on it than I already have, since the package contains the clean Data already. I am keeping this as a lesson that data is complicated, and that things change.
 
 ```{r }
-inscriptions <- readxl::read_excel(system.file("extdata",
-                                               "Bithynia_Inscriptions.xlsx",
-                                               package = "datplot",
-                                               mustWork = TRUE))
+inscriptions <- read.csv(system.file("extdata",
+                                     "Bithynia_Inscriptions_ascii.csv",
+                                     package = "datplot"))
 summary(inscriptions)
 ```
 
@@ -68,7 +69,7 @@ Using functions from the `tidyverse` package family, we can easily transform the
 
 ```{r message=FALSE}
 inscriptions <- inscriptions %>%
-  rename(Dating = `Chronological Frame`) %>%
+  rename(Dating = Chronological.Frame) %>%
   mutate(Dating = na_if(Dating, "---"),
          Language = replace(Language, Language == "Gr/Lat", "Greek/Latin"),
          Language = replace(Language, Language == "Gr / Lat", "Greek/Latin"),
@@ -174,16 +175,16 @@ As some of the values are in the format year-year, e.g. "150-160 AD", we can eas
 
 ```{r }
 # Values like: 92-120 AD
-sel <- grep("^[0-9]{1,3}–[0-9]{1,3} AD", num_dating$Dating)
+sel <- grep("^[0-9]{1,3}-[0-9]{1,3} AD", num_dating$Dating)
 for (r in sel) {
-  split <- strsplit(x = num_dating$Dating[r], split = "–| ")
+  split <- strsplit(x = num_dating$Dating[r], split = "-| ")
   num_dating$DAT_min[r] <- split[[1]][1]
   num_dating$DAT_max[r] <- split[[1]][2]
 }
 # Values like: AD 92-120
-sel <- grep("^AD [0-9]{1,3}–[0-9]{1,3}$", num_dating$Dating)
+sel <- grep("^AD [0-9]{1,3}-[0-9]{1,3}$", num_dating$Dating)
 for (r in sel) {
-  split <- strsplit(x = num_dating$Dating[r], split = "–| ")
+  split <- strsplit(x = num_dating$Dating[r], split = "-| ")
   num_dating$DAT_min[r] <- split[[1]][2]
   num_dating$DAT_max[r] <- split[[1]][3]
 }
@@ -202,9 +203,9 @@ for (r in sel) {
   num_dating$DAT_max[r] <- split[[1]][2]
 }
 # Values like: 525-75 BC
-sel <- grep("^[0-9]{1,3}–[0-9]{1,3} BC", num_dating$Dating)
+sel <- grep("^[0-9]{1,3}-[0-9]{1,3} BC", num_dating$Dating)
 for (r in sel) {
-  split <- strsplit(x = num_dating$Dating[r], split = "–| ")
+  split <- strsplit(x = num_dating$Dating[r], split = "-| ")
   num_dating$DAT_min[r] <- 0 - as.numeric(split[[1]][1])
   num_dating$DAT_max[r] <- 0 - as.numeric(split[[1]][2])
 }
@@ -470,7 +471,7 @@ ggplot(data = inscr_steps,
            y = fct_rev(as_factor(variable)),
            fill = variable,
            weight = weight)) +
-  geom_density_ridges(aes(height = ..density..),
+  geom_density_ridges(aes(height = after_stat(density)),
                       stat = "density", alpha = 0.9) +
   scale_fill_discrete(guide = FALSE)
 ```
@@ -484,7 +485,7 @@ ggplot(data = inscr_steps,
            y = fct_rev(as_factor(variable)),
            fill = variable,
            weight = weight)) +
-  geom_density_ridges(aes(height = ..density..), stat = "density", alpha = 0.9) +
+  geom_density_ridges(aes(height = after_stat(density)), stat = "density", alpha = 0.9) +
   scale_x_continuous(breaks = seq(from = -800, to = 800, by = 100),
                      limits = c(-800,800), name = "") +
   geom_vline(xintercept = 0, alpha = 0.5, lwd = 1) +

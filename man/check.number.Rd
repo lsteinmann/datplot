@@ -16,3 +16,4 @@ TRUE if value is any kind of number, FALSE if value is not
 Checks if value is either numeric, integer or double
 and and returns TRUE.
 }
+\keyword{internal}

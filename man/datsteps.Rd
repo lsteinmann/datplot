@@ -2,34 +2,60 @@
 % Please edit documentation in R/datsteps.R
 \name{datsteps}
 \alias{datsteps}
-\title{Create 'steps' of dates for each object in a dataframe}
+\title{Create 'steps' of dates for each object in a data.frame}
 \usage{
-datsteps(DAT_df, stepsize = 25)
+datsteps(DAT_df, stepsize = 1, calc = "weight", cumulative = FALSE)
 }
 \arguments{
-\item{DAT_df}{a dataframe with 4 variables: ID, group, minimum date (int/num)
-maximum date (int/num), _must_ be in this order, colnames are irrelevant;
-each object _must_ be one row.}
+\item{DAT_df}{a data.frame with 4 variables:
+  * `ID` : An identifier for each row, e.g. an Inventory number (ideally character).
+  * `group` : A grouping variable, such as type or context (ideally factor).
+  * `DAT_min` : minimum dating (int/num), the minimum dating boundary for a
+  single object, i.e. the earliest year the object may be dated to.
+  * `DAT_min` : maximum dating (int/num), the maximum dating boundary for a
+  single object, i.e. the latest year the object may be dated to.
+The columns _must_ be in this order, column names are irrelevant; each row
+_must_ correspond to one datable entity / object.}
 
-\item{stepsize}{defaults to 5. Number of years that should be used as an
-interval for creating dating steps.}
+\item{stepsize}{numeric, default is 1. Number of years that should be used
+as an interval for creating dating steps.}
+
+\item{calc}{method of calculation to use;
+can be either one of "weight" (default) or "probability":
+ * "weight": use the
+    [published original calculation](https://doi.org/10.1017/aap.2021.8)
+    for weights,
+ * "probability": calculate year-wise probability instead (only reasonable
+    when `stepsize = 1`)}
+
+\item{cumulative}{FALSE (default), TRUE: add a column containing the
+cumulative probability for each object (only reasonable when `stepsize = 1`,
+and will automatically use probability calculation)}
 }
 \value{
-a larger dataframe with a number of steps for each object as well
-as a 'weight' value, that is a quantification of how well the object is
-dated (lesser value means object is dated to larger timespans,
-i.e. with less confidence)
+an expanded data.frame in with each row represents a dating 'step'.
+Added columns contain the value of each step, the 'weight' or 'probability'-
+value for each step, and (if chosen) the cumulative probability.
 }
 \description{
-Requires a dataframe with 4 variables: ID (ideally factor),
-group (ideally factor), minimum date (int/numeric) and maximum date
-(int/numeric). It's expected that dates BCE are displayed as negative
-values while dates CE are positive values. Ignoring this will cause problems
-in any case.
+This function transforms a data.frame of dated objects with associated data
+to a new data.frame which contains a row for each dating 'step' for each
+objects. Dating 'steps' can be single years (with `stepsize = 1`) or an
+arbitrary number that will be used as a guideline for the interval.
+It's expected that dates BCE are displayed as negative
+values while dates CE are positive values. Ignoring this will cause
+problems. If dates are provided in the wrong order in any number of
+rows they will automatically be switched.
+
+The function along with a guide on how to use it and a case study is published
+in [Steinmann -- Weissova 2021](https://doi.org/10.1017/aap.2021.8).
 }
 \examples{
-DAT_df_steps <- datsteps(DAT_df[1:100, ], stepsize = 25)
+\dontrun{
+data(DAT_df)
+DAT_df_steps <- datsteps(DAT_df, stepsize = 25)
 plot(density(DAT_df_steps$DAT_step))
+}
 
 
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/datplot_utility.R
 \name{check.structure}
 \alias{check.structure}
-\title{Check the Structure to be compatible with datsteps()  (internal)}
+\title{Check if the structure is compatible with [datsteps()]  (internal)}
 \usage{
 check.structure(DAT_df)
 }
@@ -10,8 +10,10 @@ check.structure(DAT_df)
 \item{DAT_df}{An object to check}
 }
 \value{
-TRUE if object can be processed by datsteps(), error / FALSE if not
+TRUE if object can be processed by [datsteps()], error / FALSE if not
 }
 \description{
-Checks if the object passed to datsteps() will work
+Checks if the object passed to [datsteps()] can be used for
+processing.
 }
+\keyword{internal}
