@@ -1,3 +1,10 @@
+# datplot 1.1.1
+* Improved error handling in some functions. 
+* Reduced and improved messaging and warning behaviour. 
+* Fixed slight problem in `generate.stepsize()` where it would not handle same values in min & max dating properly.
+* Completely updated and redesigned tests. 
+* Removed unnecessary internal function `check.number()`.
+
 # datplot 1.1.0
 * Using either the original calculation (weights) or calculation of 
 year-wise probability is now an option in `datsteps()` with the 
