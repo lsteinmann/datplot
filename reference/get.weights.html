@@ -18,7 +18,7 @@ for information about how this is calculated."><!-- mathjax --><script src="http
     
     <a class="navbar-brand me-2" href="../index.html">datplot</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,7 +70,7 @@ for information about how this is calculated.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get.weights</span><span class="op">(</span><span class="va">DAT_min</span>, <span class="va">DAT_max</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get.weights</span><span class="op">(</span><span class="va">DAT_min</span>, <span class="va">DAT_max</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -81,6 +81,11 @@ for information about how this is calculated.</p>
 
 <dt>DAT_max</dt>
 <dd><p>a numeric vector containing the maximum date of each object</p></dd>
+
+
+<dt>verbose</dt>
+<dd><p>TRUE / FALSE: Should the function issue additional
+messages pointing to possible inconsistencies and notify of methods?</p></dd>
 
 </dl></div>
     <div class="section level2">
