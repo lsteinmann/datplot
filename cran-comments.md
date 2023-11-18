@@ -1,9 +1,8 @@
 ## Resubmission
-This is a resubmission of the archived package https://CRAN.R-project.org/package=datplot. 
-In this version I have:
+This is a resubmission. In this version I have:
   
-* Removed the UTF-8 and Latin-1 characters as noted in the archived version
-* I am submitting a new version of the package
+* Improved the messaging/warning behaviour as requested (no more printing & 'verbose'-argument for info-messages). 
+* (Package was archived on CRAN before due to UTF-8/Latin-1 strings in data and failure to correct on time. All strings have been converted to ASCII.)
 
 ## Test environments
 * local R installation, R 4.2.2 on Windows
