@@ -4,10 +4,13 @@
 \alias{check.structure}
 \title{Check if the structure is compatible with [datsteps()]  (internal)}
 \usage{
-check.structure(DAT_df)
+check.structure(DAT_df, verbose = FALSE)
 }
 \arguments{
 \item{DAT_df}{An object to check}
+
+\item{verbose}{TRUE / FALSE: Should the function issue additional
+messages pointing to possible inconsistencies and notify of methods?}
 }
 \value{
 TRUE if object can be processed by [datsteps()], error / FALSE if not

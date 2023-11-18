@@ -32,12 +32,12 @@ residual is.
 min_year <- -494
 max_year <- -334
 sequence <- get.step.sequence(datmin = min_year, datmax = max_year, stepsize = 25)
-print(sequence)
+sequence
 
 min_year <- 1
 max_year <- 100
 sequence <- get.step.sequence(datmin = min_year, datmax = max_year, stepsize = 25)
-print(sequence)
+sequence
 }
 \seealso{
 [datsteps()], [create.sub.objects()]

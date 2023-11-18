@@ -25,12 +25,13 @@
 #' get.histogramscale(DAT_df_steps$DAT_step, binwidth = 20)
 #' get.histogramscale(500, binwidth = 20)
 get.histogramscale <- function(DAT_df_steps, binwidth = "stepsize") {
-  if (check.number(DAT_df_steps) & length(DAT_df_steps) == 1) {
+  msg_sts <- paste("'binwidth = 'stepsize'' can only be used when",
+                   "a data.frame as returned by `datsteps()` is supplied.",
+                   "Otherwise, binwidth needs to be numeric.")
+  if (is.numeric(DAT_df_steps) & length(DAT_df_steps) == 1) {
     nrow <- DAT_df_steps
     if (binwidth == "stepsize") {
-      stop("'binwidth == 'stepsize'' cannot be used with a number,
-           supply either a dataframe as returned by datsteps or a
-           numerical binwidth")
+      stop(msg_sts)
     }
   } else {
     if (inherits(DAT_df_steps, "data.frame")) {
@@ -42,11 +43,10 @@ get.histogramscale <- function(DAT_df_steps, binwidth = "stepsize") {
     if (binwidth == "stepsize") {
       binwidth <- attributes(DAT_df_steps)$stepsize
       if (is.null(binwidth)) {
-        stop("Supply numerical binwidth or dataframe as returned by datsteps")
+        stop(msg_sts)
       }
-    } else if (!check.number(binwidth)) {
-      stop('Supply numerical binwidth or use binwidth = "stepsize" with a
-           dataframe as returned by datsteps.')
+    } else if (!is.numeric(binwidth)) {
+      stop("Argument 'binwidth' has to be either 'stepsize' or numeric.")
     }
   }
   histogramscale <- nrow * binwidth

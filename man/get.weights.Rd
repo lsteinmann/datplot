@@ -4,12 +4,15 @@
 \alias{get.weights}
 \title{Calculate the weights for each dated object}
 \usage{
-get.weights(DAT_min, DAT_max)
+get.weights(DAT_min, DAT_max, verbose = FALSE)
 }
 \arguments{
 \item{DAT_min}{a numeric vector containing the minimum date of each object}
 
 \item{DAT_max}{a numeric vector containing the maximum date of each object}
+
+\item{verbose}{TRUE / FALSE: Should the function issue additional
+messages pointing to possible inconsistencies and notify of methods?}
 }
 \value{
 a vector of 'weight'-values for the datsteps-data.frame, that is a

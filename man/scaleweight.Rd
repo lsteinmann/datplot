@@ -4,7 +4,7 @@
 \alias{scaleweight}
 \title{Scales the content of a column}
 \usage{
-scaleweight(DAT_df, var = c("all", 2), val = 5)
+scaleweight(DAT_df, var = "all", val = 5)
 }
 \arguments{
 \item{DAT_df}{a data.frame}

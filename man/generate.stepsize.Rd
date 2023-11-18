@@ -4,12 +4,15 @@
 \alias{generate.stepsize}
 \title{Determine stepsize (internal)}
 \usage{
-generate.stepsize(DAT_mat)
+generate.stepsize(DAT_mat, verbose = FALSE)
 }
 \arguments{
 \item{DAT_mat}{a matrix as prepared by [datsteps()], resp. a matrix witch
 columns names `datmin` and `datmax` containing numeric/integer value of the
 dating ranges.}
+
+\item{verbose}{TRUE / FALSE: Should the function issue additional
+messages pointing to possible inconsistencies and notify of methods?}
 }
 \value{
 A single numeric value that can be used as minimal stepsize.

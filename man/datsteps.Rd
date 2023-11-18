@@ -4,7 +4,13 @@
 \alias{datsteps}
 \title{Create 'steps' of dates for each object in a data.frame}
 \usage{
-datsteps(DAT_df, stepsize = 1, calc = "weight", cumulative = FALSE)
+datsteps(
+  DAT_df,
+  stepsize = 1,
+  calc = "weight",
+  cumulative = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{DAT_df}{a data.frame with 4 variables:
@@ -31,6 +37,9 @@ can be either one of "weight" (default) or "probability":
 \item{cumulative}{FALSE (default), TRUE: add a column containing the
 cumulative probability for each object (only reasonable when `stepsize = 1`,
 and will automatically use probability calculation)}
+
+\item{verbose}{TRUE / FALSE: Should the function issue additional
+messages pointing to possible inconsistencies and notify of methods?}
 }
 \value{
 an expanded data.frame in with each row represents a dating 'step'.

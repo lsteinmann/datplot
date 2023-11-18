@@ -35,6 +35,8 @@
 #' @param cumulative FALSE (default), TRUE: add a column containing the
 #' cumulative probability for each object (only reasonable when `stepsize = 1`,
 #' and will automatically use probability calculation)
+#' @param verbose TRUE / FALSE: Should the function issue additional
+#' messages pointing to possible inconsistencies and notify of methods?
 #'
 #' @return an expanded data.frame in with each row represents a dating 'step'.
 #' Added columns contain the value of each step, the 'weight' or 'probability'-
@@ -50,7 +52,8 @@
 datsteps <- function(DAT_df,
                      stepsize = 1,
                      calc = "weight",
-                     cumulative = FALSE) {
+                     cumulative = FALSE,
+                     verbose = TRUE) {
 
   calc <- ifelse(grepl("weight", calc),
                  "weight",
@@ -60,7 +63,7 @@ datsteps <- function(DAT_df,
                  calc)
 
   # redundand
-  if (cumulative & calc != "probability") {
+  if (cumulative && calc != "probability") {
     warning("Switching to probability calculation to provide cumulative probability.")
     calc <- "probability"
   }
@@ -70,9 +73,13 @@ datsteps <- function(DAT_df,
 
   calc <- match.arg(calc, c("weight", "probability"))
 
-  switch(calc,
-         weight = message("Using 'weight'-calculation (see https://doi.org/10.1017/aap.2021.8)."),
+  if (verbose) {
+    switch(calc,
+         weight = message(paste("Using 'weight'-calculation",
+                                "(see https://doi.org/10.1017/aap.2021.8).")),
          probability = message("Using step-wise probability calculation."))
+  }
+
 
   if (any(is.na(DAT_df))) {
     NA_rows <- c(which(is.na(DAT_df[, 3])),
@@ -85,7 +92,7 @@ datsteps <- function(DAT_df,
 
   DAT_df <- as.data.frame(DAT_df)
   # Checking the overall structure
-  check.structure(DAT_df)
+  check.structure(DAT_df, verbose = verbose)
 
   colnames <- c("index", "datmin", "datmax", calc, "step")
 
@@ -102,15 +109,16 @@ datsteps <- function(DAT_df,
 
   # If not already set, set stepsize
   if (stepsize == "auto") {
-    stepsize <- generate.stepsize(DAT_mat)
+    stepsize <- generate.stepsize(DAT_mat, verbose = verbose)
   } else if (!is.numeric(stepsize)) {
-    stop(print("stepsize has to be either 'auto' or numeric."))
+    stop("stepsize has to be either 'auto' or numeric.")
   }
 
   # calculate the weights or probabilities
   if (calc == "weight") {
     res <- get.weights(DAT_mat[, "datmin"],
-                       DAT_mat[, "datmax"])
+                       DAT_mat[, "datmax"],
+                       verbose = verbose)
   } else if (calc == "probability") {
     res <- get.probability(DAT_mat[, "datmin"],
                            DAT_mat[, "datmax"])
@@ -124,7 +132,10 @@ datsteps <- function(DAT_df,
 
 
   # Process the dating to create the steps
-  DAT_res <- create.sub.objects(DAT_list, stepsize, calc, cumulative)
+  DAT_res <- create.sub.objects(DAT_list,
+                                stepsize,
+                                calc,
+                                cumulative)
 
   # convert to data.frame again and store the variable and ID in the correct
   # order, using the matrix index as reference

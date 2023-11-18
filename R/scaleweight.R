@@ -18,9 +18,9 @@
 #' DAT_df_steps <- datsteps(DAT_df, stepsize = 25)
 #' DAT_df_scaled <- scaleweight(DAT_df_steps, var = 2, val = 5)
 
-scaleweight <- function(DAT_df, var = c("all", 2), val = 5) {
+scaleweight <- function(DAT_df, var = "all", val = 5) {
 
-  if (!check.number(val)) {
+  if (!is.numeric(val)) {
     val <- which(colnames(DAT_df) == val)
     if (length(val) == 0) {
       stop(paste("'val' needs to be a number",
@@ -30,7 +30,7 @@ scaleweight <- function(DAT_df, var = c("all", 2), val = 5) {
   if (val > ncol(DAT_df)) {
     stop(paste("No column at index", val))
   }
-  if (!is.numeric(DAT_df[,val])) {
+  if (!is.numeric(DAT_df[, val])) {
     stop(paste("Column", val, "is not numeric."))
   }
 
@@ -41,7 +41,7 @@ scaleweight <- function(DAT_df, var = c("all", 2), val = 5) {
                  "column containing the variable",
                  "that is to be used for scaling"))
     }
-  } else if (check.number(var) && var > ncol(DAT_df)) {
+  } else if (is.numeric(var) && var > ncol(DAT_df)) {
     stop(paste("No column at index", var))
   }
 

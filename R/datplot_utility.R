@@ -6,17 +6,27 @@
 #' @param DAT_mat a matrix as prepared by [datsteps()], resp. a matrix witch
 #' columns names `datmin` and `datmax` containing numeric/integer value of the
 #' dating ranges.
+#' @inheritParams datsteps
 #'
 #' @return A single numeric value that can be used as minimal stepsize.
 #'
 #' @seealso [datsteps()]
 #'
 #' @keywords internal
-generate.stepsize <- function(DAT_mat) {
-  timespans <- (abs(DAT_mat[, "datmin"] - DAT_mat[, "datmax"]) + 1)
+generate.stepsize <- function(DAT_mat, verbose = FALSE) {
+  if (!is.numeric(DAT_mat[, "datmin"]) & !is.numeric(DAT_mat[, "datmax"])) {
+    stop("Non numeric values handed to generate.stepsize().")
+  }
+
+  timespans <- (abs(DAT_mat[, "datmin"] - DAT_mat[, "datmax"]))
+
   stepsize <- min(timespans)
 
-  print(paste("Using stepsize = ", stepsize, " (auto).", sep = ""))
+  stepsize <- ifelse(stepsize == 0, 1, stepsize)
+
+  if(verbose) {
+    message(paste("Using stepsize = ", stepsize, " (auto).", sep = ""))
+  }
   return(stepsize)
 }
 
@@ -39,13 +49,14 @@ switch.dating <- function(DAT_df) {
   dat_wrong_order <- which(DAT_df[, 3] > DAT_df[, 4])
 
   if (length(dat_wrong_order) > 0) {
-    warning(paste0("Warning: Dating seems to be in wrong order at ID ",
-                  paste(DAT_df[dat_wrong_order, 1], collapse = ", "),
-                  " (Index: ", paste(dat_wrong_order, collapse = ", "),
-                  "). Dates have been switched, but be sure to check ",
-                  "your original data for possible mistakes."))
     # Switch the Dating of Rows assumed to be in wrong order:
     DAT_df[dat_wrong_order, 3:4] <- DAT_df[dat_wrong_order, 4:3]
+    # Notifying is important, because the data have been changed!
+    warning(paste0("Warning: Dating seems to be in wrong order at ID ",
+                   paste(DAT_df[dat_wrong_order, 1], collapse = ", "),
+                   " (Index: ", paste(dat_wrong_order, collapse = ", "),
+                   "). Dates have been switched, but be sure to check ",
+                   "your original data for possible mistakes."))
   }
 
   return(DAT_df)
@@ -62,6 +73,7 @@ switch.dating <- function(DAT_df) {
 #'
 #' @param DAT_min a numeric vector containing the minimum date of each object
 #' @param DAT_max a numeric vector containing the maximum date of each object
+#' @inheritParams datsteps
 #'
 #' @seealso [datsteps()], [get.probability()]
 #'
@@ -70,17 +82,20 @@ switch.dating <- function(DAT_df) {
 #' is dated to larger timespans, i.e. with less confidence)
 #'
 #' @export get.weights
-get.weights <- function(DAT_min, DAT_max) {
+get.weights <- function(DAT_min, DAT_max, verbose = FALSE) {
   stopifnot(is.numeric(DAT_min))
   stopifnot(is.numeric(DAT_max))
 
   weights <- abs(DAT_min - DAT_max)
 
   if (any(weights == 0)) {
-    warning(paste0("Warning: DAT_min and DAT_max at Index: ",
-                   paste(which(weights == 1), collapse = ", "),
-                   " have the same value! Is this correct? ",
-                   "Please check the table for possible errors."))
+    if (verbose) {
+      msg <- paste0("DAT_min and DAT_max at Index: ",
+                    paste(which(weights == 1), collapse = ", "),
+                    " have the same value! Is this correct? ",
+                    "If unsure, check your data for possible errors.")
+      message(msg)
+    }
     # set weight to 1 to treat objects with same min and max
     # dating (dated to one year precisely) as very influential
     # will have the same weight as objects dated to two years,
@@ -151,12 +166,12 @@ get.probability <- function(DAT_min, DAT_max) {
 #' min_year <- -494
 #' max_year <- -334
 #' sequence <- get.step.sequence(datmin = min_year, datmax = max_year, stepsize = 25)
-#' print(sequence)
+#' sequence
 #'
 #' min_year <- 1
 #' max_year <- 100
 #' sequence <- get.step.sequence(datmin = min_year, datmax = max_year, stepsize = 25)
-#' print(sequence)
+#' sequence
 get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
 
   stopifnot(is.numeric(datmin))
@@ -193,12 +208,12 @@ get.step.sequence <- function(datmin = 0, datmax = 100, stepsize = 25) {
       stepsize_mod <- (datmax - datmin) / (length(sequence) + 1)
       sequence <- seq(datmin, datmax, stepsize_mod)
       # then rounds all values except first and last, which need to stay as
-      # minumum and maximum date
+      # minimum and maximum date
       sequence[-c(1, length(sequence))] <-
         round(sequence[-c(1, length(sequence))],
               digits = 0)
     } else if (resid != 0) {
-      # if the residual is smaller but also not 0, the sequence values at moved
+      # if the residual is smaller but also not 0, the sequence values are moved
       # by an appropriate fraction
       move <- round(resid / (length(sequence) - 1), digits = 0)
       sequence[2:length(sequence)] <- sequence[2:length(sequence)] + move
@@ -246,6 +261,7 @@ create.sub.objects <- function(DAT_list,
     warning(paste0("stepsize is larger than the range of the ",
                    "closest dated object at Index = ",
                    paste(which(diffs < stepsize), collapse = ", "), "). ",
+                   "This is not recommended. ",
                    "For information see documentation of get.step.sequence()."))
   }
 
@@ -260,7 +276,7 @@ create.sub.objects <- function(DAT_list,
     names(new_object) <- NULL
     new_object <- do.call(rbind, new_object)
     if (cumulative) {
-      cumul_prob <- cumsum(new_object[,calc])
+      cumul_prob <- cumsum(new_object[, calc])
       new_object <- cbind(new_object, cumul_prob)
     }
     return(new_object)
@@ -272,30 +288,10 @@ create.sub.objects <- function(DAT_list,
 
   switch(calc,
          weight = attr <- "Calculated weight of each object according to doi.org/10.1017/aap.2021.8",
-         probability = attr <- "Dating-Probability of each object")
+         probability = attr <- "year-wise probability of each object")
 
   attributes(result)$calc <- c(calc, attr)
 
-  return(result)
-}
-
-
-#' @title Check for numbers (internal)
-#'
-#' @description Checks if value is either numeric, integer or double
-#' and and returns TRUE.
-#'
-#' @param value A value to check
-#'
-#' @return TRUE if value is any kind of number, FALSE if value is not
-#'
-#' @keywords internal
-
-
-check.number <- function(value) {
-  # This is so useless. :)
-  result <- c(is.integer(value), is.numeric(value), is.double(value))
-  result <- any(result)
   return(result)
 }
 
@@ -305,12 +301,13 @@ check.number <- function(value) {
 #' processing.
 #'
 #' @param DAT_df An object to check
+#' @inheritParams datsteps
 #'
 #' @return TRUE if object can be processed by [datsteps()], error / FALSE if not
 #'
 #' @keywords internal
 
-check.structure <- function(DAT_df) {
+check.structure <- function(DAT_df, verbose = FALSE) {
   dat_df_structure <- c(NA, NA, NA, NA, NA)
   names(dat_df_structure) <- c("is.df", "is.id", "is.var",
                                "is.minDAT", "is.maxDAT")
@@ -318,8 +315,8 @@ check.structure <- function(DAT_df) {
   dat_df_structure["is.df"] <- is.data.frame(DAT_df)
   dat_df_structure["is.id"] <- is.character(DAT_df[, 1, drop = TRUE])
   dat_df_structure["is.var"] <- is.factor(DAT_df[, 2, drop = TRUE])
-  dat_df_structure["is.minDAT"] <- check.number(DAT_df[, 3, drop = TRUE])
-  dat_df_structure["is.maxDAT"] <- check.number(DAT_df[, 4, drop = TRUE])
+  dat_df_structure["is.minDAT"] <- is.numeric(DAT_df[, 3, drop = TRUE])
+  dat_df_structure["is.maxDAT"] <- is.numeric(DAT_df[, 4, drop = TRUE])
 
 
   if (dat_df_structure[1] == FALSE) {
@@ -334,8 +331,11 @@ check.structure <- function(DAT_df) {
   } else {
     result <- TRUE
     }
-  if (any(dat_df_structure[2:3] == FALSE)) {
-    message("It is recommended to use character vector for the ID column and factor for the variable column.")
+  if (any(dat_df_structure[2:3] == FALSE) & verbose) {
+    message(paste0("It is recommended to use ",
+                   "character vector for the 'ID'-column (1) ",
+                   "and ",
+                   "factor for the 'variable'-column (2)."))
   }
   return(result)
 }
